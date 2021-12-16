@@ -1,0 +1,54 @@
+.segmentItem {
+    position: relative;
+
+    margin: 0px 20px;
+    padding: 15px 0;
+
+    border-bottom: 1px solid rgba(160, 92, 92, 0.15);
+}
+
+.index {
+    position: absolute;
+    top: 18px;
+    left: 0px;
+
+    font-size: 14px;
+    line-height: 20px;
+
+    text-align: center;
+
+    opacity: 0.75;
+}
+
+.segmentItem h3 {
+    font-size: 19px;
+    line-height: 27px;
+    font-weight: 400;
+
+    padding-left: 30px;
+    margin: 0;
+}
+
+.segmentItem p {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+
+    color: #6e6e73;
+
+    padding-left: 30px;
+    margin: 0;
+
+    display: flex;
+    gap: 10px;
+}
+
+.segmentItem svg {
+    position: absolute;
+
+    top: 20px;
+    right: 0;
+
+    height: 14px;
+    width: 14px;
+}

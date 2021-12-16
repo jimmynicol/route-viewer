@@ -1,0 +1,62 @@
+.segmentSheetWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.streetViewButtonContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.streetViewContainer {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+.xomContainer {
+    display: flex;
+    gap: 50px;
+    padding: 0 20px;
+}
+
+.KOM,
+.QOM {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.KOM svg,
+.QOM svg {
+    fill: #ffe045;
+    height: 20px;
+    width: 20px;
+}
+
+.yourPR {
+    display: flex;
+    gap: 10px;
+
+    padding: 0 20px;
+    margin: 15px 0;
+}
+
+.yourPR a {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #2997ff;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    height: 20px;
+    width: 20px;
+
+    opacity: 0.25;
+}

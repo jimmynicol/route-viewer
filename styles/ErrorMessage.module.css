@@ -1,0 +1,46 @@
+.errorMessage {
+    height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: left;
+}
+
+.compact {
+    width: 100%;
+}
+
+.regular {
+    width: 400px;
+}
+
+.errorMessage h3 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+
+    margin: 5px 20px 15px 20px;
+}
+
+.errorMessage p {
+    width: 100%;
+
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 21px;
+
+    color: rgba(0, 0, 0, 0.75);
+
+    margin: 0 0 5px 0;
+    padding: 0 20px;
+}
+
+.errorMessage code {
+    font-family: monospace;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+}

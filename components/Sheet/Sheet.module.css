@@ -1,0 +1,44 @@
+.sheet {
+    position: fixed;
+    height: calc(100vh + 100px);
+
+    box-shadow: 0 -2px 9px 0 rgba(0, 0, 0, 0.11);
+    border-radius: 15px 15px 0 0;
+
+    backdrop-filter: saturate(280%) blur(40px);
+    background-color: rgba(255, 255, 255, 0.5);
+
+    touch-action: none;
+}
+
+.compactSizeClass {
+    left: 0;
+    right: 0;
+}
+
+.regularSizeClass {
+    width: 375px;
+    left: 30px;
+}
+
+.handleWrapper {
+    height: 26px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.handle {
+    background: rgba(0, 0, 0, 0.11);
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+}
+
+.metadataContainer {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px 20px;
+}

@@ -1,0 +1,68 @@
+.oauthContainer {
+    height: 100vh;
+    width: 100%;
+}
+
+.oauthContainer,
+.compact,
+.regular {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.compact {
+    width: 100%;
+}
+
+.regular {
+    width: 375px;
+}
+
+.oauthTitle {
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 23px;
+
+    margin: 20px 30px;
+
+    text-align: center;
+}
+
+.oauthDescription {
+    padding: 30px;
+
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.redirectButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #f96500;
+    border: none;
+    border-radius: 6px;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+
+    color: #fff;
+
+    padding: 5px 20px 5px 10px;
+}
+
+.redirectButtonSVG {
+    fill: #fff;
+
+    height: 40px;
+    width: 40px;
+}
