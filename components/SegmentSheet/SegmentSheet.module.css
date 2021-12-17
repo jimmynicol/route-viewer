@@ -17,7 +17,8 @@
 
 .xomContainer {
     display: flex;
-    gap: 50px;
+    justify-content: space-around;
+
     padding: 0 20px;
 }
 

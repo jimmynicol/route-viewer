@@ -26,12 +26,13 @@
     font-weight: 400;
 
     padding-left: 30px;
+    padding-right: 30px;
     margin: 0;
 }
 
 .segmentItem p {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 17px;
     font-weight: 400;
 
     color: #6e6e73;

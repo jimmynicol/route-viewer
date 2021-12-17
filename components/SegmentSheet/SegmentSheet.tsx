@@ -89,7 +89,7 @@ export const SegmentSheet: React.ComponentType<{
         const controlsRect = controlsEl.getBoundingClientRect();
         const buttonsRect = buttonsEl.getBoundingClientRect();
         const newStreetViewHeight =
-            window.innerHeight - 50 - 26 - controlsRect.height;
+            window.innerHeight - 50 - 30 - controlsRect.height;
 
         setStreetViewHeight(newStreetViewHeight);
         setElevationHeight(newStreetViewHeight - buttonsRect.height);

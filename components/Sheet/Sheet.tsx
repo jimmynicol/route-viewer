@@ -4,6 +4,7 @@ import { useDrag } from "@use-gesture/react";
 
 import styles from "./Sheet.module.css";
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
+import { Handle, HandleDirection } from "./Handle";
 
 export enum SheetViewState {
     HIDE = 1,
@@ -112,7 +113,18 @@ export const Sheet: React.ComponentType<{
             }}
         >
             <div className={styles.handleWrapper} onClick={toggleMove}>
-                <div className={styles.handle} />
+                {/* <div className={styles.handle} /> */}
+                <Handle
+                    width={40}
+                    height={20}
+                    lineThickness={6}
+                    fillColor="rgba(160, 160, 160)"
+                    direction={
+                        viewState === SheetViewState.FULL
+                            ? HandleDirection.DOWN
+                            : HandleDirection.UP
+                    }
+                />
             </div>
             {children}
         </animated.div>
