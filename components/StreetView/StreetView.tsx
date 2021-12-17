@@ -67,7 +67,11 @@ export const StreetView: React.ComponentType<{
 
     return (
         <div className={styles.streetView}>
-            <div ref={target} style={{ height: "100%" }} draggable={false} />
+            <div
+                ref={target}
+                style={{ height: "100%", zIndex: 50 }}
+                draggable={false}
+            />
             <div className={styles.controlsContainer}>
                 <span>{label}</span>
                 <CloseButton

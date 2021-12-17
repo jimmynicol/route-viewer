@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Area, AreaChart, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, YAxis } from "recharts";
 import { useUnitsContext } from "../../contexts/Units";
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import { Units } from "../../data/useUnits";
@@ -35,9 +35,11 @@ function elevationByUnit(units: Units, elevation: number) {
 
 export const ElevationProfile: React.ComponentType<{
     segment: DetailedSegment;
-}> = ({ segment }) => {
+    height: number;
+}> = ({ segment, height }) => {
     const { units } = useUnitsContext();
     const [chartData, set] = useState<Elevation[]>();
+    const [chartHeight, setChartHeight] = useState(250);
 
     useEffect(() => {
         if (!google?.maps) return;
@@ -64,25 +66,27 @@ export const ElevationProfile: React.ComponentType<{
             });
     }, [segment, set, units]);
 
+    useEffect(() => {
+        const elevationHeight = height - 70;
+        setChartHeight(elevationHeight > 400 ? 400 : elevationHeight);
+    }, [segment, height, setChartHeight]);
+
     if (!chartData) return null;
 
     return (
-        <div style={{ marginTop: 15, padding: "0 20px" }}>
-            <h3>Elevation</h3>
-            <AreaChart data={chartData} width={345} height={250}>
-                {/* <XAxis
-                    dataKey="distance"
-                    tick={{ fontSize: 10 }}
-                    tickFormatter={(value) => parseInt(value).toFixed(0)}
-                /> */}
-                <YAxis width={30} tick={{ fontSize: 10 }} />
-                <Area
-                    type="monotone"
-                    dataKey="elevation"
-                    stroke="#ccc"
-                    fill="#ccc"
-                />
-            </AreaChart>
+        <div style={{ padding: "0 20px", height }}>
+            <h3 style={{ margin: 0, padding: "15px 0" }}>Elevation</h3>
+            <ResponsiveContainer height={chartHeight} width={"100%"}>
+                <AreaChart data={chartData}>
+                    <YAxis width={30} tick={{ fontSize: 10 }} />
+                    <Area
+                        type="monotone"
+                        dataKey="elevation"
+                        stroke="#ccc"
+                        fill="#ccc"
+                    />
+                </AreaChart>
+            </ResponsiveContainer>
         </div>
     );
 };

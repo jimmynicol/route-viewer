@@ -73,17 +73,27 @@ export const SegmentSheet: React.ComponentType<{
         StreetViewMode.START
     );
     const [streetViewHeight, setStreetViewHeight] = useState(0);
+    const [elevationHeight, setElevationHeight] = useState(250);
 
     const componentRef = useRef<HTMLDivElement>(null);
     const controlsRef = useRef<HTMLDivElement>(null);
+    const buttonsRef = useRef<HTMLDivElement>(null);
 
     // on mount set the height of the street view container
     useEffect(() => {
         const controlsEl = controlsRef.current;
-        if (!controlsEl) return;
+        const buttonsEl = buttonsRef.current;
+
+        if (!controlsEl || !buttonsEl) return;
+
         const controlsRect = controlsEl.getBoundingClientRect();
-        setStreetViewHeight(window.innerHeight - 50 - 26 - controlsRect.height);
-    }, [segment, controlsRef]);
+        const buttonsRect = buttonsEl.getBoundingClientRect();
+        const newStreetViewHeight =
+            window.innerHeight - 50 - 26 - controlsRect.height;
+
+        setStreetViewHeight(newStreetViewHeight);
+        setElevationHeight(newStreetViewHeight - buttonsRect.height);
+    }, [segment, controlsRef, buttonsRef]);
 
     const openStreetView = (mode: StreetViewMode) => {
         const componentEl = componentRef.current;
@@ -179,7 +189,10 @@ export const SegmentSheet: React.ComponentType<{
                             </div>
                         )}
                     </div>
-                    <div className={sheetStyles.streetViewButtonContainer}>
+                    <div
+                        ref={buttonsRef}
+                        className={sheetStyles.streetViewButtonContainer}
+                    >
                         <StreetViewButton
                             mode={StreetViewButtonMode.START}
                             onClick={() => openStreetView(StreetViewMode.START)}
@@ -189,7 +202,10 @@ export const SegmentSheet: React.ComponentType<{
                             onClick={() => openStreetView(StreetViewMode.END)}
                         />
                     </div>
-                    <ElevationProfile segment={segment} />
+                    <ElevationProfile
+                        segment={segment}
+                        height={elevationHeight}
+                    />
                     <animated.div
                         className={sheetStyles.streetViewContainer}
                         style={{

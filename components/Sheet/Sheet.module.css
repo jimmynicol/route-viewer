@@ -5,10 +5,16 @@
     box-shadow: 0 -2px 9px 0 rgba(0, 0, 0, 0.11);
     border-radius: 15px 15px 0 0;
 
-    backdrop-filter: saturate(280%) blur(40px);
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(233, 233, 233, 1);
 
     touch-action: none;
+}
+
+@supports (backdrop-filter: none) {
+    .sheet {
+        backdrop-filter: saturate(280%) blur(40px);
+        background-color: rgba(255, 255, 255, 0.5);
+    }
 }
 
 .compactSizeClass {
@@ -34,6 +40,8 @@
     width: 40px;
     height: 6px;
     border-radius: 3px;
+
+    cursor: pointer;
 }
 
 .metadataContainer {

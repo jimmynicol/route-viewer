@@ -111,8 +111,8 @@ export const Sheet: React.ComponentType<{
                 y,
             }}
         >
-            <div className={styles.handleWrapper}>
-                <div className={styles.handle} onClick={toggleMove} />
+            <div className={styles.handleWrapper} onClick={toggleMove}>
+                <div className={styles.handle} />
             </div>
             {children}
         </animated.div>
