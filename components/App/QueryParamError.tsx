@@ -19,13 +19,6 @@ export const QueryParamsError: React.ComponentType = () => {
             ? errorStyles.compact
             : errorStyles.regular;
 
-    console.log(
-        "sizeClass",
-        sizeClass,
-        sizeClass === SizeClass.COMPACT,
-        _className
-    );
-
     return (
         <div className={errorStyles.errorMessage}>
             <div className={_className}>

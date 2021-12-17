@@ -31,7 +31,7 @@ export default async function handler(
         const { status, data } = await axios.post(STRAVA_API_ENDPOINT, payload);
         res.status(status).json(data);
     } catch (err: any) {
-        // console.error(err.response.data);
+        console.error(err.response);
         res.status(err.response.status).json(err.response.data);
     }
 }
