@@ -1,5 +1,8 @@
 import React from "react";
+import cw from "classnames";
+
 import styles from "./SheetTitle.module.css";
+import typography from "../../styles/Typography.module.css";
 
 export const SheetTitle: React.ComponentType<{
     title: string | undefined;
@@ -7,8 +10,8 @@ export const SheetTitle: React.ComponentType<{
 }> = ({ title, link }) => {
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>{title}</h1>
-            <a className={styles.link} href={link}>
+            <h1 className={cw(styles.title, typography.title)}>{title}</h1>
+            <a className={cw(styles.link, typography.link)} href={link}>
                 View on Strava
             </a>
         </div>

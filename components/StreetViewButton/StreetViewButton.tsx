@@ -1,6 +1,8 @@
 import React from "react";
+import cw from "classnames";
 
 import styles from "./StreetViewButton.module.css";
+import typography from "../../styles/Typography.module.css";
 
 export enum StreetViewButtonMode {
     START = "start",
@@ -47,7 +49,10 @@ export const StreetViewButton: React.ComponentType<{
         mode === StreetViewButtonMode.START ? <StartIcon /> : <StopIcon />;
 
     return (
-        <button className={styles.streetViewButton} onClick={onClick}>
+        <button
+            className={cw(styles.streetViewButton, typography.button)}
+            onClick={onClick}
+        >
             {icon}
             <span>{label}</span>
         </button>

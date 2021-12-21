@@ -3,11 +3,17 @@
     font-weight: 600;
 
     color: rgba(51, 51, 51, 0.85);
-
     background-color: rgba(255, 255, 255, 0.95);
 
     padding: 5px;
     border-radius: 3px;
 
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .unitSwitcher {
+        color: rgba(255, 255, 255, 0.85);
+        background-color: rgba(0, 0, 0, 0.95);
+    }
 }

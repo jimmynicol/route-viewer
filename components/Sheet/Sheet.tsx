@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { animated, useSpring, config } from "react-spring";
 import { useDrag } from "@use-gesture/react";
 
@@ -40,7 +40,7 @@ export const Sheet: React.ComponentType<{
                 api.start({
                     y: FULL_Y,
                     immediate: false,
-                    config: config.stiff,
+                    config: config.wobbly,
                 });
                 break;
             case SheetViewState.HIDE:
@@ -55,7 +55,7 @@ export const Sheet: React.ComponentType<{
                 api.start({
                     y: DEFAULT_Y,
                     immediate: false,
-                    config: config.wobbly,
+                    config: config.stiff,
                 });
                 break;
         }
@@ -113,7 +113,6 @@ export const Sheet: React.ComponentType<{
             }}
         >
             <div className={styles.handleWrapper} onClick={toggleMove}>
-                {/* <div className={styles.handle} /> */}
                 <Handle
                     width={40}
                     height={20}

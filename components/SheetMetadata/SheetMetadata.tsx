@@ -1,6 +1,8 @@
 import React from "react";
+import cw from "classnames";
 
 import styles from "./SheetMetadata.module.css";
+import typography from "../../styles/Typography.module.css";
 
 export const SheetMetadata: React.ComponentType<{
     num: string;
@@ -10,10 +12,12 @@ export const SheetMetadata: React.ComponentType<{
 }> = ({ num, unit, description, onClick }) => {
     return (
         <div onClick={onClick}>
-            <h3 className={styles.title}>
+            <h2 className={cw(styles.title, typography.titleReduced)}>
                 <span>{num}</span> <span>{unit}</span>
-            </h3>
-            <p className={styles.description}>{description}</p>
+            </h2>
+            <p className={cw(styles.description, typography.caption)}>
+                {description}
+            </p>
         </div>
     );
 };

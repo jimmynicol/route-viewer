@@ -5,21 +5,12 @@
 }
 
 .title {
-    font-weight: 600;
-    font-size: 28px;
-    line-height: 32px;
+    width: 100%;
 
     margin: 0;
     padding: 0 20px;
-
-    width: 100%;
 }
 
 .link {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
-    color: #2997ff;
-
     margin: 0 20px;
 }

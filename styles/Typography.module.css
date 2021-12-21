@@ -1,0 +1,91 @@
+/* <h1> */
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+/* <h2> */
+.titleReduced {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+/* <h3> */
+.subTitle {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 27px;
+}
+
+/* <p> */
+.body {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+/* <p> */
+.bodyReduced {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+}
+
+/* <p> */
+.caption {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+
+    opacity: 0.5;
+}
+
+/* <code> */
+.code {
+    font-family: Menlo, monospace;
+    font-size: 14px;
+    line-height: 18px;
+
+    opacity: 0.5;
+}
+
+.button {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+.link {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+
+    color: #2997ff;
+}
+
+/*----- Colors -----*/
+.title,
+.titleReduced,
+.subTitle,
+.body,
+.bodyReduced,
+.caption,
+.code,
+.button {
+    color: rgb(0, 0, 0);
+}
+
+@media (prefers-color-scheme: dark) {
+    .title,
+    .titleReduced,
+    .subTitle,
+    .body,
+    .bodyReduced,
+    .caption,
+    .code,
+    .button {
+        color: rgb(255, 255, 255);
+    }
+}

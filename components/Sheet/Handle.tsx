@@ -62,6 +62,7 @@ export const Handle: React.ComponentType<{
             width={width}
             viewBox={[0, 0, width, height].join(" ")}
             xmlns="http://www.w3.org/2000/svg"
+            style={{ cursor: "pointer" }}
         >
             <g fill={fillColor}>
                 <animated.rect

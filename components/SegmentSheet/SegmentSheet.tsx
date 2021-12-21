@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import cw from "classnames";
 
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import {
@@ -11,6 +12,7 @@ import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
 import { SheetTitle } from "../SheetTitle/SheetTitle";
 
 import styles from "../Sheet/Sheet.module.css";
+import typography from "../../styles/Typography.module.css";
 import sheetStyles from "./SegmentSheet.module.css";
 import { useUnitsContext } from "../../contexts/Units";
 import {
@@ -33,7 +35,7 @@ const QOM: React.ComponentType<{ segment: DetailedSegment }> = ({
                     transform="translate(2 9.087)"
                 ></path>
             </svg>
-            <span>QOM - {segment.xoms.qom}</span>
+            <span className={typography.body}>QOM - {segment.xoms.qom}</span>
         </div>
     );
 };
@@ -49,7 +51,7 @@ const KOM: React.ComponentType<{ segment: DetailedSegment }> = ({
                     transform="translate(2 9.087)"
                 ></path>
             </svg>
-            <span>KOM - {segment.xoms.kom}</span>
+            <span className={typography.body}>KOM - {segment.xoms.kom}</span>
         </div>
     );
 };
@@ -171,9 +173,14 @@ export const SegmentSheet: React.ComponentType<{
                             <QOM segment={segment} />
                         </div>
                         {userHasPREffort && (
-                            <div className={sheetStyles.yourPR}>
+                            <div
+                                className={cw(
+                                    sheetStyles.yourPR,
+                                    typography.body
+                                )}
+                            >
                                 <span>
-                                    Your PR -
+                                    Your PR&nbsp;-&nbsp;
                                     {secondsToMinutes(
                                         segment.athlete_segment_stats
                                             .pr_elapsed_time

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import { Area, AreaChart, ResponsiveContainer, YAxis } from "recharts";
 import { useUnitsContext } from "../../contexts/Units";
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import { Units } from "../../data/useUnits";
 import { metersToFeet, metersToMiles } from "../../utils/unitConversions";
+
+import typography from "../../styles/Typography.module.css";
 
 type Elevation = {
     elevation: number;
@@ -75,7 +78,12 @@ export const ElevationProfile: React.ComponentType<{
 
     return (
         <div style={{ padding: "0 20px", height }}>
-            <h3 style={{ margin: 0, padding: "15px 0" }}>Elevation</h3>
+            <h3
+                className={typography.subTitle}
+                style={{ margin: 0, padding: "15px 0" }}
+            >
+                Elevation
+            </h3>
             <ResponsiveContainer height={chartHeight} width={"100%"}>
                 <AreaChart data={chartData}>
                     <YAxis width={30} tick={{ fontSize: 10 }} />
