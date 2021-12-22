@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import cw from "classnames";
 
 import { useAPITokenContext } from "../../contexts/APIToken";
 import { useQueryParamsContext } from "../../contexts/QueryParams";
@@ -13,6 +14,8 @@ import { SheetViewState } from "../Sheet/Sheet";
 import { UnitSwitcher } from "../UnitSwitcher/UnitSwitcher";
 
 import styles from "./RouteView.module.css";
+
+import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
 
@@ -61,7 +64,11 @@ export const RouteView: React.ComponentType = () => {
     if (isRouteLoading || isSegmentsLoading) {
         return (
             <div className={loadingStyles.loadingMessage}>
-                <h3>Route Data Loading...</h3>
+                <h2
+                    className={cw(loadingStyles.title, typography.titleReduced)}
+                >
+                    Route Data Loading...
+                </h2>
             </div>
         );
     }
@@ -74,8 +81,22 @@ export const RouteView: React.ComponentType = () => {
         } else {
             return (
                 <div className={errorStyles.errorMessage}>
-                    <h3>Error</h3>
-                    <p>{err?.message}</p>
+                    <h2
+                        className={cw(
+                            errorStyles.title,
+                            typography.titleReduced
+                        )}
+                    >
+                        Error.
+                    </h2>
+                    <p
+                        className={cw(
+                            errorStyles.description,
+                            typography.bodyReduced
+                        )}
+                    >
+                        {err?.message}
+                    </p>
                 </div>
             );
         }

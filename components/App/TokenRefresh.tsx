@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import cw from "classnames";
+
 import { useAPITokenContext } from "../../contexts/APIToken";
 import { AuthState, useAuthStateContext } from "../../contexts/AuthState";
 import { TokenExchangeResponse } from "../../data/stravaDataTypes";
 import { useTokenRefresh } from "../../data/useOAuth";
 
+import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
 
@@ -30,7 +33,11 @@ export const TokenRefresh: React.ComponentType = () => {
     if (isLoading) {
         return (
             <div className={loadingStyles.loadingMessage}>
-                <h3>Refreshing Access Token...</h3>
+                <h2
+                    className={cw(loadingStyles.title, typography.titleReduced)}
+                >
+                    Retrieving Access Token...
+                </h2>
             </div>
         );
     }
@@ -38,15 +45,26 @@ export const TokenRefresh: React.ComponentType = () => {
     if (isError) {
         return (
             <div className={errorStyles.errorMessage}>
-                <h3>Error retrieving access token.</h3>
-                <p>{error?.message}</p>
+                <h2 className={cw(errorStyles.title, typography.titleReduced)}>
+                    Error retrieving access token.
+                </h2>
+                <p
+                    className={cw(
+                        errorStyles.description,
+                        typography.bodyReduced
+                    )}
+                >
+                    {error?.message}
+                </p>
             </div>
         );
     }
 
     return (
         <div className={loadingStyles.loadingMessage}>
-            <h3>Access Token Retrieved!</h3>
+            <h2 className={cw(loadingStyles.title, typography.titleReduced)}>
+                Access Token Retrieved!
+            </h2>
         </div>
     );
 };

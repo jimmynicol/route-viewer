@@ -1,7 +1,10 @@
 import React from "react";
+import cw from "classnames";
+
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 
 import styles from "./OAuth.module.css";
+import typography from "../../styles/Typography.module.css";
 
 function redirectToStrava() {
     const url = new URL("https://www.strava.com/oauth/authorize");
@@ -26,9 +29,9 @@ export const OAuth: React.ComponentType = () => {
                         : styles.regular
                 }
             >
-                <h3 className={styles.oauthTitle}>
+                <h2 className={cw(styles.oauthTitle, typography.titleReduced)}>
                     Sign In with Strava to view this route and its segments.
-                </h3>
+                </h2>
                 <button
                     className={styles.redirectButton}
                     onClick={redirectToStrava}
@@ -42,7 +45,7 @@ export const OAuth: React.ComponentType = () => {
                     </svg>
                     <span>Sign In</span>
                 </button>
-                <p className={styles.oauthDescription}>
+                <p className={cw(styles.oauthDescription, typography.caption)}>
                     We do not need any of your private data. Connecting with
                     Strava is the only way to show route information.
                 </p>
