@@ -1,0 +1,27 @@
+.controls {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+}
+
+.controls hr {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 5px;
+}
+
+.controls div:last-child {
+    border-bottom: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .controls {
+        background-color: rgba(0, 0, 0, 0.95);
+    }
+}

@@ -148,7 +148,12 @@ export const GoogleMap: React.ComponentType<{
                 React.Children.map(
                     children as JSX.Element[],
                     (child: React.ReactElement) =>
-                        cloneElement(child, { ...child.props, map: googleMap })
+                        child
+                            ? cloneElement(child, {
+                                  ...child.props,
+                                  map: googleMap,
+                              })
+                            : null
                 )}
         </div>
     );

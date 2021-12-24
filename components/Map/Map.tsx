@@ -1,29 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useGeolocation } from "../../contexts/GeoLocation";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { useColorScheme } from "../../utils/useColorScheme";
 import { GoogleMap } from "./GoogleMap";
 import { Polyline } from "./Polyline";
-
-enum CONTROL_POSITION {
-    BOTTOM = 11,
-    BOTTOM_CENTER = 11,
-    BOTTOM_LEFT = 10,
-    BOTTOM_RIGHT = 12,
-    CENTER = 13,
-    LEFT = 5,
-    LEFT_BOTTOM = 6,
-    LEFT_CENTER = 4,
-    LEFT_TOP = 5,
-    RIGHT = 7,
-    RIGHT_BOTTOM = 9,
-    RIGHT_CENTER = 8,
-    RIGHT_TOP = 7,
-    TOP = 2,
-    TOP_CENTER = 2,
-    TOP_LEFT = 1,
-    TOP_RIGHT = 3,
-}
+import { RouteEndMarker, RouteStartMarker } from "./RouteMarkers";
+import { SegmentMarker } from "./SegmentMarker";
+import { UserLocationMarker } from "./UserLocationMarker";
 
 export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
@@ -32,9 +16,6 @@ const defaultCenter = {
     lng: -122.1204581,
 };
 
-const circleFillPath =
-    "M29.9475268,59.5867724 C46.1333288,59.5867724 59.534715,46.15661 59.534715,29.9998218 C59.534715,13.8140198 46.1043387,0.412871288 29.9185367,0.412871288 C13.7617248,0.412871288 0.36059406,13.8140198 0.36059406,29.9998218 C0.36059406,46.15661 13.7907743,59.5867724 29.9475268,59.5867724 Z";
-
 export const Map: React.ComponentType<{
     route: Route | undefined;
     segments: DetailedSegment[];
@@ -42,6 +23,7 @@ export const Map: React.ComponentType<{
     setCurrentSegment: (value: DetailedSegment) => void;
 }> = ({ route, segments, currentSegment, setCurrentSegment }) => {
     const colorScheme = useColorScheme();
+    const { wantsGeolocation, location } = useGeolocation();
     const [encodedPathForBounds, setEncodedPathForBounds] = useState<string>();
 
     useEffect(() => {
@@ -55,6 +37,7 @@ export const Map: React.ComponentType<{
         zoom: 14,
         mapTypeControl: false,
         fullscreenControl: false,
+        streetViewControl: false,
         zoomControlOptions: { position: 7 },
         styles: [
             {
@@ -81,7 +64,10 @@ export const Map: React.ComponentType<{
                         strokeWeight: 4,
                         zIndex: 3,
                     }}
-                />
+                >
+                    <RouteStartMarker />
+                    <RouteEndMarker />
+                </Polyline>
             )}
             {segments.map((segment, i) => (
                 <Polyline
@@ -93,8 +79,11 @@ export const Map: React.ComponentType<{
                         zIndex: 4,
                     }}
                     onClick={() => setCurrentSegment(segment)}
-                />
+                ></Polyline>
             ))}
+            {wantsGeolocation && location && (
+                <UserLocationMarker location={location} />
+            )}
         </GoogleMap>
     );
 };

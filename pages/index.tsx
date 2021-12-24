@@ -5,6 +5,7 @@ import { QueryParamsProvider } from "../contexts/QueryParams";
 import { UnitsProvider } from "../contexts/Units";
 import { APITokenProvider } from "../contexts/APIToken";
 import { AuthStateProvider } from "../contexts/AuthState";
+import { GeolocationProvider } from "../contexts/GeoLocation";
 
 export const queryClient = new QueryClient();
 
@@ -15,7 +16,9 @@ const Home: NextPage = () => {
                 <APITokenProvider>
                     <AuthStateProvider>
                         <UnitsProvider>
-                            <App />
+                            <GeolocationProvider>
+                                <App />
+                            </GeolocationProvider>
                         </UnitsProvider>
                     </AuthStateProvider>
                 </APITokenProvider>

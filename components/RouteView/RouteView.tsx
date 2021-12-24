@@ -18,10 +18,15 @@ import styles from "./RouteView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
+import { UserLocation } from "../UserLocation/UserLocation";
+import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
+import { Controls } from "./Controls";
 
 export const RouteView: React.ComponentType = () => {
     const { tokenResponse } = useAPITokenContext();
     const { queryParams } = useQueryParamsContext();
+    const sizeClass = useHorizontalSizeClass();
+
     const [currentSegment, setCurrentSegment] =
         useState<DetailedSegment | null>(null);
 
@@ -81,22 +86,30 @@ export const RouteView: React.ComponentType = () => {
         } else {
             return (
                 <div className={errorStyles.errorMessage}>
-                    <h2
-                        className={cw(
-                            errorStyles.title,
-                            typography.titleReduced
-                        )}
+                    <div
+                        className={
+                            sizeClass === SizeClass.COMPACT
+                                ? errorStyles.compact
+                                : errorStyles.regular
+                        }
                     >
-                        Error.
-                    </h2>
-                    <p
-                        className={cw(
-                            errorStyles.description,
-                            typography.bodyReduced
-                        )}
-                    >
-                        {err?.message}
-                    </p>
+                        <h2
+                            className={cw(
+                                errorStyles.title,
+                                typography.titleReduced
+                            )}
+                        >
+                            Error.
+                        </h2>
+                        <p
+                            className={cw(
+                                errorStyles.description,
+                                typography.bodyReduced
+                            )}
+                        >
+                            {err?.message}
+                        </p>
+                    </div>
                 </div>
             );
         }
@@ -110,7 +123,10 @@ export const RouteView: React.ComponentType = () => {
                 currentSegment={currentSegment}
                 setCurrentSegment={setCurrentSegment}
             />
-            <UnitSwitcher className={styles.unitSwitcher} />
+            <Controls className={styles.controls}>
+                <UnitSwitcher />
+                <UserLocation />
+            </Controls>
             <RouteSheet
                 route={route}
                 segments={segments || []}

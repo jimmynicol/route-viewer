@@ -1,4 +1,4 @@
-import React, { cloneElement, useEffect } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 
 export const Polyline: React.ComponentType<{
     encodedPath: string;
@@ -7,13 +7,15 @@ export const Polyline: React.ComponentType<{
     children?: React.ReactNode;
     onClick?: () => void;
 }> = ({ encodedPath, map, style, children, onClick }) => {
+    const [path, setPath] = useState<google.maps.LatLng[]>();
+
     useEffect(() => {
         if (!encodedPath) return;
 
-        const path = google.maps.geometry.encoding.decodePath(encodedPath);
+        const _path = google.maps.geometry.encoding.decodePath(encodedPath);
         const line = new google.maps.Polyline({
             ...style,
-            path,
+            path: _path,
         });
 
         if (onClick) {
@@ -21,15 +23,17 @@ export const Polyline: React.ComponentType<{
         }
 
         if (map) line.setMap(map);
-    }, [encodedPath, map, style, onClick]);
+        setPath(_path);
+    }, [encodedPath, map, style, onClick, setPath]);
 
     return (
         <>
             {children &&
+                path &&
                 React.Children.map(
                     children as JSX.Element[],
                     (child: React.ReactElement) =>
-                        cloneElement(child, { ...child.props, map })
+                        cloneElement(child, { ...child.props, map, path })
                 )}
         </>
     );
