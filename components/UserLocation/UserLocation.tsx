@@ -1,7 +1,7 @@
 import React from "react";
 import cw from "classnames";
 import styles from "./UserLocation.module.css";
-import { useGeolocation } from "../../contexts/GeoLocation";
+import { useGeolocation } from "../../contexts/Geolocation";
 
 export const UserLocation: React.ComponentType<React.HTMLProps<"div">> = (
     props

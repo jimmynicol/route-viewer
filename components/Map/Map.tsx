@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGeolocation } from "../../contexts/GeoLocation";
+import { useGeolocation } from "../../contexts/Geolocation";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { useColorScheme } from "../../utils/useColorScheme";

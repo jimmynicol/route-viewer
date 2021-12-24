@@ -5,7 +5,7 @@ import { QueryParamsProvider } from "../contexts/QueryParams";
 import { UnitsProvider } from "../contexts/Units";
 import { APITokenProvider } from "../contexts/APIToken";
 import { AuthStateProvider } from "../contexts/AuthState";
-import { GeolocationProvider } from "../contexts/GeoLocation";
+import { GeolocationProvider } from "../contexts/Geolocation";
 
 export const queryClient = new QueryClient();
 
