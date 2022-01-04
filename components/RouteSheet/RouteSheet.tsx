@@ -23,7 +23,8 @@ export const RouteSheet: React.ComponentType<{
 }> = ({ route, segments, viewState, setViewState, onSegmentSelect }) => {
     const { units } = useUnitsContext();
     const titleRef = useRef<HTMLDivElement>(null);
-    const [segmentListHeight, set] = useState(0);
+    const [segmentListHeight, setSegmentListHeight] = useState(0);
+    const [defaultHeight, setDefaultHeight] = useState(180);
 
     const link = `https://www.strava.com/routes/${route?.id_str}`;
     const distance = distanceStr(units, route?.distance, 2);
@@ -34,15 +35,17 @@ export const RouteSheet: React.ComponentType<{
         const titleEl = titleRef.current;
         if (!titleEl) return;
         const titleRect = titleEl.getBoundingClientRect();
-        const listHeight = window.innerHeight - 50 - 26 - titleRect.height;
-        set(listHeight);
-    }, [titleRef, set]);
+        const listHeight = window.innerHeight - 50 - 30 - titleRect.height;
+        setSegmentListHeight(listHeight);
+        setDefaultHeight(titleRect.height + 30);
+    }, [titleRef, setSegmentListHeight, setDefaultHeight]);
 
     return (
         <Sheet
             viewState={viewState}
             parentName="RouteSheet"
             onChangeViewState={setViewState}
+            defaultHeight={defaultHeight}
         >
             <div ref={titleRef}>
                 <SheetTitle title={route?.name} link={link} />

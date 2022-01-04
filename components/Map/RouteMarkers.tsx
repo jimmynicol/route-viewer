@@ -13,12 +13,13 @@ export const RouteStartMarker: React.ComponentType<{
     const position = path[0];
     const iconOpts = {
         path: circleFillPath,
-        strokeColor: "#03A10E",
+        strokeColor: "#3A4968",
+        strokeWeight: 1,
         fillColor: "#03A10E",
-        fillOpacity: 1,
+        fillOpacity: 0.75,
         rotation: 0,
         anchor: new google.maps.Point(15, 30),
-        scale: 0.3,
+        scale: 0.2,
         map,
     };
 
@@ -34,12 +35,13 @@ export const RouteEndMarker: React.ComponentType<{
     const position = path[path.length - 1];
     const iconOpts = {
         path: circleFillPath,
-        strokeColor: "#FF0000",
+        strokeColor: "#3A4968",
+        strokeWeight: 1,
         fillColor: "#FF0000",
-        fillOpacity: 1,
+        fillOpacity: 0.75,
         rotation: 0,
         anchor: new google.maps.Point(15, 30),
-        scale: 0.3,
+        scale: 0.2,
         map,
     };
 

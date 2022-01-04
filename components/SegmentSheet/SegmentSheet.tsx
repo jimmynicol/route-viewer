@@ -5,6 +5,8 @@ import { DetailedSegment } from "../../data/stravaDataTypes";
 import {
     distanceStr,
     elevationStr,
+    secondsToMinutes,
+    timeStrToSeconds,
     unitsStr,
 } from "../../utils/unitConversions";
 import { Sheet, SheetViewState } from "../Sheet/Sheet";
@@ -35,7 +37,9 @@ const QOM: React.ComponentType<{ segment: DetailedSegment }> = ({
                     transform="translate(2 9.087)"
                 ></path>
             </svg>
-            <span className={typography.body}>QOM - {segment.xoms.qom}</span>
+            <span className={typography.body}>
+                QOM - {secondsToMinutes(timeStrToSeconds(segment.xoms.qom))}
+            </span>
         </div>
     );
 };
@@ -51,15 +55,12 @@ const KOM: React.ComponentType<{ segment: DetailedSegment }> = ({
                     transform="translate(2 9.087)"
                 ></path>
             </svg>
-            <span className={typography.body}>KOM - {segment.xoms.kom}</span>
+            <span className={typography.body}>
+                KOM - {secondsToMinutes(timeStrToSeconds(segment.xoms.kom))}
+            </span>
         </div>
     );
 };
-
-function secondsToMinutes(seconds: number): string {
-    const secStr = `${seconds % 60}`;
-    return `${Math.floor(seconds / 60)}:${secStr.padStart(2, "0")}`;
-}
 
 const defaultStreetViewPosition = { y: 0 };
 
@@ -76,6 +77,7 @@ export const SegmentSheet: React.ComponentType<{
     );
     const [streetViewHeight, setStreetViewHeight] = useState(0);
     const [elevationHeight, setElevationHeight] = useState(250);
+    const [defaultHeight, setDefaultHeight] = useState(180);
 
     const componentRef = useRef<HTMLDivElement>(null);
     const controlsRef = useRef<HTMLDivElement>(null);
@@ -95,6 +97,7 @@ export const SegmentSheet: React.ComponentType<{
 
         setStreetViewHeight(newStreetViewHeight);
         setElevationHeight(newStreetViewHeight - buttonsRect.height);
+        setDefaultHeight(controlsRect.height + 30);
     }, [segment, controlsRef, buttonsRef]);
 
     const openStreetView = (mode: StreetViewMode) => {
@@ -135,6 +138,7 @@ export const SegmentSheet: React.ComponentType<{
             viewState={viewState}
             onChangeViewState={setViewState}
             parentName="SegmentSheet"
+            defaultHeight={defaultHeight}
         >
             <CloseButton
                 className={sheetStyles.closeButton}

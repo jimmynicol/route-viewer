@@ -1,23 +1,34 @@
-import React from "react";
-import { Marker } from "./Marker";
+import React, { useEffect, useRef } from "react";
 
 export const UserLocationMarker: React.ComponentType<{
-    location: GeolocationCoordinates;
+    wantsGeolocation: boolean;
+    location: GeolocationCoordinates | null;
     map?: google.maps.Map;
-}> = ({ location, map }) => {
-    if (!location && !map) return null;
+}> = ({ wantsGeolocation, location, map }) => {
+    const marker = useRef<google.maps.Marker | null>(null);
 
-    const position = {
-        lat: location.latitude,
-        lng: location.longitude,
-    };
+    useEffect(() => {
+        if (!map) return;
+        if (!location) return;
 
-    const iconOpts = {
-        // anchor: new google.maps.Point(21, 21),
-        // size: new google.maps.Size(30, 30),
-        url: "/location.svg",
-        scale: 0.6,
-    };
+        if (!marker.current) {
+            const position = {
+                lat: location?.latitude,
+                lng: location?.longitude,
+            };
 
-    return <Marker map={map} position={position} icon={iconOpts} />;
+            const iconOpts = {
+                url: "/location.svg",
+                scale: 0.6,
+            };
+            marker.current = new google.maps.Marker({
+                position,
+                icon: iconOpts,
+            });
+        }
+
+        marker.current.setMap(wantsGeolocation ? map : null);
+    }, [map, location, wantsGeolocation, marker]);
+
+    return <></>;
 };

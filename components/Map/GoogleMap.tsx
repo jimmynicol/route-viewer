@@ -108,24 +108,32 @@ export const GoogleMap: React.ComponentType<{
     options,
     boundingEncodedPath,
 }) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const mapTarget = useRef<HTMLDivElement>(null);
     const [googleMap, setGoogleMap] = useState<google.maps.Map>();
 
     useEffect(() => {
         if (googleMap) return;
 
         loadGoogleMap(apiKey, libraries).then((google) => {
-            if (!ref.current) return;
+            if (!mapTarget.current) return;
 
             const _options: google.maps.MapOptions = options || {};
             if (colorScheme === ColorScheme.DARK) {
                 _options.styles = (_options.styles || []).concat(...darkTheme);
             }
 
-            const map = new google.maps.Map(ref.current, _options);
+            const map = new google.maps.Map(mapTarget.current, _options);
             setGoogleMap(map);
         });
-    }, [ref, googleMap, setGoogleMap, apiKey, libraries, options, colorScheme]);
+    }, [
+        mapTarget,
+        googleMap,
+        setGoogleMap,
+        apiKey,
+        libraries,
+        options,
+        colorScheme,
+    ]);
 
     useEffect(() => {
         if (!googleMap) return;
@@ -143,7 +151,8 @@ export const GoogleMap: React.ComponentType<{
     }, [boundingEncodedPath, googleMap]);
 
     return (
-        <div ref={ref} style={styles || { height: "100%", width: "100%" }}>
+        <div style={styles || { height: "100%", width: "100%" }}>
+            <div ref={mapTarget} style={{ height: "100%", width: "100%" }} />
             {googleMap &&
                 React.Children.map(
                     children as JSX.Element[],

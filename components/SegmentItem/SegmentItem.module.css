@@ -6,6 +6,9 @@
 
     border-bottom: 1px solid rgba(160, 92, 92, 0.15);
 }
+.segmentItem:last-child {
+    border-bottom: none;
+}
 
 .index {
     position: absolute;

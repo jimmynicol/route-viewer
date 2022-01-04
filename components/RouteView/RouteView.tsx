@@ -5,22 +5,18 @@ import { useAPITokenContext } from "../../contexts/APIToken";
 import { useQueryParamsContext } from "../../contexts/QueryParams";
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import { useRoute, useSegments } from "../../data/useStravaData";
+import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 
 import { Map } from "../Map/Map";
 import { OAuth } from "../OAuth/OAuth";
 import { RouteSheet } from "../RouteSheet/RouteSheet";
 import { SegmentSheet } from "../SegmentSheet/SegmentSheet";
 import { SheetViewState } from "../Sheet/Sheet";
-import { UnitSwitcher } from "../UnitSwitcher/UnitSwitcher";
 
 import styles from "./RouteView.module.css";
-
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
-import { UserLocation } from "../UserLocation/UserLocation";
-import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
-import { Controls } from "./Controls";
 
 export const RouteView: React.ComponentType = () => {
     const { tokenResponse } = useAPITokenContext();
@@ -123,10 +119,6 @@ export const RouteView: React.ComponentType = () => {
                 currentSegment={currentSegment}
                 setCurrentSegment={setCurrentSegment}
             />
-            <Controls className={styles.controls}>
-                <UnitSwitcher />
-                <UserLocation />
-            </Controls>
             <RouteSheet
                 route={route}
                 segments={segments || []}

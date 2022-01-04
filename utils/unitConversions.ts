@@ -54,3 +54,30 @@ export function elevationStr(
 
     return metersToFeet(meters).toFixed(signficantFigures);
 }
+
+export function timeStrToSeconds(str = ""): number {
+    if (str.includes("s")) return parseInt(str);
+
+    const parts = str.split(":").map((i) => parseInt(i));
+    const partsLen = parts.length;
+    switch (partsLen) {
+        case 1:
+            parts.unshift(0);
+            parts.unshift(0);
+            break;
+        case 2:
+            parts.unshift(0);
+            break;
+        default:
+            break;
+    }
+
+    const [hours, minutes, seconds] = parts;
+
+    return hours * 60 * 60 + minutes * 60 + seconds;
+}
+
+export function secondsToMinutes(seconds: number): string {
+    const secStr = `${seconds % 60}`;
+    return `${Math.floor(seconds / 60)}:${secStr.padStart(2, "0")}`;
+}
