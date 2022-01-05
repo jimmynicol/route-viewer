@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Area, AreaChart, ResponsiveContainer, YAxis } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, YAxis } from "recharts";
 import { useUnitsContext } from "../../contexts/Units";
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import { Units } from "../../data/useUnits";
@@ -11,7 +11,33 @@ import typography from "../../styles/Typography.module.css";
 type Elevation = {
     elevation: number;
     distance: number;
+    gradient: number;
 };
+
+export const gradientColors: Record<number, string> = {
+    5: "#dddddd",
+    10: "#FFE045",
+    15: "#F56300",
+    20: "#AF1E2D",
+    25: "#FF3037",
+};
+
+function calculateGradient(elevations: Elevation[]): Elevation[] {
+    return elevations.map((curr: Elevation, i: number) => {
+        if (i === 0) {
+            curr.gradient = 0;
+            return curr;
+        }
+
+        const prev = elevations[i - 1];
+        curr.gradient =
+            ((curr.elevation - prev.elevation) /
+                (curr.distance - prev.distance)) *
+            100;
+
+        return curr;
+    });
+}
 
 function normalizeElevation(elevations: Elevation[]): Elevation[] {
     let minElevation = elevations[0].elevation;
@@ -35,6 +61,30 @@ function distanceByUnit(units: Units, distance: number) {
 function elevationByUnit(units: Units, elevation: number) {
     return units === Units.IMPERIAL ? metersToFeet(elevation) : elevation;
 }
+
+const CustomTooltip: React.ComponentType<{
+    active?: boolean;
+    payload?: any[];
+    label?: string;
+}> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div
+                style={{
+                    background: "#fff",
+                    padding: "10px",
+                    borderRadius: "3px",
+                }}
+            >
+                <p style={{ margin: 0 }}>
+                    {payload[0].payload.gradient.toFixed(1)}%
+                </p>
+            </div>
+        );
+    }
+
+    return null;
+};
 
 export const ElevationProfile: React.ComponentType<{
     segment: DetailedSegment;
@@ -65,7 +115,9 @@ export const ElevationProfile: React.ComponentType<{
                     }
                 );
 
-                if (results) set(normalizeElevation(elevations));
+                if (results) {
+                    set(normalizeElevation(calculateGradient(elevations)));
+                }
             });
     }, [segment, set, units]);
 
@@ -75,6 +127,29 @@ export const ElevationProfile: React.ComponentType<{
     }, [segment, height, setChartHeight]);
 
     if (!chartData) return null;
+
+    const gradientStops = chartData.map(
+        (curr: Elevation, i: number, arr: Elevation[]) => {
+            if (i === 0) {
+                return (
+                    <stop offset="0%" stopColor={gradientColors[5]} key={i} />
+                );
+            }
+
+            const { gradient } = curr;
+            const colorBucket = Math.ceil(gradient / 5) * 5;
+            const stopColor =
+                gradient < 0 ? gradientColors[5] : gradientColors[colorBucket];
+
+            return (
+                <stop
+                    offset={`${i}%`}
+                    stopColor={stopColor || gradientColors[25]}
+                    key={i}
+                />
+            );
+        }
+    );
 
     return (
         <div style={{ padding: "0 20px", height }}>
@@ -86,12 +161,18 @@ export const ElevationProfile: React.ComponentType<{
             </h3>
             <ResponsiveContainer height={chartHeight} width={"100%"}>
                 <AreaChart data={chartData}>
+                    <defs>
+                        <linearGradient id="gradientDisplay">
+                            {gradientStops}
+                        </linearGradient>
+                    </defs>
+                    <Tooltip content={<CustomTooltip />} />
                     <YAxis width={30} tick={{ fontSize: 10 }} />
                     <Area
                         type="monotone"
                         dataKey="elevation"
-                        stroke="#ccc"
-                        fill="#ccc"
+                        stroke="#bbb"
+                        fill="url(#gradientDisplay)"
                     />
                 </AreaChart>
             </ResponsiveContainer>
