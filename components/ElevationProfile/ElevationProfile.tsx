@@ -22,21 +22,29 @@ export const gradientColors: Record<number, string> = {
     25: "#FF3037",
 };
 
-function calculateGradient(elevations: Elevation[]): Elevation[] {
-    return elevations.map((curr: Elevation, i: number) => {
-        if (i === 0) {
-            curr.gradient = 0;
-            return curr;
-        }
-
-        const prev = elevations[i - 1];
-        curr.gradient =
-            ((curr.elevation - prev.elevation) /
-                (curr.distance - prev.distance)) *
-            100;
-
+function calculateGradient(
+    curr: Elevation,
+    idx: number,
+    arr: Elevation[]
+): Elevation {
+    if (idx === 0) {
+        curr.gradient = 0;
         return curr;
-    });
+    }
+    const prev = arr[idx - 1];
+    curr.gradient =
+        ((curr.elevation - prev.elevation) / (curr.distance - prev.distance)) *
+        100;
+
+    return curr;
+}
+
+function adjustElevationsByUnit(units: Units) {
+    return (curr: Elevation) => {
+        curr.elevation = elevationByUnit(units, curr.elevation);
+        curr.distance = distanceByUnit(units, curr.distance);
+        return curr;
+    };
 }
 
 function normalizeElevation(elevations: Elevation[]): Elevation[] {
@@ -86,12 +94,16 @@ const CustomTooltip: React.ComponentType<{
     return null;
 };
 
+const ELEVATION_SAMPLES = 100;
+
 export const ElevationProfile: React.ComponentType<{
     segment: DetailedSegment;
     height: number;
 }> = ({ segment, height }) => {
     const { units } = useUnitsContext();
-    const [chartData, set] = useState<Elevation[]>();
+    const [elevations, setElevations] =
+        useState<google.maps.ElevationResult[]>();
+    const [chartData, setChartData] = useState<Elevation[]>();
     const [chartHeight, setChartHeight] = useState(250);
 
     useEffect(() => {
@@ -100,26 +112,31 @@ export const ElevationProfile: React.ComponentType<{
         const elevator = new google.maps.ElevationService();
         const encodedLine = segment.map.polyline;
         const decode = google.maps.geometry.encoding.decodePath(encodedLine);
-        const distance = distanceByUnit(units, segment.distance);
-        const samples = 100;
 
         elevator
-            .getElevationAlongPath({ path: decode, samples })
+            .getElevationAlongPath({ path: decode, samples: ELEVATION_SAMPLES })
             .then(({ results }) => {
-                const elevations: Elevation[] = results.map(
-                    (r: google.maps.ElevationResult, i: number) => {
-                        return {
-                            elevation: elevationByUnit(units, r.elevation),
-                            distance: (distance / samples) * i,
-                        } as Elevation;
-                    }
-                );
-
-                if (results) {
-                    set(normalizeElevation(calculateGradient(elevations)));
-                }
+                if (results) setElevations(results);
             });
-    }, [segment, set, units]);
+    }, [segment, setElevations]);
+
+    useEffect(() => {
+        if (!elevations) return;
+
+        const distanceInKms = segment.distance;
+
+        const data: Elevation[] = elevations
+            .map((item: google.maps.ElevationResult, i: number) => {
+                return {
+                    elevation: item.elevation,
+                    distance: (distanceInKms / ELEVATION_SAMPLES) * i,
+                } as Elevation;
+            })
+            .map(calculateGradient)
+            .map(adjustElevationsByUnit(units));
+
+        setChartData(normalizeElevation(data));
+    }, [segment, elevations, setChartData, units]);
 
     useEffect(() => {
         const elevationHeight = height - 70;
