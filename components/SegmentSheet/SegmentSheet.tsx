@@ -193,6 +193,8 @@ export const SegmentSheet: React.ComponentType<{
                                 <span>
                                     <a
                                         href={`https://www.strava.com/activities/${segment.athlete_segment_stats.pr_activity_id}`}
+                                        target="_blank"
+                                        rel="noreferrer"
                                     >
                                         {segment.athlete_segment_stats.pr_date}
                                     </a>

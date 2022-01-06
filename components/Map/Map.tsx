@@ -74,7 +74,7 @@ export const Map: React.ComponentType<{
             fillColor: "#FFFFFF",
             fillOpacity: 1,
             anchor: { x: 32, y: 32 } as google.maps.Point,
-            scale: 0.1,
+            scale: 0.15,
         },
         repeat: "40px",
     };
@@ -96,7 +96,7 @@ export const Map: React.ComponentType<{
                                 ? "#3A4968"
                                 : "#0087CA",
                         strokeWeight: 6,
-                        zIndex: 3,
+                        zIndex: 4,
                         icons: [directionArrow],
                     }}
                 >
