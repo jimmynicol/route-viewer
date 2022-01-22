@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { DetailedSegment } from "../../data/stravaDataTypes";
 import { CloseButton } from "../SegmentSheet/CloseButton";
@@ -33,6 +33,7 @@ export const StreetView: React.ComponentType<{
 }> = ({ segment, mode, onClose }) => {
     const isGoogleMapsLoaded = google && google.maps;
     const target = useRef<HTMLDivElement>(null);
+    const [hasStreetView, setHasStreetView] = useState(true);
 
     useEffect(() => {
         if (!isGoogleMapsLoaded || !target.current) return;
@@ -48,7 +49,7 @@ export const StreetView: React.ComponentType<{
                     : segment.end_longitude,
         };
 
-        new google.maps.StreetViewPanorama(target.current, {
+        const sv = new google.maps.StreetViewPanorama(target.current, {
             position,
             pov: {
                 heading: determineHeading(segment, mode),
@@ -57,7 +58,12 @@ export const StreetView: React.ComponentType<{
             fullscreenControl: false,
             addressControl: false,
         });
-    }, [segment, isGoogleMapsLoaded, target, mode]);
+
+        sv.addListener("status_changed", () => {
+            const status = sv.getStatus();
+            setHasStreetView(status === google.maps.StreetViewStatus.OK);
+        });
+    }, [segment, isGoogleMapsLoaded, target, mode, setHasStreetView]);
 
     const label = mode === StreetViewMode.START ? "Start" : "End";
 
@@ -79,6 +85,7 @@ export const StreetView: React.ComponentType<{
                     onClick={onClose}
                 />
             </div>
+            {hasStreetView === false && <h3>No Street View Available</h3>}
         </div>
     );
 };

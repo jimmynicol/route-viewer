@@ -76,7 +76,7 @@ export const Map: React.ComponentType<{
             anchor: { x: 32, y: 32 } as google.maps.Point,
             scale: 0.15,
         },
-        repeat: "40px",
+        repeat: "60px",
     };
 
     return (
@@ -95,7 +95,7 @@ export const Map: React.ComponentType<{
                             colorScheme === ColorScheme.LIGHT
                                 ? "#3A4968"
                                 : "#0087CA",
-                        strokeWeight: 6,
+                        strokeWeight: 5,
                         zIndex: 4,
                         icons: [directionArrow],
                     }}
@@ -110,7 +110,7 @@ export const Map: React.ComponentType<{
                     encodedPath={segment.map.polyline}
                     style={{
                         strokeColor: "#FF4500",
-                        strokeWeight: 8,
+                        strokeWeight: 6,
                         zIndex: 4,
                     }}
                     onClick={() => setCurrentSegment(segment)}

@@ -4,7 +4,7 @@
 
     position: relative;
 
-    background: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 1);
 
     margin: 0;
 }
@@ -39,6 +39,26 @@
 .controlsContainer span {
     font-size: 24px;
     font-weight: 600;
+
+    color: rgba(255, 255, 255, 1);
+
+    margin: 0;
+    padding: 0;
+
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.streetView h3 {
+    position: absolute;
+    top: 48%;
+    left: 0;
+    right: 0;
+
+    z-index: 100;
+
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
 
     color: rgba(255, 255, 255, 1);
 

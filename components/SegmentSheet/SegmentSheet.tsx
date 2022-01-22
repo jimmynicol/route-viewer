@@ -113,7 +113,7 @@ export const SegmentSheet: React.ComponentType<{
 
         // start moving the street view to just under the controls rect
         api.start({
-            y: -(componentRect.height - controlsRect.height - 26),
+            y: -(componentRect.height - controlsRect.height - 30),
             immediate: false,
             config: config.stiff,
         });
