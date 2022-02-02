@@ -1,9 +1,5 @@
 import { useQuery } from "react-query";
-import {
-    DetailedSegment,
-    Route,
-    TokenExchangeResponse,
-} from "./stravaDataTypes";
+import { DetailedSegment, Route } from "./stravaDataTypes";
 
 const STRAVA_API_ENDPOINT = "https://www.strava.com/api/v3";
 

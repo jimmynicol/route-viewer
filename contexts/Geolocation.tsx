@@ -48,7 +48,7 @@ export const GeolocationProvider = ({
         };
 
         navigator.geolocation.getCurrentPosition(onEvent, onError);
-        if (watcher) {
+        if (!watcher) {
             const _watcher = navigator.geolocation.watchPosition(
                 onEvent,
                 onError
