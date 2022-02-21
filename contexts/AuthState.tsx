@@ -54,7 +54,6 @@ export function determineAuthState(
     tokenResponse: TokenExchangeResponse,
     queryParams: QueryParams
 ): AuthState {
-    if (!isQueryParamsValid()) return AuthState.QUERY_PARAMS_ERROR;
     if (isTokenValid(tokenResponse)) return AuthState.VALID;
     if (canTokenBeRefreshed(tokenResponse)) return AuthState.HAS_REFRESH_TOKEN;
     if (queryParams.authorizationCode) return AuthState.HAS_AUTHORIZATION_CODE;

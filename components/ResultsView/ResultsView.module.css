@@ -1,0 +1,91 @@
+.titleLockup {
+    position: relative;
+}
+
+.titleLockup a,
+.titleLockup h1 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.titleLockup h1 {
+    margin: 0;
+    padding: 25px 25px 40px 25px;
+}
+
+.routeLink {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+}
+
+.clubLink {
+    position: absolute;
+    bottom: 10px;
+    right: 25px;
+}
+
+.statsContainer {
+    padding-inline-start: 15px;
+    padding-inline-end: 15px;
+
+    overflow-y: scroll;
+}
+
+.metadataContainer {
+    display: flex;
+    justify-content: space-between;
+
+    padding-block-start: 15px;
+    padding-block-end: 15px;
+
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+}
+
+.routeStats {
+    padding-block-start: 5px;
+    padding-block-end: 5px;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+}
+
+.routeStats li {
+    list-style: none;
+    margin: 5px 0;
+}
+
+.myResults {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-block-start: 15px;
+    padding-block-end: 15px;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+}
+
+.myResults h2 {
+    margin: 0;
+}
+
+.myResults p {
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+}
+
+.myResults button {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.myResults button svg {
+    height: 26px;
+    width: 26px;
+}
+
+.myResults svg {
+    height: 26px;
+    width: 26px;
+}

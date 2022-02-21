@@ -24,6 +24,13 @@ export enum Sex {
     Male = "M",
 }
 
+export enum SegmentAchievement {
+    NONE = 0,
+    PR = 1,
+    CUP = 2,
+    XOM = 3,
+}
+
 /** ----- Models ----- */
 
 export interface SummaryAthlete {
@@ -124,6 +131,61 @@ export interface PolylineMap {
     summary_polyline: string;
 }
 
+export interface Club {
+    id: number;
+    resource_state: number;
+    name: string;
+    profile_medium: string;
+    profile: string;
+    cover_photo: string;
+    cover_photo_small: string;
+    sport_type: string;
+    activity_types: string[];
+    city: string;
+    state: string;
+    country: string;
+    private: boolean;
+    member_count: number;
+    featured: boolean;
+    verified: boolean;
+    url: string;
+    membership: string;
+    admin: boolean;
+    owner: boolean;
+    description: string;
+    club_type: string;
+    post_count: number;
+    owner_id: number;
+    following_count: number;
+}
+
+export interface SegmentEffort {
+    rank: number;
+    athlete_name: string;
+    athlete_link: string;
+    activity_id: string;
+    segment_effort_id: string;
+    start_date: string;
+    average_speed_kph: number;
+    average_hr: number;
+    average_power: number;
+    elapsed_time: number;
+    achievement: SegmentAchievement;
+    overall_rank: string;
+}
+
+export interface SegmentEfforts {
+    men: SegmentEffort[];
+    women: SegmentEffort[];
+}
+
+export interface RideSegment {
+    segment: SummarySegment;
+    xoms: SegmentEfforts;
+    clubXoms: SegmentEfforts;
+    efforts: SegmentEfforts;
+}
+
 export interface Route {
     athlete: SummaryAthlete;
     description: string;
@@ -142,6 +204,14 @@ export interface Route {
     updated_at: Date;
     estimated_moving_time: number;
     segments: SummarySegment[];
+}
+
+export interface RideEfforts {
+    title: string;
+    route: Route;
+    club: Club;
+    segmentsInOrder: string[];
+    segments: Record<string, RideSegment>;
 }
 
 /** ------ OAuth Models ----- */

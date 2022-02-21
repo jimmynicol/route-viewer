@@ -11,7 +11,6 @@ import { ZoomOut } from "../ZoomControls/ZoomOut";
 import { GoogleMap } from "./GoogleMap";
 import { Polyline } from "./Polyline";
 import { RouteEndMarker, RouteStartMarker } from "./RouteMarkers";
-import { SegmentMarker } from "./SegmentMarker";
 import { UserLocationMarker } from "./UserLocationMarker";
 
 export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";

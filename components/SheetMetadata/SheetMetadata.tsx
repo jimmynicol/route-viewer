@@ -5,7 +5,7 @@ import styles from "./SheetMetadata.module.css";
 import typography from "../../styles/Typography.module.css";
 
 export const SheetMetadata: React.ComponentType<{
-    num: string;
+    num: string | number;
     unit: string;
     description: string;
     onClick?: () => void;
