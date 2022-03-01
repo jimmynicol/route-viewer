@@ -13,7 +13,7 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 if (!accessKeyId || !secretAccessKey) {
     throw new Error(
-        "Please specify AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY AND AWS_BUCKET_NAME by adding them as environment variables."
+        "Please specify AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_BUCKET_NAME by adding them as environment variables."
     );
 }
 
@@ -38,7 +38,7 @@ s3.upload(
         if (err) {
             console.error(err.message);
         } else {
-            console.log(`File uploaded succesfully: ${data.Location}`);
+            console.log(`File uploaded sucessfully: ${data.Location}`);
         }
     }
 );

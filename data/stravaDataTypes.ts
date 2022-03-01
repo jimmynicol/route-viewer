@@ -51,6 +51,33 @@ export interface SummaryAthlete {
     updated_at: Date;
 }
 
+export interface DetailedAthlete {
+    id: string;
+    username: string;
+    resource_state: number;
+    firstname: string;
+    lastname: string;
+    city: string;
+    state: string;
+    country: string;
+    sex: Sex;
+    premium: true;
+    created_at: Date;
+    updated_at: Date;
+    badge_type_id: number;
+    profile_medium: string;
+    profile: string;
+    follower_count: number;
+    friend_count: number;
+    mutual_friend_count: number;
+    athlete_type: number;
+    date_preference: string;
+    measurement_preference: string;
+    clubs: Club[];
+    ftp: number;
+    weight: number;
+}
+
 export interface SummarySegmentEffort {
     id: number;
     elapsed_time: number;

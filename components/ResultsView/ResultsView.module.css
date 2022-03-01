@@ -1,3 +1,12 @@
+.resultsView {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+
+    height: 100vh;
+    width: 100vw;
+}
+
 .titleLockup {
     position: relative;
 }
@@ -26,8 +35,13 @@
 }
 
 .statsContainer {
+    display: block;
+
     padding-inline-start: 15px;
     padding-inline-end: 15px;
+
+    height: 100%;
+    width: 100%;
 
     overflow-y: scroll;
 }
@@ -86,6 +100,14 @@
 }
 
 .myResults svg {
-    height: 26px;
-    width: 26px;
+    height: 20px;
+    width: 20px;
+}
+
+.generalClassification {
+    padding: 15px;
+}
+
+.generalClassification table {
+    width: 100%;
 }
