@@ -34,16 +34,14 @@
     right: 25px;
 }
 
-.statsContainer {
-    display: block;
+.scrollWrapper {
+    overflow-y: scroll;
+}
 
+.statsContainer {
     padding-inline-start: 15px;
     padding-inline-end: 15px;
-
-    height: 100%;
-    width: 100%;
-
-    overflow-y: scroll;
+    padding-block-end: 30px;
 }
 
 .metadataContainer {
@@ -108,6 +106,16 @@
     padding: 15px;
 }
 
+.generalClassification h2 {
+    margin: 0;
+}
+
+.segmentedControl {
+    margin: 10px;
+}
+
 .generalClassification table {
     width: 100%;
+
+    margin-block-end: 20px;
 }

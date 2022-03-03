@@ -6,11 +6,13 @@ import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import { RideEfforts } from "../../data/stravaDataTypes";
 
-export const TitleLockup: React.ComponentType<{ data: RideEfforts }> = ({
-    data,
-}) => {
+export const TitleLockup = React.forwardRef<
+    HTMLDivElement,
+    { data: RideEfforts }
+>(function TitleLockup({ data }, ref) {
     return (
         <div
+            ref={ref}
             className={cw(styles.titleLockup)}
             style={{
                 backgroundImage: `url(${data.club.cover_photo})`,
@@ -34,4 +36,4 @@ export const TitleLockup: React.ComponentType<{ data: RideEfforts }> = ({
             </Link>
         </div>
     );
-};
+});

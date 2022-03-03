@@ -12,7 +12,6 @@ export const GeneralClassificationTable: React.ComponentType<{
 }> = ({ riders, label, classNames }) => {
     return (
         <div className={cw(...(classNames || []))}>
-            <h3 className={cw(typography.subTitle)}>{label}</h3>
             <table>
                 <tbody>
                     {riders.map((item: GCRider, i: number) => (

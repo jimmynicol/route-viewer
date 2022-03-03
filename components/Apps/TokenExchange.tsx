@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import cw from "classnames";
 
 import { useAPITokenContext } from "../../contexts/APIToken";
-import { AuthState, useAuthStateContext } from "../../contexts/AuthState";
 import {
-    clearOAuthQueryParams,
-    useQueryParamsContext,
-} from "../../contexts/QueryParams";
+    AuthState,
+    parseAuthQueryParam,
+    useAuthStateContext,
+} from "../../contexts/AuthState";
+import { clearOAuthQueryParams } from "../../contexts/QueryParams";
 import { useTokenExchange } from "../../data/useOAuth";
 
 import typography from "../../styles/Typography.module.css";
@@ -15,10 +16,8 @@ import loadingStyles from "../../styles/LoadingMessage.module.css";
 
 export const TokenExchange: React.ComponentType = () => {
     const { setAuthState } = useAuthStateContext();
-    const {
-        queryParams: { authorizationCode },
-    } = useQueryParamsContext();
     const { setTokenResponse } = useAPITokenContext();
+    const authorizationCode = parseAuthQueryParam();
 
     const { isLoading, isError, data, error } = useTokenExchange(
         authorizationCode || ""
