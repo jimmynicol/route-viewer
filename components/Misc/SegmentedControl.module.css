@@ -12,17 +12,16 @@
 }
 
 .label {
+    position: relative;
+
     padding-block-start: 2px;
     padding-block-end: 2px;
     padding-inline-start: 15px;
     padding-inline-end: 15px;
-
-    z-index: 2;
 }
 
 .background {
     position: absolute;
-    z-index: 1;
 
     top: 2px;
     bottom: 2px;
@@ -34,20 +33,4 @@
     border-radius: 4px;
 
     transition: left 1s ease-out;
-}
-
-.items-2::before {
-    width: 50%;
-}
-.items-3::before {
-    width: 33%;
-}
-.items-4::before {
-    width: 25%;
-}
-.items-5::before {
-    width: 20%;
-}
-.items-6::before {
-    width: 17%;
 }

@@ -1,11 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cw from "classnames";
 
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 
 import { riderResultsToHighlightString } from "../../data/resultsConverter";
-import { distanceStr, elevationStr } from "../../utils/unitConversions";
-import { useUnitsContext } from "../../contexts/Units";
 import { HR } from "../Misc/HR";
 import { StravaSignInButton } from "../OAuth/StravaSignInButton";
 import { AuthState, useAuthStateContext } from "../../contexts/AuthState";
@@ -13,11 +11,6 @@ import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 import { TitleLockup } from "./TitleLockup";
 import { RideStats } from "./RideStats";
 import { EffortStats } from "./EffortStats";
-
-import styles from "./ResultsView.module.css";
-import typography from "../../styles/Typography.module.css";
-import errorStyles from "../../styles/ErrorMessage.module.css";
-import loadingStyles from "../../styles/LoadingMessage.module.css";
 import { GeneralClassificationTable } from "./GeneralClassificationTable";
 import { SegmentStats } from "./SegmentStats";
 import { SegmentedControl } from "../Misc/SegmentedControl";
@@ -28,27 +21,48 @@ import {
 import { isEmpty } from "../../utils/isEmpty";
 import { MyResults } from "./MyResults";
 
+import styles from "./ResultsView.module.css";
+import typography from "../../styles/Typography.module.css";
+import errorStyles from "../../styles/ErrorMessage.module.css";
+import loadingStyles from "../../styles/LoadingMessage.module.css";
+import { Sheet, SheetViewState } from "../Sheet/Sheet";
+
 export const ResultsView: React.ComponentType = () => {
     const sizeClass = useHorizontalSizeClass();
     const { authState } = useAuthStateContext();
-    const [showGC, setShowGC] = useState<number>(0);
-    const viewRef = useRef<HTMLDivElement>(null);
-    const titleLockupRef = useRef<HTMLDivElement>(null);
-    const [wrapperHeight, setWrapperHeight] = useState<number>(500);
     const { resultsDataState, results, talliedResults } =
         useResultsDataContext();
 
-    useLayoutEffect(() => {
+    const viewRef = useRef<HTMLDivElement>(null);
+    const titleLockupRef = useRef<HTMLDivElement>(null);
+
+    const [showGC, setShowGC] = useState<number>(0);
+    const [wrapperHeight, setWrapperHeight] = useState<number>(500);
+    const [sheetFullHeight, setSheetFullHeight] = useState<number>(0);
+    const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
+        SheetViewState.HIDE
+    );
+
+    useEffect(() => {
         const viewElement = viewRef.current;
         const titleLockupElement = titleLockupRef.current;
 
         if (!viewElement || !titleLockupElement) return;
 
+        const viewElementHeight = viewElement.getBoundingClientRect().height;
+
         setWrapperHeight(
-            viewElement.getBoundingClientRect().height -
+            viewElementHeight -
                 titleLockupElement.getBoundingClientRect().height
         );
-    }, [resultsDataState, viewRef, titleLockupRef, setWrapperHeight]);
+        setSheetFullHeight(viewElementHeight - 30);
+    }, [
+        resultsDataState,
+        viewRef,
+        titleLockupRef,
+        setWrapperHeight,
+        setSheetFullHeight,
+    ]);
 
     if (resultsDataState === ResultsDataState.LOADING) {
         return (
@@ -110,6 +124,9 @@ export const ResultsView: React.ComponentType = () => {
                         distance={results.route.distance}
                         elevationGain={results.route.elevation_gain}
                         numberOfSegments={results.segmentsInOrder.length}
+                        onSegmentsClick={() =>
+                            setSheetViewState(SheetViewState.FULL)
+                        }
                     />
                     <HR />
                     <EffortStats
@@ -192,6 +209,15 @@ export const ResultsView: React.ComponentType = () => {
                     </div>
                 </div>
             </div>
+
+            <Sheet
+                viewState={sheetViewState}
+                defaultHeight={-50}
+                fullHeight={sheetFullHeight}
+                onChangeViewState={setSheetViewState}
+            >
+                <h3>Sheet</h3>
+            </Sheet>
         </div>
     );
 };

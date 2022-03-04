@@ -11,7 +11,7 @@ export enum AthleteDataState {
 }
 
 export interface AthleteDataCtx {
-    state: AthleteDataState;
+    athleteDataState: AthleteDataState;
     athleteData: DetailedAthlete;
 }
 
@@ -24,7 +24,9 @@ export const AthleteDataProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [state, setState] = useState<AthleteDataState>(AthleteDataState.IDLE);
+    const [athleteDataState, setAthleteDataState] = useState<AthleteDataState>(
+        AthleteDataState.IDLE
+    );
     const [athleteData, setAthleteData] = useState<DetailedAthlete>(
         {} as DetailedAthlete
     );
@@ -35,18 +37,18 @@ export const AthleteDataProvider = ({
 
     useEffect(() => {
         if (isLoading) {
-            setState(AthleteDataState.LOADING);
+            setAthleteDataState(AthleteDataState.LOADING);
         } else if (isError) {
-            setState(AthleteDataState.ERROR);
+            setAthleteDataState(AthleteDataState.ERROR);
         } else {
-            setState(AthleteDataState.COMPLETE);
+            setAthleteDataState(AthleteDataState.COMPLETE);
         }
 
         if (data) setAthleteData(data);
-    }, [isLoading, isError, data, setState]);
+    }, [isLoading, isError, data, setAthleteDataState]);
 
     return (
-        <AthleteDataContext.Provider value={{ state, athleteData }}>
+        <AthleteDataContext.Provider value={{ athleteDataState, athleteData }}>
             {children}
         </AthleteDataContext.Provider>
     );

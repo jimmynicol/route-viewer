@@ -78,6 +78,13 @@
     padding-inline-end: 10px;
 }
 
+/* .myResults > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+} */
+
 .myResults h2 {
     margin: 0;
 }

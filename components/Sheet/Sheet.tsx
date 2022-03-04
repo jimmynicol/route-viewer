@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { animated, useSpring, config } from "react-spring";
-import { useDrag } from "@use-gesture/react";
+import cw from "classnames";
 
 import styles from "./Sheet.module.css";
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
@@ -12,26 +12,34 @@ export enum SheetViewState {
     FULL = 3,
 }
 
+const DEFAULT_HEIGHT = 180;
+const FULL_HEIGHT =
+    (typeof window === "undefined" ? 840 : window.innerHeight) -
+    DEFAULT_HEIGHT -
+    50;
+
 export const Sheet: React.ComponentType<{
     viewState: SheetViewState;
-    onChangeViewState: (value: SheetViewState) => void;
+    onChangeViewState?: (value: SheetViewState) => void;
     children?: React.ReactNode;
+    parentName?: string;
     className?: string;
     defaultHeight?: number;
-    parentName?: string;
+    fullHeight?: number;
 }> = ({
     viewState,
     onChangeViewState,
     children,
-    className,
-    defaultHeight = 180,
     parentName,
+    className,
+    defaultHeight = DEFAULT_HEIGHT,
+    fullHeight = FULL_HEIGHT,
 }) => {
     const sizeClass = useHorizontalSizeClass();
     const [{ y }, api] = useSpring(() => ({ y: 0 }));
 
     useEffect(() => {
-        const FULL_Y = -1 * (window.innerHeight - defaultHeight - 50);
+        const FULL_Y = -1 * fullHeight;
         const DEFAULT_Y = 0;
         const HIDE_Y = defaultHeight + 100;
 
@@ -59,53 +67,27 @@ export const Sheet: React.ComponentType<{
                 });
                 break;
         }
-    }, [viewState, api, defaultHeight, parentName]);
+    }, [viewState, api, defaultHeight, fullHeight, parentName]);
 
     const toggleMove = () => {
-        onChangeViewState(
-            y.get() < 0 ? SheetViewState.DEFAULT : SheetViewState.FULL
-        );
+        if (onChangeViewState) {
+            onChangeViewState(
+                y.get() < 0 ? SheetViewState.DEFAULT : SheetViewState.FULL
+            );
+        }
     };
 
-    const bind = useDrag(
-        ({
-            last,
-            initial: [, iy],
-            velocity: [, vy],
-            movement: [, my],
-            target,
-        }) => {
-            if (vy === 0) return;
-
-            // if (target && target["draggable"] === false) return;
-
-            // if (last) {
-            //     const currY = y.get();
-
-            //     currY < -50 ? maximize() : minimize(vy);
-            // } else {
-            //     api.start({ y: my, immediate: true });
-            // }
-        },
-        {
-            from: [0, y.get()],
-            filterTaps: true,
-            bounds: { top: 0 },
-            rubberband: true,
-        }
-    );
-
-    let _classNames = styles.sheet;
-    _classNames += className ? ` ${className}` : "";
-    _classNames +=
+    const _classNames = [styles.sheet];
+    if (className) _classNames.push(className);
+    _classNames.push(
         sizeClass === SizeClass.COMPACT
-            ? ` ${styles.compactSizeClass}`
-            : ` ${styles.regularSizeClass}`;
+            ? styles.compactSizeClass
+            : styles.regularSizeClass
+    );
 
     return (
         <animated.div
-            {...bind()}
-            className={_classNames}
+            className={cw(_classNames)}
             style={{
                 display: "block",
                 bottom: `calc(-100vh + ${defaultHeight - 100}px)`,

@@ -13,8 +13,15 @@ export const RideStats: React.ComponentType<{
     distance: number;
     elevationGain: number;
     numberOfSegments: number;
+    onSegmentsClick?: () => void;
     classNames?: string[];
-}> = ({ distance, elevationGain, numberOfSegments, classNames }) => {
+}> = ({
+    distance,
+    elevationGain,
+    numberOfSegments,
+    onSegmentsClick,
+    classNames,
+}) => {
     const { units } = useUnitsContext();
 
     const _distance = distanceStr(units, distance, 2);
@@ -36,6 +43,7 @@ export const RideStats: React.ComponentType<{
                 num={numberOfSegments}
                 unit={""}
                 description={"Segments"}
+                onClick={() => (onSegmentsClick ? onSegmentsClick() : null)}
             />
         </div>
     );
