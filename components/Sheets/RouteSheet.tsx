@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
-import { Sheet, SheetViewState } from "../Sheet/Sheet";
+import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
 import { SheetTitle } from "../SheetTitle/SheetTitle";
 
-import styles from "../Sheet/Sheet.module.css";
+import styles from "../Sheets/Sheet.module.css";
 import { SegmentItem } from "../SegmentItem/SegmentItem";
 import {
     distanceStr,

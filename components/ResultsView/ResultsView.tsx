@@ -25,13 +25,15 @@ import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
-import { Sheet, SheetViewState } from "../Sheet/Sheet";
+import { ResultSheetViewType, ResultsSheet } from "../Sheets/ResultsSheet";
+import { useAthleteDataContext } from "../../contexts/AthleteData";
 
 export const ResultsView: React.ComponentType = () => {
     const sizeClass = useHorizontalSizeClass();
     const { authState } = useAuthStateContext();
     const { resultsDataState, results, talliedResults } =
         useResultsDataContext();
+    const { athleteData } = useAthleteDataContext();
 
     const viewRef = useRef<HTMLDivElement>(null);
     const titleLockupRef = useRef<HTMLDivElement>(null);
@@ -39,8 +41,8 @@ export const ResultsView: React.ComponentType = () => {
     const [showGC, setShowGC] = useState<number>(0);
     const [wrapperHeight, setWrapperHeight] = useState<number>(500);
     const [sheetFullHeight, setSheetFullHeight] = useState<number>(0);
-    const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
-        SheetViewState.HIDE
+    const [sheetViewType, setSheetViewType] = useState<ResultSheetViewType>(
+        ResultSheetViewType.EMPTY
     );
 
     useEffect(() => {
@@ -111,6 +113,9 @@ export const ResultsView: React.ComponentType = () => {
         return <div></div>;
     }
 
+    console.log(results);
+    console.log(talliedResults);
+
     return (
         <div ref={viewRef} className={cw(styles.resultsView)}>
             <TitleLockup ref={titleLockupRef} data={results} />
@@ -125,7 +130,7 @@ export const ResultsView: React.ComponentType = () => {
                         elevationGain={results.route.elevation_gain}
                         numberOfSegments={results.segmentsInOrder.length}
                         onSegmentsClick={() =>
-                            setSheetViewState(SheetViewState.FULL)
+                            setSheetViewType(ResultSheetViewType.SEGMENTS)
                         }
                     />
                     <HR />
@@ -156,7 +161,12 @@ export const ResultsView: React.ComponentType = () => {
                         </div>
                     )}
                     {authState === AuthState.VALID && (
-                        <MyResults classNames={[styles.myResults]} />
+                        <MyResults
+                            className={styles.myResults}
+                            onClick={() =>
+                                setSheetViewType(ResultSheetViewType.MY_RESULTS)
+                            }
+                        />
                     )}
                     <HR />
                     <div className={cw(styles.myResults)}>
@@ -210,14 +220,14 @@ export const ResultsView: React.ComponentType = () => {
                 </div>
             </div>
 
-            <Sheet
-                viewState={sheetViewState}
-                defaultHeight={-50}
+            <ResultsSheet
+                type={sheetViewType}
+                results={results}
+                talliedResults={talliedResults}
+                athleteData={athleteData}
                 fullHeight={sheetFullHeight}
-                onChangeViewState={setSheetViewState}
-            >
-                <h3>Sheet</h3>
-            </Sheet>
+                onHide={() => setSheetViewType(ResultSheetViewType.EMPTY)}
+            ></ResultsSheet>
         </div>
     );
 };

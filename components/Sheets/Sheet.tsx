@@ -4,7 +4,7 @@ import cw from "classnames";
 
 import styles from "./Sheet.module.css";
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
-import { Handle, HandleDirection } from "./Handle";
+import { Handle, HandleDirection } from "../Icons/Handle";
 
 export enum SheetViewState {
     HIDE = 1,

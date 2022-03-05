@@ -1,8 +1,6 @@
 import React from "react";
 import cw from "classnames";
-import Image from "next/image";
 
-import typography from "../../styles/Typography.module.css";
 import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 import { useResultsDataContext } from "../../contexts/ResultsData";
 import { riderResultsToHighlightString } from "../../data/resultsConverter";
@@ -12,15 +10,17 @@ import {
 } from "../../contexts/AthleteData";
 import { ProfileImage } from "../Misc/ProfileImage";
 
-export const MyResults: React.ComponentType<{
-    classNames?: string[];
-}> = ({ classNames }) => {
+import typography from "../../styles/Typography.module.css";
+
+export const MyResults: React.ComponentType<
+    React.HTMLAttributes<HTMLDivElement>
+> = ({ ...props }) => {
     const { athleteDataState, athleteData } = useAthleteDataContext();
     const { statsByRider } = useResultsDataContext();
 
     if (athleteDataState === AthleteDataState.LOADING) {
         return (
-            <div className={cw(...(classNames || []))}>
+            <div {...props}>
                 <p>Loading your data...</p>
             </div>
         );
@@ -28,7 +28,7 @@ export const MyResults: React.ComponentType<{
 
     if (athleteDataState === AthleteDataState.ERROR) {
         return (
-            <div className={cw(...(classNames || []))}>
+            <div {...props}>
                 <p>Unable to load your data, please try again soon!</p>
             </div>
         );
@@ -39,12 +39,19 @@ export const MyResults: React.ComponentType<{
     const caption = riderResultsToHighlightString(statsByRider(athleteData.id));
 
     return (
-        <div className={cw(...(classNames || []))}>
-            <div>
+        <div {...props}>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 15,
+                }}
+            >
                 <ProfileImage
                     src={athleteData.profile}
-                    height={40}
-                    width={40}
+                    height={46}
+                    width={46}
                 ></ProfileImage>
                 <div>
                     <h2 className={cw(typography.titleReduced)}>My Results</h2>

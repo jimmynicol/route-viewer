@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { DetailedSegment } from "../../data/stravaDataTypes";
-import { CloseButton } from "../SegmentSheet/CloseButton";
+import { CloseButton } from "../Icons/CloseButton";
 
 import styles from "./StreetView.module.css";
 

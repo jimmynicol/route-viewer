@@ -45,7 +45,7 @@ export const SegmentItem: React.ComponentType<{
                 </span>
                 <span>{segment.average_grade}%</span>
             </p>
-            <ForwardChevronIcon classNames={[styles.forwardChevron]} />
+            <ForwardChevronIcon className={styles.forwardChevron} />
         </div>
     );
 };

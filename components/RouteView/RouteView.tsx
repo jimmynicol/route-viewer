@@ -9,9 +9,9 @@ import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 
 import { Map } from "../Map/Map";
 import { OAuth } from "../OAuth/OAuth";
-import { RouteSheet } from "../RouteSheet/RouteSheet";
-import { SegmentSheet } from "../SegmentSheet/SegmentSheet";
-import { SheetViewState } from "../Sheet/Sheet";
+import { RouteSheet } from "../Sheets/RouteSheet";
+import { SegmentSheet } from "../Sheets/SegmentSheet";
+import { SheetViewState } from "../Sheets/Sheet";
 
 import styles from "./RouteView.module.css";
 import typography from "../../styles/Typography.module.css";

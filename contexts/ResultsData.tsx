@@ -31,6 +31,13 @@ function getResultsName(): string {
     return url.pathname.split("/").slice(-1)[0];
 }
 
+export function athleteLinks(athleteId: string): string[] {
+    return [
+        `https://www.strava.com/athletes/${athleteId}`,
+        `https://www.strava.com/pros/${athleteId}`,
+    ];
+}
+
 export const ResultsDataProvider = ({
     children,
 }: {
@@ -48,8 +55,7 @@ export const ResultsDataProvider = ({
     const { isLoading, isError, data } = useResultsData(resultsName);
 
     const statsByRider = (athleteId: string) => {
-        const athleteLink = `https://www.strava.com/athletes/${athleteId}`;
-        const proLink = `https://www.strava.com/pros/${athleteId}`;
+        const [athleteLink, proLink] = athleteLinks(athleteId);
 
         return (
             talliedResults.riders[athleteLink] || talliedResults.riders[proLink]
@@ -57,8 +63,7 @@ export const ResultsDataProvider = ({
     };
 
     const effortsByRider = (athleteId: string) => {
-        const athleteLink = `https://www.strava.com/athletes/${athleteId}`;
-        const proLink = `https://www.strava.com/pros/${athleteId}`;
+        const [athleteLink, proLink] = athleteLinks(athleteId);
 
         const efforts: Record<string, SegmentEffort> = {};
 

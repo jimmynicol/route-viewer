@@ -9,11 +9,11 @@ import {
     timeStrToSeconds,
     unitsStr,
 } from "../../utils/unitConversions";
-import { Sheet, SheetViewState } from "../Sheet/Sheet";
+import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
 import { SheetTitle } from "../SheetTitle/SheetTitle";
 
-import styles from "../Sheet/Sheet.module.css";
+import styles from "../Sheets/Sheet.module.css";
 import typography from "../../styles/Typography.module.css";
 import sheetStyles from "./SegmentSheet.module.css";
 import { useUnitsContext } from "../../contexts/Units";
@@ -21,7 +21,7 @@ import {
     StreetViewButton,
     StreetViewButtonMode,
 } from "../StreetViewButton/StreetViewButton";
-import { CloseButton } from "./CloseButton";
+import { CloseButton } from "../Icons/CloseButton";
 import { animated, useSpring, config } from "react-spring";
 import { StreetView, StreetViewMode } from "../StreetView/StreetView";
 import { ElevationProfile } from "../ElevationProfile/ElevationProfile";

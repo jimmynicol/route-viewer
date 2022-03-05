@@ -72,18 +72,9 @@
     justify-content: space-between;
     align-items: center;
 
-    padding-block-start: 15px;
-    padding-block-end: 15px;
-    padding-inline-start: 10px;
-    padding-inline-end: 10px;
+    padding-block: 15px;
+    padding-inline: 10px;
 }
-
-/* .myResults > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-} */
 
 .myResults h2 {
     margin: 0;
@@ -91,7 +82,7 @@
 
 .myResults p {
     margin-block-start: 5px;
-    margin-block-end: 5px;
+    margin-block-end: 0px;
 }
 
 .myResults button {
@@ -118,7 +109,8 @@
 }
 
 .segmentedControl {
-    margin: 10px;
+    margin-block: 15px;
+    margin-inline: 30px;
 }
 
 .generalClassification table {
