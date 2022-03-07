@@ -3,18 +3,52 @@ import React from "react";
 import { SheetMetadata } from "../Misc/SheetMetadata";
 import { MetadataContainer } from "../Misc/MetadataContainer";
 
+export enum EffortStatsTypes {
+    RIDERS,
+    PRS,
+    XOMS,
+    CLUB_XOMS,
+}
+
 export const EffortStats: React.ComponentType<{
     riders: number;
     prs: number;
     xoms: number;
     clubXoms: number;
-}> = ({ riders, prs, xoms, clubXoms }) => {
+    onClick?: (value: EffortStatsTypes) => void;
+}> = ({ riders, prs, xoms, clubXoms, onClick }) => {
     return (
         <MetadataContainer>
-            <SheetMetadata num={riders} unit={""} description={"Riders"} />
-            <SheetMetadata num={prs} unit={""} description={"PRs"} />
-            <SheetMetadata num={xoms} unit={""} description={"XOMs"} />
-            <SheetMetadata num={clubXoms} unit={""} description={"Club XOMs"} />
+            <SheetMetadata
+                num={riders}
+                unit={""}
+                description={"Riders"}
+                onClick={() =>
+                    onClick ? onClick(EffortStatsTypes.RIDERS) : null
+                }
+            />
+            <SheetMetadata
+                num={prs}
+                unit={""}
+                description={"PRs"}
+                onClick={() => (onClick ? onClick(EffortStatsTypes.PRS) : null)}
+            />
+            <SheetMetadata
+                num={xoms}
+                unit={""}
+                description={"XOMs"}
+                onClick={() =>
+                    onClick ? onClick(EffortStatsTypes.XOMS) : null
+                }
+            />
+            <SheetMetadata
+                num={clubXoms}
+                unit={""}
+                description={"Club XOMs"}
+                onClick={() =>
+                    onClick ? onClick(EffortStatsTypes.CLUB_XOMS) : null
+                }
+            />
         </MetadataContainer>
     );
 };

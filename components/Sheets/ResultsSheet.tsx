@@ -30,7 +30,6 @@ export const ResultsSheet: React.ComponentType<{
     const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
         SheetViewState.HIDE
     );
-    const [wrapperHeight, setWrapperHeight] = useState(0);
 
     useEffect(() => {
         setSheetViewState(
@@ -44,11 +43,9 @@ export const ResultsSheet: React.ComponentType<{
         if (sheetViewState === SheetViewState.DEFAULT) onHide();
     }, [sheetViewState, onHide]);
 
-    useEffect(() => {
-        setWrapperHeight(fullHeight - 20);
-    }, [fullHeight, setWrapperHeight]);
-
     let content;
+
+    console.log("show result sheet type", type);
 
     switch (type) {
         case ResultSheetViewType.MY_RESULTS:
@@ -81,9 +78,7 @@ export const ResultsSheet: React.ComponentType<{
             fullHeight={fullHeight}
             onChangeViewState={setSheetViewState}
         >
-            <div className={styles.wrapper} style={{ height: wrapperHeight }}>
-                {content}
-            </div>
+            <div className={styles.wrapper}>{content}</div>
         </Sheet>
     );
 };

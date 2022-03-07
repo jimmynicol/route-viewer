@@ -13,6 +13,7 @@ import { useUnitsContext } from "../../contexts/Units";
 import { SegmentListItem } from "../Misc/SegmentListItem";
 
 import styles from "../Sheets/Sheet.module.css";
+import typography from "../../styles/Typography.module.css";
 
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
@@ -24,7 +25,7 @@ export const RouteSheet: React.ComponentType<{
     const { units } = useUnitsContext();
     const titleRef = useRef<HTMLDivElement>(null);
     const [segmentListHeight, setSegmentListHeight] = useState(0);
-    const [defaultHeight, setDefaultHeight] = useState(180);
+    const [defaultHeight, setDefaultHeight] = useState(0);
 
     const link = `https://www.strava.com/routes/${route?.id_str}`;
     const distance = distanceStr(units, route?.distance, 2);
@@ -33,9 +34,9 @@ export const RouteSheet: React.ComponentType<{
 
     useEffect(() => {
         const titleEl = titleRef.current;
-        if (!titleEl) return;
-        const componentEl = titleEl.parentElement;
-        if (!componentEl) return;
+        const componentEl = titleEl?.parentElement;
+
+        if (!titleEl || !componentEl) return;
 
         const componentRect = componentEl.getBoundingClientRect();
         const titleRect = titleEl.getBoundingClientRect();
@@ -56,18 +57,22 @@ export const RouteSheet: React.ComponentType<{
                 title={segment.name}
                 onClick={() => onSegmentSelect(segment)}
             >
-                <span>
+                <span className={typography.semanticallyReduced}>
                     {distance}
                     {unitsStr(units, "km")}
                 </span>
-                <span>
+                <span className={typography.semanticallyReduced}>
                     {elevation}
                     {unitsStr(units, "m")}
                 </span>
-                <span>{segment.average_grade}%</span>
+                <span className={typography.semanticallyReduced}>
+                    {segment.average_grade}%
+                </span>
             </SegmentListItem>
         );
     });
+
+    if (!route) return <div></div>;
 
     return (
         <Sheet
@@ -76,7 +81,7 @@ export const RouteSheet: React.ComponentType<{
             defaultHeight={defaultHeight}
         >
             <div ref={titleRef}>
-                <SheetTitle title={route?.name} link={link} />
+                <SheetTitle title={route.name} link={link} />
                 <div className={styles.metadataContainer}>
                     <SheetMetadata
                         num={distance}

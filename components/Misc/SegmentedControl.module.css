@@ -34,3 +34,14 @@
 
     transition: left 1s ease-out;
 }
+
+@media (prefers-color-scheme: dark) {
+    .segmentedControl {
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.75);
+    }
+
+    .background {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+}

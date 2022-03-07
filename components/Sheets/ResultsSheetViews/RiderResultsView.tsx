@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cw from "classnames";
 
 import { useAthleteDataContext } from "../../../contexts/AthleteData";
@@ -22,12 +22,24 @@ import { SheetMetadata } from "../../Misc/SheetMetadata";
 import typography from "../../../styles/Typography.module.css";
 import styles from "./RiderResultsView.module.css";
 
+function measurePrevSiblingsHeight(el: HTMLElement): number {
+    let height = 0;
+    let prev = el.previousElementSibling;
+    while (prev) {
+        height += prev.getBoundingClientRect().height;
+        prev = prev.previousElementSibling;
+    }
+    return height;
+}
+
 export const RiderResultsView: React.ComponentType<{
     athleteId: string;
     onSegmentClick?: (segment: SummarySegment) => void;
 }> = ({ athleteId, onSegmentClick }) => {
     const { athleteData } = useAthleteDataContext();
     const { results, talliedResults, effortsByRider } = useResultsDataContext();
+    const segmentsRef = useRef<HTMLDivElement>(null);
+    const [segmentsHeight, setSegmentsHeight] = useState(0);
 
     const isLoggedInUser = athleteData.id === athleteId;
     const efforts = effortsByRider(athleteId);
@@ -42,6 +54,24 @@ export const RiderResultsView: React.ComponentType<{
         },
         0
     );
+
+    useEffect(() => {
+        const segmentsEl = segmentsRef.current;
+        const componentEl =
+            segmentsEl?.parentElement?.parentElement?.parentElement;
+        if (!segmentsEl || !componentEl) return;
+
+        const componentHeight = componentEl.getBoundingClientRect().height;
+        const siblingsHeight = measurePrevSiblingsHeight(segmentsEl);
+
+        console.log(
+            componentHeight,
+            siblingsHeight,
+            componentHeight - siblingsHeight
+        );
+
+        setSegmentsHeight(componentHeight - siblingsHeight);
+    }, [athleteId, segmentsRef, setSegmentsHeight]);
 
     const metadata = () => {
         const [athleteLink, proLink] = athleteLinks(athleteId);
@@ -112,9 +142,14 @@ export const RiderResultsView: React.ComponentType<{
                             height={46}
                             width={46}
                         ></ProfileImage>
-                        <h2 className={cw(typography.titleReduced)}>
-                            My Results
-                        </h2>
+                        <div>
+                            <h2 className={cw(typography.titleReduced)}>
+                                My Results
+                            </h2>
+                            <p className={cw(typography.caption)}>
+                                {athleteData.firstname} {athleteData.lastname}
+                            </p>
+                        </div>
                     </div>
                 )}
                 {!isLoggedInUser && (
@@ -141,7 +176,15 @@ export const RiderResultsView: React.ComponentType<{
                 <span>{secondsToMinutes(overallTimeInSeconds)}</span>
             </div>
             <HR />
-            <div>{segments}</div>
+            <div
+                ref={segmentsRef}
+                style={{
+                    height: segmentsHeight,
+                    overflowY: "scroll",
+                }}
+            >
+                <div>{segments}</div>
+            </div>
         </div>
     );
 };

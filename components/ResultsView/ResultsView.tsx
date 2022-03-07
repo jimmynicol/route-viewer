@@ -10,7 +10,7 @@ import { AuthState, useAuthStateContext } from "../../contexts/AuthState";
 import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 import { TitleLockup } from "./TitleLockup";
 import { RideStats } from "./RideStats";
-import { EffortStats } from "./EffortStats";
+import { EffortStats, EffortStatsTypes } from "./EffortStats";
 import { GeneralClassificationTable } from "./GeneralClassificationTable";
 import { SegmentStats } from "./SegmentStats";
 import { SegmentedControl } from "../Misc/SegmentedControl";
@@ -26,6 +26,8 @@ import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
+import { Controls } from "../Controls/Controls";
+import { UnitSwitcher } from "../Controls/UnitSwitcher";
 
 export const ResultsView: React.ComponentType = () => {
     const sizeClass = useHorizontalSizeClass();
@@ -43,6 +45,12 @@ export const ResultsView: React.ComponentType = () => {
         ResultSheetViewType.EMPTY
     );
     const [sheetViewData, setSheetViewData] = useState<any>(null);
+
+    const handleSheetState = (value: any, data?: any) => {
+        if (value === EffortStatsTypes.RIDERS) {
+            setSheetViewType(ResultSheetViewType.RIDERS);
+        }
+    };
 
     useEffect(() => {
         const viewElement = viewRef.current;
@@ -134,6 +142,7 @@ export const ResultsView: React.ComponentType = () => {
                         prs={talliedResults.stats.numberOfPRs}
                         xoms={talliedResults.stats.numberOfXOMs}
                         clubXoms={talliedResults.stats.numberOfXOMs}
+                        onClick={handleSheetState}
                     />
                     <HR />
                     <SegmentStats
@@ -219,6 +228,10 @@ export const ResultsView: React.ComponentType = () => {
                     </div>
                 </div>
             </div>
+
+            <Controls style={{ top: 10, right: 10 }}>
+                <UnitSwitcher />
+            </Controls>
 
             <ResultsSheet
                 type={sheetViewType}

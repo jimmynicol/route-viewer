@@ -22,9 +22,9 @@ export const AchievementIcon: React.ComponentType<
 
     if (achievement === SegmentAchievement.XOM) {
         if (gender === Sex.Female) {
-            return <QOMIcon />;
+            return <QOMIcon style={{ height: 17, fill: "#FEC835" }} />;
         } else {
-            return <KOMIcon />;
+            return <KOMIcon style={{ height: 17, fill: "#FEC835" }} />;
         }
     }
 

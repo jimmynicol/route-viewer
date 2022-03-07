@@ -5,7 +5,7 @@
 .titleLockup {
     position: relative;
 
-    padding-block-end: 15px;
+    padding-block-end: 20px;
 }
 
 .loggedInUser {
@@ -17,8 +17,16 @@
 
 .titleLockup a {
     position: absolute;
-    inset-block-end: 15px;
+    inset-block-end: 10px;
     inset-inline-end: 15px;
+}
+
+.titleLockup h2 {
+    margin-block-start: 0;
+    margin-block-end: 5px;
+}
+.titleLockup p {
+    margin-block: 0;
 }
 
 .rank {

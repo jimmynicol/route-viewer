@@ -12,10 +12,6 @@ import {
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../Misc/SheetMetadata";
 import { SheetTitle } from "../Misc/SheetTitle";
-
-import styles from "../Sheets/Sheet.module.css";
-import typography from "../../styles/Typography.module.css";
-import sheetStyles from "./SegmentSheet.module.css";
 import { useUnitsContext } from "../../contexts/Units";
 import {
     StreetViewButton,
@@ -27,6 +23,10 @@ import { StreetView, StreetViewMode } from "../StreetView/StreetView";
 import { ElevationProfile } from "../ElevationProfile/ElevationProfile";
 import { QOMIcon } from "../Icons/QOMIcon";
 import { KOMIcon } from "../Icons/KOMIcon";
+
+import styles from "../Sheets/Sheet.module.css";
+import typography from "../../styles/Typography.module.css";
+import sheetStyles from "./SegmentSheet.module.css";
 
 const QOM: React.ComponentType<{ segment: DetailedSegment }> = ({
     segment,
@@ -68,9 +68,9 @@ export const SegmentSheet: React.ComponentType<{
         StreetViewMode.NONE
     );
     const [streetViewHeight, setStreetViewHeight] = useState(0);
-    const [streetViewStart, setStreetViewStart] = useState(1000);
-    const [elevationHeight, setElevationHeight] = useState(250);
-    const [defaultHeight, setDefaultHeight] = useState(180);
+    const [streetViewStart, setStreetViewStart] = useState(0);
+    const [elevationHeight, setElevationHeight] = useState(0);
+    const [defaultHeight, setDefaultHeight] = useState(0);
     const [fullHeight, setFullHeight] = useState(0);
 
     const componentRef = useRef<HTMLDivElement>(null);
