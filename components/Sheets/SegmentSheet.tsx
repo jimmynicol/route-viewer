@@ -10,8 +10,8 @@ import {
     unitsStr,
 } from "../../utils/unitConversions";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
-import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
-import { SheetTitle } from "../SheetTitle/SheetTitle";
+import { SheetMetadata } from "../Misc/SheetMetadata";
+import { SheetTitle } from "../Misc/SheetTitle";
 
 import styles from "../Sheets/Sheet.module.css";
 import typography from "../../styles/Typography.module.css";
@@ -21,7 +21,7 @@ import {
     StreetViewButton,
     StreetViewButtonMode,
 } from "../StreetViewButton/StreetViewButton";
-import { CloseButton } from "../Icons/CloseButton";
+import { CloseIcon } from "../Icons/CloseIcon";
 import { animated, useSpring, config } from "react-spring";
 import { StreetView, StreetViewMode } from "../StreetView/StreetView";
 import { ElevationProfile } from "../ElevationProfile/ElevationProfile";
@@ -65,11 +65,13 @@ export const SegmentSheet: React.ComponentType<{
     const { units } = useUnitsContext();
     const [{ y }, api] = useSpring(() => defaultStreetViewPosition);
     const [streetViewMode, setStreetViewMode] = useState<StreetViewMode>(
-        StreetViewMode.START
+        StreetViewMode.NONE
     );
     const [streetViewHeight, setStreetViewHeight] = useState(0);
+    const [streetViewStart, setStreetViewStart] = useState(1000);
     const [elevationHeight, setElevationHeight] = useState(250);
     const [defaultHeight, setDefaultHeight] = useState(180);
+    const [fullHeight, setFullHeight] = useState(0);
 
     const componentRef = useRef<HTMLDivElement>(null);
     const controlsRef = useRef<HTMLDivElement>(null);
@@ -79,33 +81,34 @@ export const SegmentSheet: React.ComponentType<{
     useEffect(() => {
         const controlsEl = controlsRef.current;
         const buttonsEl = buttonsRef.current;
+        const componentEl = componentRef.current;
 
-        if (!controlsEl || !buttonsEl) return;
+        if (!controlsEl || !buttonsEl || !componentEl) return;
 
+        const parentWrapperEl = componentEl.parentElement;
+        if (!parentWrapperEl) return;
+
+        const parentWrapperRect = parentWrapperEl.getBoundingClientRect();
         const controlsRect = controlsEl.getBoundingClientRect();
         const buttonsRect = buttonsEl.getBoundingClientRect();
         const newStreetViewHeight =
-            window.innerHeight - 50 - 30 - controlsRect.height;
+            parentWrapperRect.height - controlsRect.height;
+        const newDefaultHeight = controlsRect.height + 30;
+        const newFullHeight = window.innerHeight - newDefaultHeight - 80;
 
         setStreetViewHeight(newStreetViewHeight);
+        setStreetViewStart(parentWrapperRect.height + 100);
         setElevationHeight(newStreetViewHeight - buttonsRect.height);
-        setDefaultHeight(controlsRect.height + 30);
-    }, [segment, controlsRef, buttonsRef]);
+        setDefaultHeight(newDefaultHeight);
+        setFullHeight(newFullHeight);
+    }, [viewState, segment, componentRef, controlsRef, buttonsRef]);
 
     const openStreetView = (mode: StreetViewMode) => {
-        const componentEl = componentRef.current;
-        const controlsEl = controlsRef.current;
-
-        if (!controlsEl || !componentEl) return;
-
-        const componentRect = componentEl.getBoundingClientRect();
-        const controlsRect = controlsEl.getBoundingClientRect();
-
         setStreetViewMode(mode);
 
         // start moving the street view to just under the controls rect
         api.start({
-            y: -(componentRect.height - controlsRect.height - 30),
+            y: -(streetViewHeight + 70),
             immediate: false,
             config: config.stiff,
         });
@@ -129,13 +132,10 @@ export const SegmentSheet: React.ComponentType<{
             className={sheetStyles.segmentSheet}
             viewState={viewState}
             onChangeViewState={setViewState}
-            parentName="SegmentSheet"
             defaultHeight={defaultHeight}
+            fullHeight={fullHeight}
         >
-            <CloseButton
-                className={sheetStyles.closeButton}
-                onClick={onClose}
-            />
+            <CloseIcon className={sheetStyles.closeButton} onClick={onClose} />
             {segment && (
                 <div
                     ref={componentRef}
@@ -214,16 +214,18 @@ export const SegmentSheet: React.ComponentType<{
                     <animated.div
                         className={sheetStyles.streetViewContainer}
                         style={{
-                            height: `${streetViewHeight}px`,
-                            top: "100%",
+                            height: streetViewHeight,
+                            top: streetViewStart,
                             y,
                         }}
                     >
-                        <StreetView
-                            segment={segment}
-                            mode={streetViewMode}
-                            onClose={closeStreetView}
-                        />
+                        {streetViewMode !== StreetViewMode.NONE && (
+                            <StreetView
+                                segment={segment}
+                                mode={streetViewMode}
+                                onClose={closeStreetView}
+                            />
+                        )}
                     </animated.div>
                 </div>
             )}

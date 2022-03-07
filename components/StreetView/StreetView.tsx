@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { DetailedSegment } from "../../data/stravaDataTypes";
-import { CloseButton } from "../Icons/CloseButton";
+import { CloseIcon } from "../Icons/CloseIcon";
 
 import styles from "./StreetView.module.css";
 
 export enum StreetViewMode {
+    NONE = 0,
     START = 1,
     END = 2,
 }
@@ -36,6 +37,7 @@ export const StreetView: React.ComponentType<{
     const [hasStreetView, setHasStreetView] = useState(true);
 
     useEffect(() => {
+        if (!segment) return;
         if (!isGoogleMapsLoaded || !target.current) return;
 
         const position = {
@@ -75,12 +77,12 @@ export const StreetView: React.ComponentType<{
         <div className={styles.streetView}>
             <div
                 ref={target}
-                style={{ height: "100%", zIndex: 50 }}
+                className={styles.streetViewTarget}
                 draggable={false}
             />
             <div className={styles.controlsContainer}>
                 <span>{label}</span>
-                <CloseButton
+                <CloseIcon
                     className={styles.streetViewClose}
                     onClick={onClose}
                 />

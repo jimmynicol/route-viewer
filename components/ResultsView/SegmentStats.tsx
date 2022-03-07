@@ -1,10 +1,11 @@
 import React from "react";
 import cw from "classnames";
-import { TalliedRideEfforts } from "../../data/resultsConverter";
 
-import typography from "../../styles/Typography.module.css";
+import { TalliedRideEfforts } from "../../data/resultsConverter";
 import { distanceStr, unitsStr } from "../../utils/unitConversions";
 import { useUnitsContext } from "../../contexts/Units";
+
+import typography from "../../styles/Typography.module.css";
 
 export const SegmentStats: React.ComponentType<{
     talliedData: TalliedRideEfforts;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { animated, useSpring, config } from "react-spring";
 import cw from "classnames";
 
@@ -22,7 +22,6 @@ export const Sheet: React.ComponentType<{
     viewState: SheetViewState;
     onChangeViewState?: (value: SheetViewState) => void;
     children?: React.ReactNode;
-    parentName?: string;
     className?: string;
     defaultHeight?: number;
     fullHeight?: number;
@@ -30,13 +29,15 @@ export const Sheet: React.ComponentType<{
     viewState,
     onChangeViewState,
     children,
-    parentName,
     className,
     defaultHeight = DEFAULT_HEIGHT,
     fullHeight = FULL_HEIGHT,
 }) => {
     const sizeClass = useHorizontalSizeClass();
     const [{ y }, api] = useSpring(() => ({ y: 0 }));
+
+    const handleRef = useRef<HTMLDivElement>(null);
+    const [childWrapperHeight, setChildWrapperHeight] = useState(0);
 
     useEffect(() => {
         const FULL_Y = -1 * fullHeight;
@@ -67,7 +68,20 @@ export const Sheet: React.ComponentType<{
                 });
                 break;
         }
-    }, [viewState, api, defaultHeight, fullHeight, parentName]);
+
+        const handleEl = handleRef.current;
+        if (handleEl) {
+            const handleHeight = handleEl.getBoundingClientRect().height;
+            setChildWrapperHeight(fullHeight + defaultHeight - handleHeight);
+        }
+    }, [
+        viewState,
+        api,
+        defaultHeight,
+        fullHeight,
+        handleRef,
+        setChildWrapperHeight,
+    ]);
 
     const toggleMove = () => {
         if (onChangeViewState) {
@@ -94,7 +108,11 @@ export const Sheet: React.ComponentType<{
                 y,
             }}
         >
-            <div className={styles.handleWrapper} onClick={toggleMove}>
+            <div
+                ref={handleRef}
+                className={styles.handleWrapper}
+                onClick={toggleMove}
+            >
                 <Handle
                     width={40}
                     height={20}
@@ -107,7 +125,9 @@ export const Sheet: React.ComponentType<{
                     }
                 />
             </div>
-            {children}
+            <div style={{ height: childWrapperHeight, position: "relative" }}>
+                {children}
+            </div>
         </animated.div>
     );
 };

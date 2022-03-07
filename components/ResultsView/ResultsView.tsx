@@ -20,20 +20,18 @@ import {
 } from "../../contexts/ResultsData";
 import { isEmpty } from "../../utils/isEmpty";
 import { MyResults } from "./MyResults";
+import { ResultSheetViewType, ResultsSheet } from "../Sheets/ResultsSheet";
 
 import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
-import { ResultSheetViewType, ResultsSheet } from "../Sheets/ResultsSheet";
-import { useAthleteDataContext } from "../../contexts/AthleteData";
 
 export const ResultsView: React.ComponentType = () => {
     const sizeClass = useHorizontalSizeClass();
     const { authState } = useAuthStateContext();
     const { resultsDataState, results, talliedResults } =
         useResultsDataContext();
-    const { athleteData } = useAthleteDataContext();
 
     const viewRef = useRef<HTMLDivElement>(null);
     const titleLockupRef = useRef<HTMLDivElement>(null);
@@ -44,6 +42,7 @@ export const ResultsView: React.ComponentType = () => {
     const [sheetViewType, setSheetViewType] = useState<ResultSheetViewType>(
         ResultSheetViewType.EMPTY
     );
+    const [sheetViewData, setSheetViewData] = useState<any>(null);
 
     useEffect(() => {
         const viewElement = viewRef.current;
@@ -113,9 +112,6 @@ export const ResultsView: React.ComponentType = () => {
         return <div></div>;
     }
 
-    console.log(results);
-    console.log(talliedResults);
-
     return (
         <div ref={viewRef} className={cw(styles.resultsView)}>
             <TitleLockup ref={titleLockupRef} data={results} />
@@ -125,7 +121,6 @@ export const ResultsView: React.ComponentType = () => {
             >
                 <div className={cw(styles.statsContainer)}>
                     <RideStats
-                        classNames={[styles.metadataContainer]}
                         distance={results.route.distance}
                         elevationGain={results.route.elevation_gain}
                         numberOfSegments={results.segmentsInOrder.length}
@@ -135,7 +130,6 @@ export const ResultsView: React.ComponentType = () => {
                     />
                     <HR />
                     <EffortStats
-                        classNames={[styles.metadataContainer]}
                         riders={talliedResults.stats.numberOfRiders}
                         prs={talliedResults.stats.numberOfPRs}
                         xoms={talliedResults.stats.numberOfXOMs}
@@ -169,7 +163,13 @@ export const ResultsView: React.ComponentType = () => {
                         />
                     )}
                     <HR />
-                    <div className={cw(styles.myResults)}>
+                    <div
+                        className={cw(styles.myResults)}
+                        onClick={() => {
+                            setSheetViewData(talliedResults.riderOfTheDay.id);
+                            setSheetViewType(ResultSheetViewType.RIDER);
+                        }}
+                    >
                         <div>
                             <h2 className={cw(typography.titleReduced)}>
                                 Rider of the Day
@@ -222,9 +222,7 @@ export const ResultsView: React.ComponentType = () => {
 
             <ResultsSheet
                 type={sheetViewType}
-                results={results}
-                talliedResults={talliedResults}
-                athleteData={athleteData}
+                typeData={sheetViewData}
                 fullHeight={sheetFullHeight}
                 onHide={() => setSheetViewType(ResultSheetViewType.EMPTY)}
             ></ResultsSheet>

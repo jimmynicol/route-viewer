@@ -1,6 +1,6 @@
 import React from "react";
 
-export const CloseButton: React.ComponentType<
+export const CloseIcon: React.ComponentType<
     React.HTMLAttributes<SVGElement>
 > = ({ ...props }) => {
     return (

@@ -13,6 +13,7 @@ export interface GeneralClassification {
 }
 
 export interface RiderStats {
+    id: string;
     name: string;
     athlete_link: string;
     prs: number;
@@ -155,6 +156,7 @@ function tallyResultsByRider(results: RideEfforts) {
 
         if (!riderStats) {
             resultsByRider[effort.athlete_link] = riderStats = {
+                id: effort.athlete_link.split("/").slice(-1)[0],
                 name: effort.athlete_name,
                 athlete_link: effort.athlete_link,
                 prs: 0,

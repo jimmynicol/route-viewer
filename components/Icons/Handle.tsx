@@ -7,13 +7,15 @@ export enum HandleDirection {
     STRAIGHT,
 }
 
-export const Handle: React.ComponentType<{
-    height: number;
-    width: number;
-    lineThickness: number;
-    fillColor: string;
-    direction: HandleDirection;
-}> = ({ height, width, lineThickness, fillColor, direction }) => {
+export const Handle: React.ComponentType<
+    {
+        height: number;
+        width: number;
+        lineThickness: number;
+        fillColor: string;
+        direction: HandleDirection;
+    } & React.HTMLAttributes<SVGElement>
+> = ({ height, width, lineThickness, fillColor, direction, ...props }) => {
     const midLine = height / 2;
     const radius = lineThickness / 2;
     const tickLength = width / 2 + radius;
@@ -58,11 +60,15 @@ export const Handle: React.ComponentType<{
 
     return (
         <svg
-            height={height}
-            width={width}
+            {...props}
             viewBox={[0, 0, width, height].join(" ")}
             xmlns="http://www.w3.org/2000/svg"
-            style={{ cursor: "pointer" }}
+            style={{
+                cursor: "pointer",
+                height: height,
+                width: width,
+                ...props.style,
+            }}
         >
             <g fill={fillColor}>
                 <animated.rect

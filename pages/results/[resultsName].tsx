@@ -5,6 +5,7 @@ import { APITokenProvider } from "../../contexts/APIToken";
 import { AthleteDataProvider } from "../../contexts/AthleteData";
 import { AuthStateProvider } from "../../contexts/AuthState";
 import { ResultsDataProvider } from "../../contexts/ResultsData";
+import { UnitsProvider } from "../../contexts/Units";
 
 const queryClient = new QueryClient();
 
@@ -13,11 +14,13 @@ const Results: NextPage = () => {
         <QueryClientProvider client={queryClient}>
             <APITokenProvider>
                 <AuthStateProvider>
-                    <ResultsDataProvider>
-                        <AthleteDataProvider>
-                            <ResultsApp />
-                        </AthleteDataProvider>
-                    </ResultsDataProvider>
+                    <UnitsProvider>
+                        <ResultsDataProvider>
+                            <AthleteDataProvider>
+                                <ResultsApp />
+                            </AthleteDataProvider>
+                        </ResultsDataProvider>
+                    </UnitsProvider>
                 </AuthStateProvider>
             </APITokenProvider>
         </QueryClientProvider>

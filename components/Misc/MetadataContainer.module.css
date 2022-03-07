@@ -1,0 +1,10 @@
+.metadataContainer {
+    display: flex;
+    justify-content: space-between;
+
+    padding-block-start: 15px;
+    padding-block-end: 15px;
+
+    padding-inline-start: 15px;
+    padding-inline-end: 15px;
+}

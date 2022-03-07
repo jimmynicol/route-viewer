@@ -7,13 +7,13 @@ require("dotenv").config({
     path: resolve(process.cwd(), ".env.local"),
 });
 
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const bucketName = process.env.AWS_BUCKET_NAME;
+const accessKeyId = process.env.ACCESS_KEY_ID_AWS;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY_AWS;
+const bucketName = process.env.BUCKET_NAME_AWS;
 
 if (!accessKeyId || !secretAccessKey) {
     throw new Error(
-        "Please specify AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_BUCKET_NAME by adding them as environment variables."
+        "Please specify ACCESS_KEY_ID_AWS, SECRET_ACCESS_KEY_AWS, and BUCKET_NAME_AWS by adding them as environment variables."
     );
 }
 

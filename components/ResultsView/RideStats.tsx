@@ -1,34 +1,27 @@
 import React from "react";
-import cw from "classnames";
 
-import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
+import { SheetMetadata } from "../Misc/SheetMetadata";
 import { useUnitsContext } from "../../contexts/Units";
 import {
     distanceStr,
     elevationStr,
     unitsStr,
 } from "../../utils/unitConversions";
+import { MetadataContainer } from "../Misc/MetadataContainer";
 
 export const RideStats: React.ComponentType<{
     distance: number;
     elevationGain: number;
     numberOfSegments: number;
     onSegmentsClick?: () => void;
-    classNames?: string[];
-}> = ({
-    distance,
-    elevationGain,
-    numberOfSegments,
-    onSegmentsClick,
-    classNames,
-}) => {
+}> = ({ distance, elevationGain, numberOfSegments, onSegmentsClick }) => {
     const { units } = useUnitsContext();
 
     const _distance = distanceStr(units, distance, 2);
     const _elevation = elevationStr(units, elevationGain, 0);
 
     return (
-        <div className={cw(...(classNames || []))}>
+        <MetadataContainer>
             <SheetMetadata
                 num={_distance}
                 unit={unitsStr(units, "km")}
@@ -45,6 +38,6 @@ export const RideStats: React.ComponentType<{
                 description={"Segments"}
                 onClick={() => (onSegmentsClick ? onSegmentsClick() : null)}
             />
-        </div>
+        </MetadataContainer>
     );
 };

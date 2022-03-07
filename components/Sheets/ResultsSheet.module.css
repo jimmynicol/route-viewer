@@ -1,0 +1,8 @@
+.resultsSheet {
+    padding-inline: 20px;
+    padding-block-end: 20px;
+}
+
+.wrapper {
+    overflow-y: scroll;
+}

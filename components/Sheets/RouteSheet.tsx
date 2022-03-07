@@ -2,17 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
-import { SheetMetadata } from "../SheetMetadata/SheetMetadata";
-import { SheetTitle } from "../SheetTitle/SheetTitle";
-
-import styles from "../Sheets/Sheet.module.css";
-import { SegmentItem } from "../SegmentItem/SegmentItem";
+import { SheetMetadata } from "../Misc/SheetMetadata";
+import { SheetTitle } from "../Misc/SheetTitle";
 import {
     distanceStr,
     elevationStr,
     unitsStr,
 } from "../../utils/unitConversions";
 import { useUnitsContext } from "../../contexts/Units";
+import { SegmentListItem } from "../Misc/SegmentListItem";
+
+import styles from "../Sheets/Sheet.module.css";
 
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
@@ -34,16 +34,44 @@ export const RouteSheet: React.ComponentType<{
     useEffect(() => {
         const titleEl = titleRef.current;
         if (!titleEl) return;
+        const componentEl = titleEl.parentElement;
+        if (!componentEl) return;
+
+        const componentRect = componentEl.getBoundingClientRect();
         const titleRect = titleEl.getBoundingClientRect();
-        const listHeight = window.innerHeight - 50 - 30 - titleRect.height;
+        const listHeight = componentRect.height - titleRect.height;
+
         setSegmentListHeight(listHeight);
         setDefaultHeight(titleRect.height + 30);
-    }, [titleRef, setSegmentListHeight, setDefaultHeight]);
+    }, [viewState, titleRef, setSegmentListHeight, setDefaultHeight]);
+
+    const segmentItems = segments.map((segment, i) => {
+        const distance = distanceStr(units, segment.distance, 2);
+        const elevation = elevationStr(units, segment.total_elevation_gain, 0);
+
+        return (
+            <SegmentListItem
+                key={i}
+                index={i + 1}
+                title={segment.name}
+                onClick={() => onSegmentSelect(segment)}
+            >
+                <span>
+                    {distance}
+                    {unitsStr(units, "km")}
+                </span>
+                <span>
+                    {elevation}
+                    {unitsStr(units, "m")}
+                </span>
+                <span>{segment.average_grade}%</span>
+            </SegmentListItem>
+        );
+    });
 
     return (
         <Sheet
             viewState={viewState}
-            parentName="RouteSheet"
             onChangeViewState={setViewState}
             defaultHeight={defaultHeight}
         >
@@ -74,14 +102,7 @@ export const RouteSheet: React.ComponentType<{
                     overflowY: "scroll",
                 }}
             >
-                {segments.map((segment, i) => (
-                    <SegmentItem
-                        segment={segment}
-                        index={i}
-                        key={i}
-                        onSegmentSelect={onSegmentSelect}
-                    />
-                ))}
+                {segmentItems}
             </div>
         </Sheet>
     );
