@@ -35,28 +35,3 @@
     text-align: center;
     padding: 30px;
 }
-
-.redirectButton {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    background: #f96500;
-    border: none;
-    border-radius: 6px;
-
-    font-size: 24px;
-    line-height: 28px;
-    font-weight: 600;
-
-    color: #fff;
-
-    padding: 5px 20px 5px 10px;
-}
-
-.redirectButtonSVG {
-    fill: #fff;
-
-    height: 40px;
-    width: 40px;
-}

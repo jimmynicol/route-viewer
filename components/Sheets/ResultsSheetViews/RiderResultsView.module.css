@@ -1,0 +1,39 @@
+.riderResults {
+    position: relative;
+}
+
+.titleLockup {
+    position: relative;
+
+    padding-block-end: 15px;
+}
+
+.loggedInUser {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.titleLockup a {
+    position: absolute;
+    inset-block-end: 15px;
+    inset-inline-end: 15px;
+}
+
+.rank {
+    position: absolute;
+    inset-inline-end: 20px;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 1);
+
+    font-size: 11px;
+    padding: 0 4px;
+
+    border-radius: 3px;
+}
+
+.overallTime {
+    padding: 15px;
+}

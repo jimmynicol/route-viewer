@@ -1,0 +1,36 @@
+.segmentedControl {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    padding: 3px;
+    background-color: #eee;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.label {
+    position: relative;
+
+    padding-block-start: 2px;
+    padding-block-end: 2px;
+    padding-inline-start: 15px;
+    padding-inline-end: 15px;
+}
+
+.background {
+    position: absolute;
+
+    top: 2px;
+    bottom: 2px;
+    left: 0px;
+
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    border-radius: 4px;
+
+    transition: left 1s ease-out;
+}

@@ -5,14 +5,8 @@ import {
     isTokenValid,
     useAPITokenContext,
 } from "./APIToken";
-import {
-    isQueryParamsValid,
-    QueryParams,
-    useQueryParamsContext,
-} from "./QueryParams";
 
 export enum AuthState {
-    QUERY_PARAMS_ERROR = 0,
     UN_AUTH = 1,
     HAS_REFRESH_TOKEN = 2,
     HAS_AUTHORIZATION_CODE = 3,
@@ -34,9 +28,9 @@ export const AuthStateProvider = ({
     children: React.ReactNode;
 }) => {
     const { tokenResponse } = useAPITokenContext();
-    const { queryParams } = useQueryParamsContext();
+    const authCode = parseAuthQueryParam();
     const [authState, setAuthState] = useState<AuthState>(
-        determineAuthState(tokenResponse, queryParams)
+        determineAuthState(tokenResponse, authCode)
     );
 
     return (
@@ -50,13 +44,21 @@ export const useAuthStateContext = (): AuthStateCtx => {
     return React.useContext(AuthStateContext);
 };
 
+export function parseAuthQueryParam(): string | null {
+    const params =
+        typeof window !== "undefined"
+            ? new URLSearchParams(window.location.search)
+            : new URLSearchParams();
+
+    return params.get("code");
+}
+
 export function determineAuthState(
     tokenResponse: TokenExchangeResponse,
-    queryParams: QueryParams
+    authCode: string | null
 ): AuthState {
-    if (!isQueryParamsValid()) return AuthState.QUERY_PARAMS_ERROR;
     if (isTokenValid(tokenResponse)) return AuthState.VALID;
     if (canTokenBeRefreshed(tokenResponse)) return AuthState.HAS_REFRESH_TOKEN;
-    if (queryParams.authorizationCode) return AuthState.HAS_AUTHORIZATION_CODE;
+    if (authCode) return AuthState.HAS_AUTHORIZATION_CODE;
     return AuthState.UN_AUTH;
 }

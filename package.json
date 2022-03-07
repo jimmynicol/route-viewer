@@ -5,7 +5,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "upload:ride": "scripts/upload-results.js"
     },
     "dependencies": {
         "@googlemaps/js-api-loader": "^1.12.12",
@@ -24,7 +25,9 @@
         "@types/google.maps": "^3.47.1",
         "@types/node": "16.11.11",
         "@types/react": "17.0.37",
+        "aws-sdk": "^2.1077.0",
         "babel-plugin-styled-components": "^2.0.2",
+        "dotenv": "^16.0.0",
         "eslint": "7.32.0",
         "eslint-config-next": "12.0.4",
         "prettier": "^2.5.0",

@@ -34,6 +34,13 @@
 }
 
 /* <p> */
+.bodySmall {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+/* <p> */
 .caption {
     font-size: 12px;
     font-weight: 400;
@@ -75,6 +82,10 @@
 .code,
 .button {
     color: rgb(0, 0, 0);
+}
+
+.semanticallyReduced {
+    opacity: 0.5;
 }
 
 @media (prefers-color-scheme: dark) {

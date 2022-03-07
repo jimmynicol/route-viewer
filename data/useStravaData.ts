@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { DetailedSegment, Route } from "./stravaDataTypes";
+import { DetailedAthlete, DetailedSegment, Route } from "./stravaDataTypes";
 
 const STRAVA_API_ENDPOINT = "https://www.strava.com/api/v3";
 
@@ -21,6 +21,15 @@ const queryOptions = {
     retry: false,
     refetchOnWindowFocus: false,
 };
+
+export function useAthlete(token: string) {
+    const path = "/athlete";
+    return useQuery<DetailedAthlete, Error>(
+        "athlete",
+        () => stravaAPI(path, token),
+        queryOptions
+    );
+}
 
 export function useRoute(routeId: string, token: string) {
     const path = `/routes/${routeId}`;

@@ -4,14 +4,13 @@ import { useGeolocation } from "../../contexts/Geolocation";
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { ColorScheme, useColorScheme } from "../../utils/useColorScheme";
 import { Controls } from "../Controls/Controls";
-import { UnitSwitcher } from "../UnitSwitcher/UnitSwitcher";
-import { UserLocation } from "../UserLocation/UserLocation";
-import { ZoomIn } from "../ZoomControls/ZoomIn";
-import { ZoomOut } from "../ZoomControls/ZoomOut";
+import { UnitSwitcher } from "../Controls/UnitSwitcher";
+import { UserLocation } from "../Controls/UserLocation";
+import { ZoomIn } from "../Controls/ZoomIn";
+import { ZoomOut } from "../Controls/ZoomOut";
 import { GoogleMap } from "./GoogleMap";
 import { Polyline } from "./Polyline";
 import { RouteEndMarker, RouteStartMarker } from "./RouteMarkers";
-import { SegmentMarker } from "./SegmentMarker";
 import { UserLocationMarker } from "./UserLocationMarker";
 
 export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";

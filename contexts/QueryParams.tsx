@@ -4,7 +4,6 @@ import { useState } from "react";
 export interface QueryParams {
     routeId: string;
     segmentIds: string[];
-    authorizationCode: string | null;
 }
 export interface QueryParamsCtx {
     queryParams: QueryParams;
@@ -48,12 +47,10 @@ export function parseQueryParams(): QueryParams {
         params.get("amp;amp;s") ||
         ""
     ).split(",");
-    const authorizationCode = params.get("code");
 
     return {
         routeId,
         segmentIds,
-        authorizationCode,
     } as QueryParams;
 }
 
@@ -64,5 +61,11 @@ export function isQueryParamsValid(): boolean {
 
 export function clearOAuthQueryParams() {
     const { routeId, segmentIds } = parseQueryParams();
-    window.history.pushState({}, "", `?r=${routeId}&s=${segmentIds.join(",")}`);
+
+    let cleanParams = "";
+    if (routeId && segmentIds) {
+        cleanParams = `?r=${routeId}&s=${segmentIds.join(",")}`;
+    }
+
+    window.history.pushState({}, "", cleanParams);
 }
