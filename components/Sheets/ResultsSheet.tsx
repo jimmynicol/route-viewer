@@ -6,7 +6,10 @@ import { RiderResultsView } from "./ResultsSheetViews/RiderResultsView";
 
 import styles from "./ResultsSheet.module.css";
 import { RidersView } from "./ResultsSheetViews/RidersView";
-import { RiderStats } from "../../data/resultsConverter";
+import { PREffort, RiderStats } from "../../data/resultsConverter";
+import { SegmentsView } from "./ResultsSheetViews/SegmentsView";
+import { SummarySegment } from "../../data/stravaDataTypes";
+import { PRsView } from "./ResultsSheetViews/PRsView";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -55,14 +58,20 @@ export const ResultsSheet: React.ComponentType<{
 
     switch (sheetViewType) {
         case ResultSheetViewType.MY_RESULTS:
+            content = <RiderResultsView athleteId={athleteData.id} />;
+            break;
+        case ResultSheetViewType.PRS:
             content = (
-                <RiderResultsView athleteId={athleteData.id}></RiderResultsView>
+                <PRsView
+                    onItemClick={(effort: PREffort) => {
+                        setSheetViewData(effort.athleteId);
+                        setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
             );
             break;
         case ResultSheetViewType.RIDER:
-            content = (
-                <RiderResultsView athleteId={sheetViewData}></RiderResultsView>
-            );
+            content = <RiderResultsView athleteId={sheetViewData} />;
             break;
         case ResultSheetViewType.RIDERS:
             content = (
@@ -70,6 +79,16 @@ export const ResultsSheet: React.ComponentType<{
                     onItemClick={(rider: RiderStats) => {
                         setSheetViewData(rider.id);
                         setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
+            );
+            break;
+        case ResultSheetViewType.SEGMENTS:
+            content = (
+                <SegmentsView
+                    onItemClick={(segment: SummarySegment) => {
+                        setSheetViewData(segment);
+                        setSheetViewType(ResultSheetViewType.SEGMENT);
                     }}
                 />
             );

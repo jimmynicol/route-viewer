@@ -47,8 +47,13 @@ export const ResultsView: React.ComponentType = () => {
     const [sheetViewData, setSheetViewData] = useState<any>(null);
 
     const handleSheetState = (value: any, data?: any) => {
-        if (value === EffortStatsTypes.RIDERS) {
-            setSheetViewType(ResultSheetViewType.RIDERS);
+        switch (value) {
+            case EffortStatsTypes.RIDERS:
+                setSheetViewType(ResultSheetViewType.RIDERS);
+                break;
+            case EffortStatsTypes.PRS:
+                setSheetViewType(ResultSheetViewType.PRS);
+                break;
         }
     };
 
@@ -200,9 +205,9 @@ export const ResultsView: React.ComponentType = () => {
                             General Classification
                         </h2>
                         <SegmentedControl
+                            className={styles.segmentedControl}
                             labels={["Women", "Men"]}
                             onValueChanged={(value) => setShowGC(value.index)}
-                            classNames={[styles.segmentedControl]}
                         ></SegmentedControl>
 
                         {talliedResults.generalClassification.women.length >

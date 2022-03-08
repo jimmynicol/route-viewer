@@ -12,15 +12,12 @@ export interface SegmentedControlValue {
     index: number;
 }
 
-export const SegmentedControl: React.ComponentType<{
-    labels: string[];
-    classNames?: string[];
-    onValueChanged?: (value: SegmentedControlValue) => void;
-}> = ({ labels, classNames, onValueChanged }) => {
-    const _classNames = [
-        ...(classNames || []),
-        styles[`items-${labels.length}`],
-    ];
+export const SegmentedControl: React.ComponentType<
+    {
+        labels: string[];
+        onValueChanged?: (value: SegmentedControlValue) => void;
+    } & React.HTMLAttributes<HTMLDivElement>
+> = ({ labels, onValueChanged, ...props }) => {
     const componentRef = useRef<HTMLDivElement>(null);
     const [{ x }, api] = useSpring(() => ({ x: 2 }));
 
@@ -54,7 +51,8 @@ export const SegmentedControl: React.ComponentType<{
 
     return (
         <div
-            className={cw(styles.segmentedControl, _classNames)}
+            {...props}
+            className={cw(styles.segmentedControl, props.className)}
             ref={componentRef}
         >
             <animated.div

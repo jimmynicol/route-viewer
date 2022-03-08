@@ -4,16 +4,16 @@ import cw from "classnames";
 import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 
 import typography from "../../styles/Typography.module.css";
-import styles from "./SegmentListItem.module.css";
+import styles from "./ListItem.module.css";
 
-export interface SegmentListItemProps {
+export interface ListItemProps {
     index: number;
     title: string;
     description?: string;
 }
 
-export const SegmentListItem: React.ComponentType<
-    SegmentListItemProps & React.HTMLAttributes<HTMLDivElement>
+export const ListItem: React.ComponentType<
+    ListItemProps & React.HTMLAttributes<HTMLDivElement>
 > = ({ index, title, description, ...props }) => {
     return (
         <div {...props} className={cw(styles.segmentListItem, props.className)}>

@@ -8,7 +8,6 @@ import {
 } from "../../../contexts/ResultsData";
 import {
     SegmentAchievement,
-    SegmentEffort,
     SummarySegment,
 } from "../../../data/stravaDataTypes";
 import { secondsToMinutes } from "../../../utils/unitConversions";
@@ -16,7 +15,7 @@ import { AchievementIcon } from "../../Icons/AchievementIcon";
 import { HR } from "../../Misc/HR";
 import { MetadataContainer } from "../../Misc/MetadataContainer";
 import { ProfileImage } from "../../Misc/ProfileImage";
-import { SegmentListItem } from "../../Misc/SegmentListItem";
+import { ListItem } from "../../Misc/ListItem";
 import { SheetMetadata } from "../../Misc/SheetMetadata";
 
 import typography from "../../../styles/Typography.module.css";
@@ -63,6 +62,16 @@ export const RiderResultsView: React.ComponentType<{
         const rideStats =
             talliedResults.riders[athleteLink] ||
             talliedResults.riders[proLink];
+
+        if (
+            rideStats.prs === 0 &&
+            rideStats.xoms === 0 &&
+            rideStats.clubXOMs === 0 &&
+            rideStats.top10s === 0
+        ) {
+            return <div></div>;
+        }
+
         return (
             <MetadataContainer>
                 <SheetMetadata
@@ -95,7 +104,7 @@ export const RiderResultsView: React.ComponentType<{
         const hasAchievement = effort.achievement !== SegmentAchievement.NONE;
 
         return (
-            <SegmentListItem
+            <ListItem
                 key={index}
                 index={index + 1}
                 title={segment.name}
@@ -109,11 +118,13 @@ export const RiderResultsView: React.ComponentType<{
                     ></AchievementIcon>
                 )}
                 <span className={typography.semanticallyReduced}>
-                    {secondsToMinutes(effort.elapsed_time)} @{" "}
-                    {effort.average_power}W
+                    {secondsToMinutes(effort.elapsed_time)}
+                    {effort.average_power > 0 && (
+                        <span>{` @ ${effort.average_power}W`}</span>
+                    )}
                 </span>
                 <span className={styles.rank}>{effort.rank}</span>
-            </SegmentListItem>
+            </ListItem>
         );
     });
 

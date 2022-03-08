@@ -125,7 +125,10 @@ export const Sheet: React.ComponentType<{
                     }
                 />
             </div>
-            <div style={{ height: childWrapperHeight, position: "relative" }}>
+            <div
+                data-scroll-container={true}
+                style={{ height: childWrapperHeight, position: "relative" }}
+            >
                 {children}
             </div>
         </animated.div>

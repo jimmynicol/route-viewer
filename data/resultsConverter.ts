@@ -1,5 +1,10 @@
 import { RideEfforts, RideSegment, SegmentEffort } from "./stravaDataTypes";
 
+export interface PREffort extends SegmentEffort {
+    segmentId: string;
+    athleteId: string;
+}
+
 export interface GCRider {
     name: string;
     athlete_link: string;
@@ -39,6 +44,10 @@ export interface TalliedRideEfforts {
     xoms: {
         men: SegmentEffort[];
         women: SegmentEffort[];
+    };
+    prs: {
+        men: PREffort[];
+        women: PREffort[];
     };
     generalClassification: GeneralClassification;
 }
@@ -231,6 +240,30 @@ function listXOMs(results: RideEfforts) {
     };
 }
 
+function listPRs(results: RideEfforts) {
+    const men: PREffort[] = [];
+    const women: PREffort[] = [];
+
+    for (const segmentId of results.segmentsInOrder) {
+        const segment: RideSegment = results.segments[segmentId];
+        for (const effort of segment.efforts.men) {
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement > 0)
+                men.push({ segmentId, athleteId, ...effort } as PREffort);
+        }
+        for (const effort of segment.efforts.women) {
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement > 0)
+                women.push({ segmentId, athleteId, ...effort } as PREffort);
+        }
+    }
+
+    return {
+        men,
+        women,
+    };
+}
+
 function determineGC(results: RideEfforts) {
     const numSegments = results.segmentsInOrder.length;
     const men: Record<string, GCRider> = {};
@@ -297,6 +330,7 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
         riders: talliedResultsByRider,
         riderOfTheDay: determineRiderOfTheDay(talliedResultsByRider),
         xoms: listXOMs(results),
+        prs: listPRs(results),
         generalClassification: determineGC(results),
     };
 }

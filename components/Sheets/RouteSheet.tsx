@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { DetailedSegment, Route } from "../../data/stravaDataTypes";
+import { SummarySegment, Route } from "../../data/stravaDataTypes";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../Misc/SheetMetadata";
 import { SheetTitle } from "../Misc/SheetTitle";
@@ -10,17 +10,17 @@ import {
     unitsStr,
 } from "../../utils/unitConversions";
 import { useUnitsContext } from "../../contexts/Units";
-import { SegmentListItem } from "../Misc/SegmentListItem";
+import { ListItem } from "../Misc/ListItem";
 
 import styles from "../Sheets/Sheet.module.css";
-import typography from "../../styles/Typography.module.css";
+import { segmentListItems } from "../Misc/SegmentListItems";
 
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
-    segments: DetailedSegment[];
+    segments: SummarySegment[];
     viewState: SheetViewState;
     setViewState: (value: SheetViewState) => void;
-    onSegmentSelect: (value: DetailedSegment) => void;
+    onSegmentSelect: (value: SummarySegment) => void;
 }> = ({ route, segments, viewState, setViewState, onSegmentSelect }) => {
     const { units } = useUnitsContext();
     const titleRef = useRef<HTMLDivElement>(null);
@@ -45,32 +45,6 @@ export const RouteSheet: React.ComponentType<{
         setSegmentListHeight(listHeight);
         setDefaultHeight(titleRect.height + 30);
     }, [viewState, titleRef, setSegmentListHeight, setDefaultHeight]);
-
-    const segmentItems = segments.map((segment, i) => {
-        const distance = distanceStr(units, segment.distance, 2);
-        const elevation = elevationStr(units, segment.total_elevation_gain, 0);
-
-        return (
-            <SegmentListItem
-                key={i}
-                index={i + 1}
-                title={segment.name}
-                onClick={() => onSegmentSelect(segment)}
-            >
-                <span className={typography.semanticallyReduced}>
-                    {distance}
-                    {unitsStr(units, "km")}
-                </span>
-                <span className={typography.semanticallyReduced}>
-                    {elevation}
-                    {unitsStr(units, "m")}
-                </span>
-                <span className={typography.semanticallyReduced}>
-                    {segment.average_grade}%
-                </span>
-            </SegmentListItem>
-        );
-    });
 
     if (!route) return <div></div>;
 
@@ -107,7 +81,7 @@ export const RouteSheet: React.ComponentType<{
                     overflowY: "scroll",
                 }}
             >
-                {segmentItems}
+                {segmentListItems(segments, onSegmentSelect)}
             </div>
         </Sheet>
     );
