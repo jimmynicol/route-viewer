@@ -6,6 +6,8 @@ import { segmentListItems } from "../../Misc/SegmentListItems";
 import { DetailedSegment } from "../../../data/stravaDataTypes";
 import { useResultsDataContext } from "../../../contexts/ResultsData";
 
+import typography from "../../../styles/Typography.module.css";
+
 export const SegmentsView: React.ComponentType<
     {
         onItemClick: (segment: DetailedSegment) => void;
@@ -19,7 +21,10 @@ export const SegmentsView: React.ComponentType<
 
     const header = (
         <div>
-            <h2 style={{ marginBlockStart: 0 }}>
+            <h2
+                className={typography.titleReduced}
+                style={{ marginBlockStart: 0 }}
+            >
                 {len} Segment{len === 1 ? "" : "s"}
             </h2>
             <HR />

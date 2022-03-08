@@ -5,10 +5,10 @@ import { PREffort } from "../../../data/resultsConverter";
 import { HR } from "../../Misc/HR";
 import { ListItem } from "../../Misc/ListItem";
 import { ScrollingListView } from "../../Misc/ScrollingListView";
-
-import typography from "../../../styles/Typography.module.css";
 import { SegmentedControl } from "../../Misc/SegmentedControl";
 import { secondsToMinutes } from "../../../utils/unitConversions";
+
+import typography from "../../../styles/Typography.module.css";
 
 export const PRsView: React.ComponentType<
     {
@@ -25,7 +25,12 @@ export const PRsView: React.ComponentType<
 
     const header = (
         <div>
-            <h2 style={{ marginBlockStart: 0 }}>{totalPRs} PRs</h2>
+            <h2
+                className={typography.titleReduced}
+                style={{ marginBlockStart: 0 }}
+            >
+                {totalPRs} PRs
+            </h2>
             <HR />
             <SegmentedControl
                 labels={["Women", "Men"]}

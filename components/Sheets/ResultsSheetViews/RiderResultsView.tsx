@@ -40,7 +40,7 @@ export const RiderResultsView: React.ComponentType<{
     const overallTimeInSeconds = results.segmentsInOrder.reduce(
         (previousValue: number, currentValue: string) => {
             const effort = efforts[currentValue];
-            return previousValue + effort.elapsed_time;
+            return effort ? previousValue + effort.elapsed_time : previousValue;
         },
         0
     );
@@ -98,7 +98,7 @@ export const RiderResultsView: React.ComponentType<{
         );
     };
 
-    const segments = results.segmentsInOrder.map((segmentId, index) => {
+    const segments = Object.keys(efforts).map((segmentId, index) => {
         const segment = results.segments[segmentId].segment;
         const effort = efforts[segmentId];
         const hasAchievement = effort.achievement !== SegmentAchievement.NONE;

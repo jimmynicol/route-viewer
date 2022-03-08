@@ -20,7 +20,7 @@ export const MyResults: React.ComponentType<
 
     if (athleteDataState === AthleteDataState.LOADING) {
         return (
-            <div {...props}>
+            <div className={typography.body}>
                 <p>Loading your data...</p>
             </div>
         );
@@ -28,7 +28,7 @@ export const MyResults: React.ComponentType<
 
     if (athleteDataState === AthleteDataState.ERROR) {
         return (
-            <div {...props}>
+            <div className={typography.body}>
                 <p>Unable to load your data, please try again soon!</p>
             </div>
         );
