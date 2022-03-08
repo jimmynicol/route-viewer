@@ -33,7 +33,7 @@ export const RiderResultsView: React.ComponentType<{
 
     const isLoggedInUser = athleteData.id === athleteId;
     const efforts = effortsByRider(athleteId);
-    const firstEffort = efforts[results.segmentsInOrder[0]];
+    const firstEffort = efforts[Object.keys(efforts)[0]];
     const riderName = firstEffort.athlete_name;
     const link = `https://www.strava.com/activities/${firstEffort.activity_id}`;
 
