@@ -3,12 +3,12 @@ import React from "react";
 import { HR } from "../../Misc/HR";
 import { ScrollingListView } from "../../Misc/ScrollingListView";
 import { segmentListItems } from "../../Misc/SegmentListItems";
-import { SummarySegment } from "../../../data/stravaDataTypes";
+import { DetailedSegment } from "../../../data/stravaDataTypes";
 import { useResultsDataContext } from "../../../contexts/ResultsData";
 
 export const SegmentsView: React.ComponentType<
     {
-        onItemClick: (segment: SummarySegment) => void;
+        onItemClick: (segment: DetailedSegment) => void;
     } & React.HTMLAttributes<HTMLDivElement>
 > = ({ onItemClick, ...props }) => {
     const {
@@ -26,7 +26,7 @@ export const SegmentsView: React.ComponentType<
         </div>
     );
 
-    const _segments: SummarySegment[] = segmentsInOrder.map(
+    const _segments: DetailedSegment[] = segmentsInOrder.map(
         (segmentId: string) => {
             return segments[segmentId].segment;
         }

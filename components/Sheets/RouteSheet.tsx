@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { SummarySegment, Route } from "../../data/stravaDataTypes";
+import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../Misc/SheetMetadata";
 import { SheetTitle } from "../Misc/SheetTitle";
@@ -10,17 +10,16 @@ import {
     unitsStr,
 } from "../../utils/unitConversions";
 import { useUnitsContext } from "../../contexts/Units";
-import { ListItem } from "../Misc/ListItem";
 
 import styles from "../Sheets/Sheet.module.css";
 import { segmentListItems } from "../Misc/SegmentListItems";
 
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
-    segments: SummarySegment[];
+    segments: DetailedSegment[];
     viewState: SheetViewState;
     setViewState: (value: SheetViewState) => void;
-    onSegmentSelect: (value: SummarySegment) => void;
+    onSegmentSelect: (value: DetailedSegment) => void;
 }> = ({ route, segments, viewState, setViewState, onSegmentSelect }) => {
     const { units } = useUnitsContext();
     const titleRef = useRef<HTMLDivElement>(null);

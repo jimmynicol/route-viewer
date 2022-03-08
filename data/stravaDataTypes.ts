@@ -207,7 +207,7 @@ export interface SegmentEfforts {
 }
 
 export interface RideSegment {
-    segment: SummarySegment;
+    segment: DetailedSegment;
     xoms: SegmentEfforts;
     clubXoms: SegmentEfforts;
     efforts: SegmentEfforts;

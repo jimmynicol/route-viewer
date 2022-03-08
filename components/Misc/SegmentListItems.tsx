@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useUnitsContext } from "../../contexts/Units";
-import { SummarySegment } from "../../data/stravaDataTypes";
+import { DetailedSegment } from "../../data/stravaDataTypes";
 import {
     distanceStr,
     elevationStr,
@@ -12,9 +12,9 @@ import { ListItem } from "./ListItem";
 import typography from "../../styles/Typography.module.css";
 
 export const SegmentListItem: React.ComponentType<{
-    segment: SummarySegment;
+    segment: DetailedSegment;
     index: number;
-    onItemClick: (segment: SummarySegment) => void;
+    onItemClick: (segment: DetailedSegment) => void;
 }> = ({ segment, index, onItemClick }) => {
     const { units } = useUnitsContext();
     const distance = distanceStr(units, segment.distance, 2);
@@ -43,8 +43,8 @@ export const SegmentListItem: React.ComponentType<{
 };
 
 export function segmentListItems(
-    segments: SummarySegment[],
-    onItemClick: (segment: SummarySegment) => void
+    segments: DetailedSegment[],
+    onItemClick: (segment: DetailedSegment) => void
 ) {
     return segments.map((segment, index) => {
         return (

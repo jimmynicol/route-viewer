@@ -48,7 +48,7 @@ export const PRsView: React.ComponentType<
                 )}
             </span>
             <span className={typography.caption}>
-                {results.segments[effort.segmentId].segment.name}
+                - {results.segments[effort.segmentId].segment.name}
             </span>
         </ListItem>
     ));
