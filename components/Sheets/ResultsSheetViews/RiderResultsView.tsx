@@ -21,16 +21,7 @@ import { SheetMetadata } from "../../Misc/SheetMetadata";
 
 import typography from "../../../styles/Typography.module.css";
 import styles from "./RiderResultsView.module.css";
-
-function measurePrevSiblingsHeight(el: HTMLElement): number {
-    let height = 0;
-    let prev = el.previousElementSibling;
-    while (prev) {
-        height += prev.getBoundingClientRect().height;
-        prev = prev.previousElementSibling;
-    }
-    return height;
-}
+import { measurePrevSiblingsHeight } from "../../../utils/domUtils";
 
 export const RiderResultsView: React.ComponentType<{
     athleteId: string;
@@ -63,12 +54,6 @@ export const RiderResultsView: React.ComponentType<{
 
         const componentHeight = componentEl.getBoundingClientRect().height;
         const siblingsHeight = measurePrevSiblingsHeight(segmentsEl);
-
-        console.log(
-            componentHeight,
-            siblingsHeight,
-            componentHeight - siblingsHeight
-        );
 
         setSegmentsHeight(componentHeight - siblingsHeight);
     }, [athleteId, segmentsRef, setSegmentsHeight]);
@@ -181,6 +166,7 @@ export const RiderResultsView: React.ComponentType<{
                 style={{
                     height: segmentsHeight,
                     overflowY: "scroll",
+                    paddingBlockEnd: 30,
                 }}
             >
                 <div>{segments}</div>

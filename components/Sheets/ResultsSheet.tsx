@@ -6,6 +6,7 @@ import { RiderResultsView } from "./ResultsSheetViews/RiderResultsView";
 
 import styles from "./ResultsSheet.module.css";
 import { RidersView } from "./ResultsSheetViews/RidersView";
+import { RiderStats } from "../../data/resultsConverter";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -30,14 +31,21 @@ export const ResultsSheet: React.ComponentType<{
     const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
         SheetViewState.HIDE
     );
+    const [sheetViewType, setSheetViewType] = useState<ResultSheetViewType>(
+        ResultSheetViewType.EMPTY
+    );
+    const [sheetViewData, setSheetViewData] = useState<any>(null);
+
+    useEffect(() => setSheetViewType(type), [type, setSheetViewType]);
+    useEffect(() => setSheetViewData(typeData), [typeData, setSheetViewData]);
 
     useEffect(() => {
         setSheetViewState(
-            type === ResultSheetViewType.EMPTY
+            sheetViewType === ResultSheetViewType.EMPTY
                 ? SheetViewState.HIDE
                 : SheetViewState.FULL
         );
-    }, [type, setSheetViewState]);
+    }, [sheetViewType, setSheetViewState]);
 
     useEffect(() => {
         if (sheetViewState === SheetViewState.DEFAULT) onHide();
@@ -45,9 +53,7 @@ export const ResultsSheet: React.ComponentType<{
 
     let content;
 
-    console.log("show result sheet type", type);
-
-    switch (type) {
+    switch (sheetViewType) {
         case ResultSheetViewType.MY_RESULTS:
             content = (
                 <RiderResultsView athleteId={athleteData.id}></RiderResultsView>
@@ -55,11 +61,18 @@ export const ResultsSheet: React.ComponentType<{
             break;
         case ResultSheetViewType.RIDER:
             content = (
-                <RiderResultsView athleteId={typeData}></RiderResultsView>
+                <RiderResultsView athleteId={sheetViewData}></RiderResultsView>
             );
             break;
         case ResultSheetViewType.RIDERS:
-            content = <RidersView />;
+            content = (
+                <RidersView
+                    onItemClick={(rider: RiderStats) => {
+                        setSheetViewData(rider.id);
+                        setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
+            );
             break;
         default:
             content = (

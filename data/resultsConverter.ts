@@ -305,7 +305,9 @@ export function riderResultsToHighlightString(riderResults: RiderStats) {
     const result = [];
     const { prs, top10s, clubXOMs, xoms, segments } = riderResults;
 
-    result.push(`${segments} Segments`);
+    result.push(
+        segments === 1 ? `${segments} Segment` : `${segments} Segments`
+    );
 
     if (prs > 0) {
         result.push(`${prs} PR${prs !== 1 ? "s" : ""}`);
