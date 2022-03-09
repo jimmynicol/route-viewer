@@ -1,4 +1,9 @@
-import { RideEfforts, RideSegment, SegmentEffort } from "./stravaDataTypes";
+import {
+    RideEfforts,
+    RideSegment,
+    SegmentAchievement,
+    SegmentEffort,
+} from "./stravaDataTypes";
 
 export interface PREffort extends SegmentEffort {
     segmentId: string;
@@ -7,6 +12,7 @@ export interface PREffort extends SegmentEffort {
 
 export interface GCRider {
     name: string;
+    athleteId: string;
     athlete_link: string;
     segments: number;
     timeInSeconds: number;
@@ -34,6 +40,7 @@ export interface TalliedRideEfforts {
     stats: {
         numberOfRiders: number;
         numberOfPRs: number;
+        numberOfClubXoms: number;
         numberOfXOMs: number;
         longestSegment: [string, number];
         steepestSegment: [string, number];
@@ -42,6 +49,10 @@ export interface TalliedRideEfforts {
     riders: Record<string, RiderStats>;
     riderOfTheDay: RiderStats;
     xoms: {
+        men: SegmentEffort[];
+        women: SegmentEffort[];
+    };
+    clubXOMs: {
         men: SegmentEffort[];
         women: SegmentEffort[];
     };
@@ -82,6 +93,29 @@ function determineNumberOfPRs(results: RideEfforts) {
     }
 
     return prs;
+}
+
+function determineNumberOfClubXOMs(results: RideEfforts) {
+    let XOMs = 0;
+
+    for (const segmentId in results.segments) {
+        const segment: RideSegment = results.segments[segmentId];
+        const clubXOMsMen = segment.clubXOMs.men.map(
+            (effort) => effort.segment_effort_id
+        );
+        const clubXOMsWomen = segment.clubXOMs.women.map(
+            (effort) => effort.segment_effort_id
+        );
+
+        for (const effort of segment.efforts.men) {
+            if (clubXOMsMen.includes(effort.segment_effort_id)) XOMs++;
+        }
+        for (const effort of segment.efforts.women) {
+            if (clubXOMsWomen.includes(effort.segment_effort_id)) XOMs++;
+        }
+    }
+
+    return XOMs;
 }
 
 function determineNumberOfXOMs(results: RideEfforts) {
@@ -220,6 +254,39 @@ function determineRiderOfTheDay(resultsByRider: Record<string, RiderStats>) {
         .sort((a, b) => b.rideScore - a.rideScore)[0];
 }
 
+function listClubXOMs(results: RideEfforts) {
+    const men: SegmentEffort[] = [];
+    const women: SegmentEffort[] = [];
+
+    for (const segmentId of results.segmentsInOrder) {
+        const segment: RideSegment = results.segments[segmentId];
+        const clubXOMsMen = segment.clubXOMs.men.map(
+            (effort) => effort.segment_effort_id
+        );
+        const clubXOMsWomen = segment.clubXOMs.women.map(
+            (effort) => effort.segment_effort_id
+        );
+
+        for (const effort of segment.efforts.men) {
+            if (clubXOMsMen.includes(effort.segment_effort_id)) {
+                effort.achievement = SegmentAchievement.CLUB_XOM;
+                men.push(effort);
+            }
+        }
+        for (const effort of segment.efforts.women) {
+            if (clubXOMsWomen.includes(effort.segment_effort_id)) {
+                effort.achievement = SegmentAchievement.CLUB_XOM;
+                women.push(effort);
+            }
+        }
+    }
+
+    return {
+        men,
+        women,
+    };
+}
+
 function listXOMs(results: RideEfforts) {
     const men: SegmentEffort[] = [];
     const women: SegmentEffort[] = [];
@@ -276,6 +343,7 @@ function determineGC(results: RideEfforts) {
             if (!maleEffort) {
                 men[effort.athlete_link] = {
                     name: effort.athlete_name,
+                    athleteId: effort.athlete_link.split("/").slice(-1)[0],
                     athlete_link: effort.athlete_link,
                     segments: 1,
                     timeInSeconds: effort.elapsed_time,
@@ -290,6 +358,7 @@ function determineGC(results: RideEfforts) {
             if (!femaleEffort) {
                 women[effort.athlete_link] = {
                     name: effort.athlete_name,
+                    athleteId: effort.athlete_link.split("/").slice(-1)[0],
                     athlete_link: effort.athlete_link,
                     segments: 1,
                     timeInSeconds: effort.elapsed_time,
@@ -322,6 +391,7 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
         stats: {
             numberOfRiders: determineNumberOfRiders(results),
             numberOfPRs: determineNumberOfPRs(results),
+            numberOfClubXoms: determineNumberOfClubXOMs(results),
             numberOfXOMs: determineNumberOfXOMs(results),
             longestSegment: determineLongestSegment(results),
             steepestSegment: determineSteepestSegment(results),
@@ -329,6 +399,7 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
         },
         riders: talliedResultsByRider,
         riderOfTheDay: determineRiderOfTheDay(talliedResultsByRider),
+        clubXOMs: listClubXOMs(results),
         xoms: listXOMs(results),
         prs: listPRs(results),
         generalClassification: determineGC(results),

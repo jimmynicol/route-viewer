@@ -27,7 +27,12 @@ export const RidersView: React.ComponentType<
 
     const header = (
         <div>
-            <h2 style={{ marginBlockStart: 0 }}>{riders.length} Riders</h2>
+            <h2
+                className={typography.titleReduced}
+                style={{ marginBlockStart: 0 }}
+            >
+                {riders.length} Riders
+            </h2>
             <HR />
         </div>
     );

@@ -29,6 +29,7 @@ export enum SegmentAchievement {
     PR = 1,
     CUP = 2,
     XOM = 3,
+    CLUB_XOM = 4,
 }
 
 /** ----- Models ----- */
@@ -209,7 +210,7 @@ export interface SegmentEfforts {
 export interface RideSegment {
     segment: DetailedSegment;
     xoms: SegmentEfforts;
-    clubXoms: SegmentEfforts;
+    clubXOMs: SegmentEfforts;
     efforts: SegmentEfforts;
 }
 

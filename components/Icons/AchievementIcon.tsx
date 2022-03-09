@@ -8,10 +8,9 @@ import { QOMIcon } from "./QOMIcon";
 export const AchievementIcon: React.ComponentType<
     {
         achievement: SegmentAchievement;
-        isClubXom?: boolean;
         gender?: Sex;
     } & React.HTMLAttributes<HTMLDivElement>
-> = ({ achievement, isClubXom = false, gender, ...props }) => {
+> = ({ achievement, gender, ...props }) => {
     if (achievement === SegmentAchievement.PR) {
         return <PRIcon style={{ height: 17 }} />;
     }
@@ -28,7 +27,7 @@ export const AchievementIcon: React.ComponentType<
         }
     }
 
-    if (isClubXom) {
+    if (achievement === SegmentAchievement.CLUB_XOM) {
         if (gender === Sex.Female) {
             return <QOMIcon style={{ fill: "#ccc" }} />;
         } else {

@@ -10,6 +10,7 @@ import { PREffort, RiderStats } from "../../data/resultsConverter";
 import { SegmentsView } from "./ResultsSheetViews/SegmentsView";
 import { SummarySegment } from "../../data/stravaDataTypes";
 import { PRsView } from "./ResultsSheetViews/PRsView";
+import { GCView } from "./ResultsSheetViews/GCView";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -21,6 +22,7 @@ export enum ResultSheetViewType {
     PRS,
     XOMS,
     CLUB_XOMS,
+    GC,
 }
 
 export const ResultsSheet: React.ComponentType<{
@@ -89,6 +91,16 @@ export const ResultsSheet: React.ComponentType<{
                     onItemClick={(segment: SummarySegment) => {
                         setSheetViewData(segment);
                         setSheetViewType(ResultSheetViewType.SEGMENT);
+                    }}
+                />
+            );
+            break;
+        case ResultSheetViewType.GC:
+            content = (
+                <GCView
+                    onItemClick={(athleteId: string) => {
+                        setSheetViewData(athleteId);
+                        setSheetViewType(ResultSheetViewType.RIDER);
                     }}
                 />
             );

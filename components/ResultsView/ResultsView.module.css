@@ -106,7 +106,8 @@
 }
 
 .generalClassification {
-    padding: 15px;
+    padding-block: 15px;
+    padding-inline: 10px;
 }
 
 .generalClassification h2 {
@@ -122,6 +123,18 @@
     width: 100%;
 
     margin-block-end: 20px;
+}
+
+.generalClassificationChevron {
+    position: absolute;
+
+    top: 6px;
+    right: 0;
+
+    height: 18px;
+    width: 18px;
+
+    fill: rgba(0, 0, 0, 0.85);
 }
 
 @supports (backdrop-filter: none) or (-webkit-backdrop-filter: none) {

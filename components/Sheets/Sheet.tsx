@@ -5,6 +5,8 @@ import cw from "classnames";
 import styles from "./Sheet.module.css";
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 import { Handle, HandleDirection } from "../Icons/Handle";
+import { useColorScheme } from "../../utils/useColorScheme";
+import { rgba } from "@react-spring/shared";
 
 export enum SheetViewState {
     HIDE = 1,
@@ -34,6 +36,7 @@ export const Sheet: React.ComponentType<{
     fullHeight = FULL_HEIGHT,
 }) => {
     const sizeClass = useHorizontalSizeClass();
+    const darkMode = useColorScheme();
     const [{ y }, api] = useSpring(() => ({ y: 0 }));
 
     const handleRef = useRef<HTMLDivElement>(null);
@@ -99,6 +102,8 @@ export const Sheet: React.ComponentType<{
             : styles.regularSizeClass
     );
 
+    const handleFill = darkMode ? "rgba(160, 160, 160)" : "rgba(110, 110, 110)";
+
     return (
         <animated.div
             className={cw(_classNames)}
@@ -117,7 +122,7 @@ export const Sheet: React.ComponentType<{
                     width={40}
                     height={20}
                     lineThickness={6}
-                    fillColor="rgba(160, 160, 160)"
+                    fillColor={handleFill}
                     direction={
                         viewState === SheetViewState.FULL
                             ? HandleDirection.DOWN

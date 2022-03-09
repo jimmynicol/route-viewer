@@ -1,0 +1,33 @@
+.gcListItem {
+    position: relative;
+
+    margin: 0px 20px;
+    padding: 15px 0;
+
+    border-bottom: 1px solid rgba(160, 92, 92, 0.15);
+}
+
+.index {
+    position: absolute;
+
+    inset-block-start: 20px;
+    inset-inline-start: 0px;
+
+    text-align: center;
+
+    opacity: 0.75;
+
+    margin: 0;
+}
+
+.title {
+    margin: 0;
+    padding: 0 30px;
+}
+
+.time {
+    position: absolute;
+
+    inset-block-start: 5px;
+    inset-inline-end: 0px;
+}

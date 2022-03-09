@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import cw from "classnames";
 
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
-
 import { riderResultsToHighlightString } from "../../data/resultsConverter";
 import { HR } from "../Misc/HR";
 import { StravaSignInButton } from "../OAuth/StravaSignInButton";
@@ -11,9 +10,8 @@ import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 import { TitleLockup } from "./TitleLockup";
 import { RideStats } from "./RideStats";
 import { EffortStats, EffortStatsTypes } from "./EffortStats";
-import { GeneralClassificationTable } from "./GeneralClassificationTable";
+import { GeneralClassificationList } from "./GeneralClassificationList";
 import { SegmentStats } from "./SegmentStats";
-import { SegmentedControl } from "../Misc/SegmentedControl";
 import {
     ResultsDataState,
     useResultsDataContext,
@@ -21,13 +19,15 @@ import {
 import { isEmpty } from "../../utils/isEmpty";
 import { MyResults } from "./MyResults";
 import { ResultSheetViewType, ResultsSheet } from "../Sheets/ResultsSheet";
+import { Controls } from "../Controls/Controls";
+import { UnitSwitcher } from "../Controls/UnitSwitcher";
 
 import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
-import { Controls } from "../Controls/Controls";
-import { UnitSwitcher } from "../Controls/UnitSwitcher";
+
+const DEFAULT_HEIGHT = -50;
 
 export const ResultsView: React.ComponentType = () => {
     const sizeClass = useHorizontalSizeClass();
@@ -38,7 +38,6 @@ export const ResultsView: React.ComponentType = () => {
     const viewRef = useRef<HTMLDivElement>(null);
     const titleLockupRef = useRef<HTMLDivElement>(null);
 
-    const [showGC, setShowGC] = useState<number>(0);
     const [wrapperHeight, setWrapperHeight] = useState<number>(500);
     const [sheetFullHeight, setSheetFullHeight] = useState<number>(0);
     const [sheetViewType, setSheetViewType] = useState<ResultSheetViewType>(
@@ -60,7 +59,6 @@ export const ResultsView: React.ComponentType = () => {
     useEffect(() => {
         const viewElement = viewRef.current;
         const titleLockupElement = titleLockupRef.current;
-
         if (!viewElement || !titleLockupElement) return;
 
         const viewElementHeight = viewElement.getBoundingClientRect().height;
@@ -69,7 +67,7 @@ export const ResultsView: React.ComponentType = () => {
             viewElementHeight -
                 titleLockupElement.getBoundingClientRect().height
         );
-        setSheetFullHeight(viewElementHeight - 30);
+        setSheetFullHeight(viewElementHeight - DEFAULT_HEIGHT - 100);
     }, [
         resultsDataState,
         viewRef,
@@ -146,7 +144,7 @@ export const ResultsView: React.ComponentType = () => {
                         riders={talliedResults.stats.numberOfRiders}
                         prs={talliedResults.stats.numberOfPRs}
                         xoms={talliedResults.stats.numberOfXOMs}
-                        clubXoms={talliedResults.stats.numberOfXOMs}
+                        clubXOMs={talliedResults.stats.numberOfClubXoms}
                         onClick={handleSheetState}
                     />
                     <HR />
@@ -204,32 +202,23 @@ export const ResultsView: React.ComponentType = () => {
                         <h2 className={cw(typography.titleReduced)}>
                             General Classification
                         </h2>
-                        <SegmentedControl
-                            className={styles.segmentedControl}
-                            labels={["Women", "Men"]}
-                            onValueChanged={(value) => setShowGC(value.index)}
-                        ></SegmentedControl>
-
-                        {talliedResults.generalClassification.women.length >
-                            0 &&
-                            showGC === 0 && (
-                                <GeneralClassificationTable
-                                    label={"Women"}
-                                    riders={
-                                        talliedResults.generalClassification
-                                            .women
-                                    }
-                                />
-                            )}
-                        {talliedResults.generalClassification.men.length > 0 &&
-                            showGC === 1 && (
-                                <GeneralClassificationTable
-                                    label={"Men"}
-                                    riders={
-                                        talliedResults.generalClassification.men
-                                    }
-                                />
-                            )}
+                        <GeneralClassificationList
+                            riders={talliedResults.generalClassification}
+                            limit={10}
+                            onItemClick={(athleteId) => {
+                                setSheetViewData(athleteId);
+                                setSheetViewType(ResultSheetViewType.RIDER);
+                            }}
+                        />
+                        <div
+                            className={typography.bodyReduced}
+                            style={{ textAlign: "center", margin: 15 }}
+                            onClick={() => {
+                                setSheetViewType(ResultSheetViewType.GC);
+                            }}
+                        >
+                            See All
+                        </div>
                     </div>
                 </div>
             </div>

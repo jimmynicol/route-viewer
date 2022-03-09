@@ -14,9 +14,9 @@ export const EffortStats: React.ComponentType<{
     riders: number;
     prs: number;
     xoms: number;
-    clubXoms: number;
+    clubXOMs: number;
     onClick?: (value: EffortStatsTypes) => void;
-}> = ({ riders, prs, xoms, clubXoms, onClick }) => {
+}> = ({ riders, prs, xoms, clubXOMs, onClick }) => {
     return (
         <MetadataContainer>
             <SheetMetadata
@@ -41,14 +41,16 @@ export const EffortStats: React.ComponentType<{
                     onClick ? onClick(EffortStatsTypes.XOMS) : null
                 }
             />
-            <SheetMetadata
-                num={clubXoms}
-                unit={""}
-                description={"Club XOMs"}
-                onClick={() =>
-                    onClick ? onClick(EffortStatsTypes.CLUB_XOMS) : null
-                }
-            />
+            {clubXOMs > 0 && (
+                <SheetMetadata
+                    num={clubXOMs}
+                    unit={""}
+                    description={"Club XOMs"}
+                    onClick={() =>
+                        onClick ? onClick(EffortStatsTypes.CLUB_XOMS) : null
+                    }
+                />
+            )}
         </MetadataContainer>
     );
 };

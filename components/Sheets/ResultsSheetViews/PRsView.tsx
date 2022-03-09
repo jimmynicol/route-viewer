@@ -34,6 +34,7 @@ export const PRsView: React.ComponentType<
             <HR />
             <SegmentedControl
                 labels={["Women", "Men"]}
+                style={{ marginBlock: 15 }}
                 onValueChanged={(value) => setGenderToShow(value.index)}
             ></SegmentedControl>
         </div>
