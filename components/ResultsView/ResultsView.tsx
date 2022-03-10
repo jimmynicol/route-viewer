@@ -123,6 +123,9 @@ export const ResultsView: React.ComponentType = () => {
         return <div></div>;
     }
 
+    // console.log(results);
+    // console.log(talliedResults);
+
     return (
         <div ref={viewRef} className={cw(styles.resultsView)}>
             <TitleLockup ref={titleLockupRef} data={results} />

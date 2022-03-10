@@ -24,7 +24,7 @@ import { measurePrevSiblingsHeight } from "../../../utils/domUtils";
 
 export const RiderResultsView: React.ComponentType<{
     athleteId: string;
-    onSegmentClick?: (segment: SummarySegment) => void;
+    onSegmentClick?: (segmentId: number) => void;
 }> = ({ athleteId, onSegmentClick }) => {
     const { athleteData } = useAthleteDataContext();
     const { results, talliedResults, effortsByRider } = useResultsDataContext();
@@ -109,7 +109,7 @@ export const RiderResultsView: React.ComponentType<{
                 index={index + 1}
                 title={segment.name}
                 onClick={() =>
-                    onSegmentClick ? onSegmentClick(segment) : null
+                    onSegmentClick ? onSegmentClick(segment.id) : null
                 }
             >
                 {hasAchievement && (

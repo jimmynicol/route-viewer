@@ -8,9 +8,9 @@ import styles from "./ResultsSheet.module.css";
 import { RidersView } from "./ResultsSheetViews/RidersView";
 import { PREffort, RiderStats } from "../../data/resultsConverter";
 import { SegmentsView } from "./ResultsSheetViews/SegmentsView";
-import { SummarySegment } from "../../data/stravaDataTypes";
 import { PRsView } from "./ResultsSheetViews/PRsView";
 import { GCView } from "./ResultsSheetViews/GCView";
+import { SegmentView } from "./ResultsSheetViews/SegmentView";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -73,7 +73,15 @@ export const ResultsSheet: React.ComponentType<{
             );
             break;
         case ResultSheetViewType.RIDER:
-            content = <RiderResultsView athleteId={sheetViewData} />;
+            content = (
+                <RiderResultsView
+                    athleteId={sheetViewData}
+                    onSegmentClick={(segmentId: number) => {
+                        setSheetViewData(segmentId);
+                        setSheetViewType(ResultSheetViewType.SEGMENT);
+                    }}
+                />
+            );
             break;
         case ResultSheetViewType.RIDERS:
             content = (
@@ -85,11 +93,22 @@ export const ResultsSheet: React.ComponentType<{
                 />
             );
             break;
+        case ResultSheetViewType.SEGMENT:
+            content = (
+                <SegmentView
+                    segmentId={sheetViewData}
+                    onItemClick={(athleteId: string) => {
+                        setSheetViewData(athleteId);
+                        setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
+            );
+            break;
         case ResultSheetViewType.SEGMENTS:
             content = (
                 <SegmentsView
-                    onItemClick={(segment: SummarySegment) => {
-                        setSheetViewData(segment);
+                    onItemClick={(segmentId: number) => {
+                        setSheetViewData(segmentId);
                         setSheetViewType(ResultSheetViewType.SEGMENT);
                     }}
                 />
@@ -106,11 +125,7 @@ export const ResultsSheet: React.ComponentType<{
             );
             break;
         default:
-            content = (
-                <div>
-                    <h3>sheet contents</h3>
-                </div>
-            );
+            content = <div></div>;
             break;
     }
 

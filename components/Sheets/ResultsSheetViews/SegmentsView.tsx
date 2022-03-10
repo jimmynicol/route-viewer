@@ -3,14 +3,14 @@ import React from "react";
 import { HR } from "../../Misc/HR";
 import { ScrollingListView } from "../../Misc/ScrollingListView";
 import { segmentListItems } from "../../Misc/SegmentListItems";
-import { DetailedSegment } from "../../../data/stravaDataTypes";
+import { DetailedSegment, RideSegment } from "../../../data/stravaDataTypes";
 import { useResultsDataContext } from "../../../contexts/ResultsData";
 
 import typography from "../../../styles/Typography.module.css";
 
 export const SegmentsView: React.ComponentType<
     {
-        onItemClick: (segment: DetailedSegment) => void;
+        onItemClick: (segmentId: number) => void;
     } & React.HTMLAttributes<HTMLDivElement>
 > = ({ onItemClick, ...props }) => {
     const {
@@ -37,7 +37,9 @@ export const SegmentsView: React.ComponentType<
         }
     );
 
-    const listItems = segmentListItems(_segments, onItemClick);
+    const listItems = segmentListItems(_segments, (segment) => {
+        onItemClick(segment.id);
+    });
 
     return (
         <ScrollingListView header={header} listItems={listItems} {...props} />

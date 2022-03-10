@@ -414,8 +414,9 @@ export function riderResultsToHighlightString(riderResults: RiderStats) {
         segments === 1 ? `${segments} Segment` : `${segments} Segments`
     );
 
-    if (prs > 0) {
-        result.push(`${prs} PR${prs !== 1 ? "s" : ""}`);
+    if (prs > 0 || top10s > 0 || clubXOMs > 0 || xoms > 0) {
+        const count = prs + top10s + clubXOMs + xoms;
+        result.push(`${count} PR${count !== 1 ? "s" : ""}`);
     }
     if (top10s > 0) {
         result.push(`${top10s} Top10${top10s !== 1 ? "s" : ""}`);

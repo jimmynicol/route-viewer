@@ -1,9 +1,14 @@
 import React from "react";
 
-export const HR: React.ComponentType = () => {
+export const HR: React.ComponentType<React.HTMLAttributes<HTMLDivElement>> = ({
+    style,
+    ...props
+}) => {
     return (
         <div
+            {...props}
             style={{
+                ...style,
                 border: "none",
                 height: 0.5,
                 width: "100%",
