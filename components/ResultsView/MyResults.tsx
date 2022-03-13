@@ -4,21 +4,20 @@ import cw from "classnames";
 import { ForwardChevronIcon } from "../Icons/ForwardChevronIcon";
 import { useResultsDataContext } from "../../contexts/ResultsData";
 import { riderResultsToHighlightString } from "../../data/resultsConverter";
-import {
-    AthleteDataState,
-    useAthleteDataContext,
-} from "../../contexts/AthleteData";
 import { ProfileImage } from "../Misc/ProfileImage";
+import { useAthleteWithToken } from "../../data/useStravaData";
 
 import typography from "../../styles/Typography.module.css";
 
 export const MyResults: React.ComponentType<
-    React.HTMLAttributes<HTMLDivElement>
-> = ({ ...props }) => {
-    const { athleteDataState, athleteData } = useAthleteDataContext();
+    {
+        onItemClick: (athleteId: string) => void;
+    } & React.HTMLAttributes<HTMLDivElement>
+> = ({ onItemClick, ...props }) => {
     const { statsByRider } = useResultsDataContext();
+    const { isLoading, isError, data } = useAthleteWithToken();
 
-    if (athleteDataState === AthleteDataState.LOADING) {
+    if (isLoading) {
         return (
             <div className={typography.body}>
                 <p>Loading your data...</p>
@@ -26,7 +25,7 @@ export const MyResults: React.ComponentType<
         );
     }
 
-    if (athleteDataState === AthleteDataState.ERROR) {
+    if (isError) {
         return (
             <div className={typography.body}>
                 <p>Unable to load your data, please try again soon!</p>
@@ -34,12 +33,12 @@ export const MyResults: React.ComponentType<
         );
     }
 
-    if (!athleteData) return <div></div>;
+    if (!data) return <div></div>;
 
-    const caption = riderResultsToHighlightString(statsByRider(athleteData.id));
+    const caption = riderResultsToHighlightString(statsByRider(data.id));
 
     return (
-        <div {...props}>
+        <div {...props} onClick={() => onItemClick(data.id)}>
             <div
                 style={{
                     display: "flex",
@@ -49,7 +48,7 @@ export const MyResults: React.ComponentType<
                 }}
             >
                 <ProfileImage
-                    src={athleteData.profile}
+                    src={data.profile}
                     height={46}
                     width={46}
                 ></ProfileImage>

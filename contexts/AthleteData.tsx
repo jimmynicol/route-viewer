@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { DetailedAthlete } from "../data/stravaDataTypes";
-import { useAthlete } from "../data/useStravaData";
+import { StravaQueryKeys, useAthlete } from "../data/useStravaData";
 import { useAPITokenContext } from "./APIToken";
 
 export enum AthleteDataState {
@@ -24,15 +25,22 @@ export const AthleteDataProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    const queryClient = useQueryClient();
+    const {
+        tokenResponse: { access_token },
+    } = useAPITokenContext();
     const [athleteDataState, setAthleteDataState] = useState<AthleteDataState>(
         AthleteDataState.IDLE
     );
     const [athleteData, setAthleteData] = useState<DetailedAthlete>(
         {} as DetailedAthlete
     );
-    const {
-        tokenResponse: { access_token },
-    } = useAPITokenContext();
+
+    // if (access_token === undefined) {
+    //     queryClient.invalidateQueries(StravaQueryKeys.ATHLETE);
+    // }
+
+    console.log("get athlete data", access_token);
     const { isLoading, isError, data } = useAthlete(access_token);
 
     useEffect(() => {

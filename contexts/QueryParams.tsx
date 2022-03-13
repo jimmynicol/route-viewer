@@ -41,12 +41,8 @@ export function parseQueryParams(): QueryParams {
             : new URLSearchParams();
 
     const routeId = params.get("r") || "";
-    const segmentIds = (
-        params.get("s") ||
-        params.get("amp;s") ||
-        params.get("amp;amp;s") ||
-        ""
-    ).split(",");
+    const s = params.get("s") || params.get("amp;s") || params.get("amp;amp;s");
+    const segmentIds = s?.split(",");
 
     return {
         routeId,
@@ -61,11 +57,15 @@ export function isQueryParamsValid(): boolean {
 
 export function clearOAuthQueryParams() {
     const { routeId, segmentIds } = parseQueryParams();
+    const url = new URL(window.location.href);
+    const keys = Array.from(url.searchParams.keys());
 
-    let cleanParams = "";
-    if (routeId && segmentIds) {
-        cleanParams = `?r=${routeId}&s=${segmentIds.join(",")}`;
+    for (const key of keys) {
+        url.searchParams.delete(key);
     }
 
-    window.history.pushState({}, "", cleanParams);
+    if (routeId) url.searchParams.set("r", routeId);
+    if (segmentIds) url.searchParams.set("s", segmentIds.join(","));
+
+    window.history.pushState({}, "", url);
 }

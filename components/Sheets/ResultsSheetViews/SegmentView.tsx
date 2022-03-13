@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cw from "classnames";
 
 import { useUnitsContext } from "../../../contexts/Units";
 import {
@@ -63,7 +64,7 @@ export const SegmentView: React.ComponentType<
                 />{" "}
             </MetadataContainer>
             <HR />
-            <div className={styles.segmentSheetRecords}>
+            <div className={cw(styles.segmentSheetRecords, typography.body)}>
                 <span>All Time:</span>
                 <span>
                     <KOMIcon style={{ height: 19, fill: "#FEC835" }} /> KOM{" "}
@@ -75,7 +76,7 @@ export const SegmentView: React.ComponentType<
                 </span>
             </div>
             <div
-                className={styles.segmentSheetRecords}
+                className={cw(styles.segmentSheetRecords, typography.body)}
                 style={{ paddingBlockStart: 0 }}
             >
                 <span>Club:</span>

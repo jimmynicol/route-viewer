@@ -14,7 +14,6 @@ import { SegmentView } from "./ResultsSheetViews/SegmentView";
 
 export enum ResultSheetViewType {
     EMPTY,
-    MY_RESULTS,
     RIDER,
     RIDERS,
     SEGMENT,
@@ -32,7 +31,6 @@ export const ResultsSheet: React.ComponentType<{
     fullHeight?: number;
     defaultHeight?: number;
 }> = ({ type, typeData, onHide, defaultHeight = -50, fullHeight = 500 }) => {
-    const { athleteData } = useAthleteDataContext();
     const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
         SheetViewState.HIDE
     );
@@ -43,7 +41,6 @@ export const ResultsSheet: React.ComponentType<{
 
     useEffect(() => setSheetViewType(type), [type, setSheetViewType]);
     useEffect(() => setSheetViewData(typeData), [typeData, setSheetViewData]);
-
     useEffect(() => {
         setSheetViewState(
             sheetViewType === ResultSheetViewType.EMPTY
@@ -51,7 +48,6 @@ export const ResultsSheet: React.ComponentType<{
                 : SheetViewState.FULL
         );
     }, [sheetViewType, setSheetViewState]);
-
     useEffect(() => {
         if (sheetViewState === SheetViewState.DEFAULT) onHide();
     }, [sheetViewState, onHide]);
@@ -59,9 +55,6 @@ export const ResultsSheet: React.ComponentType<{
     let content;
 
     switch (sheetViewType) {
-        case ResultSheetViewType.MY_RESULTS:
-            content = <RiderResultsView athleteId={athleteData.id} />;
-            break;
         case ResultSheetViewType.PRS:
             content = (
                 <PRsView

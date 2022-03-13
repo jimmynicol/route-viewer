@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import cw from "classnames";
 
-import { useAthleteDataContext } from "../../../contexts/AthleteData";
 import {
     athleteLinks,
     useResultsDataContext,
 } from "../../../contexts/ResultsData";
-import {
-    SegmentAchievement,
-    SummarySegment,
-} from "../../../data/stravaDataTypes";
+import { SegmentAchievement } from "../../../data/stravaDataTypes";
 import { secondsToMinutes } from "../../../utils/unitConversions";
 import { AchievementIcon } from "../../Icons/AchievementIcon";
 import { HR } from "../../Misc/HR";
@@ -17,21 +13,22 @@ import { MetadataContainer } from "../../Misc/MetadataContainer";
 import { ProfileImage } from "../../Misc/ProfileImage";
 import { ListItem } from "../../Misc/ListItem";
 import { SheetMetadata } from "../../Misc/SheetMetadata";
+import { measurePrevSiblingsHeight } from "../../../utils/domUtils";
+import { useAthleteWithToken } from "../../../data/useStravaData";
 
 import typography from "../../../styles/Typography.module.css";
 import styles from "./RiderResultsView.module.css";
-import { measurePrevSiblingsHeight } from "../../../utils/domUtils";
 
 export const RiderResultsView: React.ComponentType<{
     athleteId: string;
     onSegmentClick?: (segmentId: number) => void;
 }> = ({ athleteId, onSegmentClick }) => {
-    const { athleteData } = useAthleteDataContext();
+    const { data: athleteData } = useAthleteWithToken();
     const { results, talliedResults, effortsByRider } = useResultsDataContext();
     const segmentsRef = useRef<HTMLDivElement>(null);
     const [segmentsHeight, setSegmentsHeight] = useState(0);
 
-    const isLoggedInUser = athleteData.id === athleteId;
+    const isLoggedInUser = athleteData ? athleteData.id === athleteId : false;
     const efforts = effortsByRider(athleteId);
     const firstEffort = efforts[Object.keys(efforts)[0]];
     const riderName = firstEffort.athlete_name;
@@ -131,7 +128,7 @@ export const RiderResultsView: React.ComponentType<{
     return (
         <div className={styles.riderResults}>
             <div className={styles.titleLockup}>
-                {isLoggedInUser && (
+                {isLoggedInUser && athleteData && (
                     <div className={styles.loggedInUser}>
                         <ProfileImage
                             src={athleteData.profile}

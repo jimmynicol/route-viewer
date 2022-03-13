@@ -172,9 +172,10 @@ export const ResultsView: React.ComponentType = () => {
                     {authState === AuthState.VALID && (
                         <MyResults
                             className={styles.myResults}
-                            onClick={() =>
-                                setSheetViewType(ResultSheetViewType.MY_RESULTS)
-                            }
+                            onItemClick={(athleteId: string) => {
+                                setSheetViewData(athleteId);
+                                setSheetViewType(ResultSheetViewType.RIDER);
+                            }}
                         />
                     )}
                     <HR />

@@ -16,9 +16,7 @@ const Results: NextPage = () => {
                 <AuthStateProvider>
                     <UnitsProvider>
                         <ResultsDataProvider>
-                            <AthleteDataProvider>
-                                <ResultsApp />
-                            </AthleteDataProvider>
+                            <ResultsApp />
                         </ResultsDataProvider>
                     </UnitsProvider>
                 </AuthStateProvider>
