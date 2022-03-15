@@ -20,20 +20,22 @@ const FULL_HEIGHT =
     DEFAULT_HEIGHT -
     50;
 
-export const Sheet: React.ComponentType<{
-    viewState: SheetViewState;
-    onChangeViewState?: (value: SheetViewState) => void;
-    children?: React.ReactNode;
-    className?: string;
-    defaultHeight?: number;
-    fullHeight?: number;
-}> = ({
+export const Sheet: React.ComponentType<
+    {
+        viewState: SheetViewState;
+        onChangeViewState?: (value: SheetViewState) => void;
+        defaultHeight?: number;
+        fullHeight?: number;
+    } & React.HTMLAttributes<HTMLDivElement>
+> = ({
     viewState,
     onChangeViewState,
-    children,
-    className,
     defaultHeight = DEFAULT_HEIGHT,
     fullHeight = FULL_HEIGHT,
+    children,
+    className,
+    style,
+    ...props
 }) => {
     const sizeClass = useHorizontalSizeClass();
     const darkMode = useColorScheme();
@@ -108,10 +110,12 @@ export const Sheet: React.ComponentType<{
         <animated.div
             className={cw(_classNames)}
             style={{
+                ...style,
                 display: "block",
                 bottom: `calc(-100vh + ${defaultHeight - 100}px)`,
                 y,
             }}
+            {...props}
         >
             <div
                 ref={handleRef}

@@ -28,7 +28,16 @@ export const Map: React.ComponentType<{
     segments: DetailedSegment[];
     currentSegment: DetailedSegment | null;
     setCurrentSegment: (value: DetailedSegment) => void;
-}> = ({ route, segments, currentSegment, setCurrentSegment }) => {
+    shouldShowUnitUserControls?: boolean;
+    shouldShowZoomControls?: boolean;
+}> = ({
+    route,
+    segments,
+    currentSegment,
+    setCurrentSegment,
+    shouldShowUnitUserControls = true,
+    shouldShowZoomControls = true,
+}) => {
     const colorScheme = useColorScheme();
     const { wantsGeolocation, location } = useGeolocation();
     const [encodedPathForBounds, setEncodedPathForBounds] = useState<string>();
@@ -119,14 +128,18 @@ export const Map: React.ComponentType<{
                 wantsGeolocation={wantsGeolocation}
                 location={location}
             />
-            <Controls style={{ top: 10, left: 10 }}>
-                <UnitSwitcher />
-                <UserLocation />
-            </Controls>
-            <Controls style={{ top: 10, right: 10 }}>
-                <ZoomIn onClick={zoomInMap} />
-                <ZoomOut onClick={zoomOutMap} />
-            </Controls>
+            {shouldShowUnitUserControls && (
+                <Controls style={{ top: 10, left: 10 }}>
+                    <UnitSwitcher />
+                    <UserLocation />
+                </Controls>
+            )}
+            {shouldShowZoomControls && (
+                <Controls style={{ top: 10, right: 10 }}>
+                    <ZoomIn onClick={zoomInMap} />
+                    <ZoomOut onClick={zoomOutMap} />
+                </Controls>
+            )}
         </GoogleMap>
     );
 };

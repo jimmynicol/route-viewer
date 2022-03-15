@@ -26,6 +26,8 @@ import styles from "./ResultsView.module.css";
 import typography from "../../styles/Typography.module.css";
 import errorStyles from "../../styles/ErrorMessage.module.css";
 import loadingStyles from "../../styles/LoadingMessage.module.css";
+import { Map } from "../Map/Map";
+import { DetailedSegment } from "../../data/stravaDataTypes";
 
 const DEFAULT_HEIGHT = -50;
 
@@ -44,6 +46,8 @@ export const ResultsView: React.ComponentType = () => {
         ResultSheetViewType.EMPTY
     );
     const [sheetViewData, setSheetViewData] = useState<any>(null);
+    const [currentSegment, setCurrentSegment] =
+        useState<DetailedSegment | null>(null);
 
     const handleSheetState = (value: any, data?: any) => {
         switch (value) {
@@ -126,117 +130,151 @@ export const ResultsView: React.ComponentType = () => {
     // console.log(results);
     // console.log(talliedResults);
 
+    const sizeClassClass =
+        sizeClass === SizeClass.COMPACT
+            ? styles.compactSizeClass
+            : styles.regularSizeClass;
+
+    const mapSegments = Object.values(results.segments).map(
+        (seg) => seg.segment
+    );
+
     return (
-        <div ref={viewRef} className={cw(styles.resultsView)}>
-            <TitleLockup ref={titleLockupRef} data={results} />
+        <div>
+            {sizeClass === SizeClass.REGULAR && (
+                <div
+                    style={{
+                        height: "100vh",
+                        width: "calc(100% - 375)",
+                        position: "relative",
+                        marginInlineStart: 375,
+                    }}
+                >
+                    <Map
+                        route={results.route}
+                        segments={mapSegments || []}
+                        currentSegment={currentSegment}
+                        setCurrentSegment={setCurrentSegment}
+                        shouldShowUnitUserControls={false}
+                    />
+                </div>
+            )}
             <div
-                className={cw(styles.scrollWrapper)}
-                style={{ height: wrapperHeight }}
+                ref={viewRef}
+                className={cw(styles.resultsView, sizeClassClass)}
             >
-                <div className={cw(styles.statsContainer)}>
-                    <RideStats
-                        distance={results.route.distance}
-                        elevationGain={results.route.elevation_gain}
-                        numberOfSegments={results.segmentsInOrder.length}
-                        onSegmentsClick={() =>
-                            setSheetViewType(ResultSheetViewType.SEGMENTS)
-                        }
-                    />
-                    <HR />
-                    <EffortStats
-                        riders={talliedResults.stats.numberOfRiders}
-                        prs={talliedResults.stats.numberOfPRs}
-                        xoms={talliedResults.stats.numberOfXOMs}
-                        clubXOMs={talliedResults.stats.numberOfClubXoms}
-                        onClick={handleSheetState}
-                    />
-                    <HR />
-                    <SegmentStats
-                        classNames={[styles.routeStats]}
-                        talliedData={talliedResults}
-                    />
-                    <HR />
-                    {authState !== AuthState.VALID && (
-                        <div className={cw(styles.myResults)}>
-                            <div>
-                                <h2 className={cw(typography.titleReduced)}>
-                                    My Results
-                                </h2>
-                                <p className={cw(typography.caption)}>
-                                    Log into Strava to see your results.
-                                </p>
+                <TitleLockup ref={titleLockupRef} data={results} />
+                <div
+                    className={cw(styles.scrollWrapper)}
+                    style={{ height: wrapperHeight }}
+                >
+                    <div className={cw(styles.statsContainer)}>
+                        <RideStats
+                            distance={results.route.distance}
+                            elevationGain={results.route.elevation_gain}
+                            numberOfSegments={results.segmentsInOrder.length}
+                            onSegmentsClick={() =>
+                                setSheetViewType(ResultSheetViewType.SEGMENTS)
+                            }
+                        />
+                        <HR />
+                        <EffortStats
+                            riders={talliedResults.stats.numberOfRiders}
+                            prs={talliedResults.stats.numberOfPRs}
+                            xoms={talliedResults.stats.numberOfXOMs}
+                            clubXOMs={talliedResults.stats.numberOfClubXoms}
+                            onClick={handleSheetState}
+                        />
+                        <HR />
+                        <SegmentStats
+                            classNames={[styles.routeStats]}
+                            talliedData={talliedResults}
+                        />
+                        <HR />
+                        {authState !== AuthState.VALID && (
+                            <div className={cw(styles.myResults)}>
+                                <div>
+                                    <h2 className={cw(typography.titleReduced)}>
+                                        My Results
+                                    </h2>
+                                    <p className={cw(typography.caption)}>
+                                        Log into Strava to see your results.
+                                    </p>
+                                </div>
+                                <StravaSignInButton />
                             </div>
-                            <StravaSignInButton />
-                        </div>
-                    )}
-                    {authState === AuthState.VALID && (
-                        <MyResults
-                            className={styles.myResults}
-                            onItemClick={(athleteId: string) => {
-                                setSheetViewData(athleteId);
-                                setSheetViewType(ResultSheetViewType.RIDER);
-                            }}
-                        />
-                    )}
-                    <HR />
-                    <div
-                        className={cw(styles.myResults)}
-                        onClick={() => {
-                            setSheetViewData(talliedResults.riderOfTheDay.id);
-                            setSheetViewType(ResultSheetViewType.RIDER);
-                        }}
-                    >
-                        <div>
-                            <h2 className={cw(typography.titleReduced)}>
-                                Rider of the Day
-                            </h2>
-                            <p className={cw(typography.bodyReduced)}>
-                                {talliedResults.riderOfTheDay.name}
-                            </p>
-                            <p className={cw(typography.caption)}>
-                                {riderResultsToHighlightString(
-                                    talliedResults.riderOfTheDay
-                                )}
-                            </p>
-                        </div>
-                        <ForwardChevronIcon />
-                    </div>
-                    <HR />
-                    <div className={cw(styles.generalClassification)}>
-                        <h2 className={cw(typography.titleReduced)}>
-                            General Classification
-                        </h2>
-                        <GeneralClassificationList
-                            riders={talliedResults.generalClassification}
-                            limit={10}
-                            onItemClick={(athleteId) => {
-                                setSheetViewData(athleteId);
-                                setSheetViewType(ResultSheetViewType.RIDER);
-                            }}
-                        />
+                        )}
+                        {authState === AuthState.VALID && (
+                            <MyResults
+                                className={styles.myResults}
+                                onItemClick={(athleteId: string) => {
+                                    setSheetViewData(athleteId);
+                                    setSheetViewType(ResultSheetViewType.RIDER);
+                                }}
+                            />
+                        )}
+                        <HR />
                         <div
-                            className={typography.bodyReduced}
-                            style={{ textAlign: "center", margin: 15 }}
+                            className={cw(styles.myResults)}
                             onClick={() => {
-                                setSheetViewType(ResultSheetViewType.GC);
+                                setSheetViewData(
+                                    talliedResults.riderOfTheDay.id
+                                );
+                                setSheetViewType(ResultSheetViewType.RIDER);
                             }}
                         >
-                            See All
+                            <div>
+                                <h2 className={cw(typography.titleReduced)}>
+                                    Rider of the Day
+                                </h2>
+                                <p className={cw(typography.bodyReduced)}>
+                                    {talliedResults.riderOfTheDay.name}
+                                </p>
+                                <p className={cw(typography.caption)}>
+                                    {riderResultsToHighlightString(
+                                        talliedResults.riderOfTheDay
+                                    )}
+                                </p>
+                            </div>
+                            <ForwardChevronIcon />
+                        </div>
+                        <HR />
+                        <div className={cw(styles.generalClassification)}>
+                            <h2 className={cw(typography.titleReduced)}>
+                                General Classification
+                            </h2>
+                            <GeneralClassificationList
+                                riders={talliedResults.generalClassification}
+                                limit={10}
+                                onItemClick={(athleteId) => {
+                                    setSheetViewData(athleteId);
+                                    setSheetViewType(ResultSheetViewType.RIDER);
+                                }}
+                            />
+                            <div
+                                className={typography.bodyReduced}
+                                style={{ textAlign: "center", margin: 15 }}
+                                onClick={() => {
+                                    setSheetViewType(ResultSheetViewType.GC);
+                                }}
+                            >
+                                See All
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <Controls style={{ top: 10, right: 10 }}>
+                    <UnitSwitcher />
+                </Controls>
+
+                <ResultsSheet
+                    type={sheetViewType}
+                    typeData={sheetViewData}
+                    fullHeight={sheetFullHeight}
+                    onHide={() => setSheetViewType(ResultSheetViewType.EMPTY)}
+                ></ResultsSheet>
             </div>
-
-            <Controls style={{ top: 10, right: 10 }}>
-                <UnitSwitcher />
-            </Controls>
-
-            <ResultsSheet
-                type={sheetViewType}
-                typeData={sheetViewData}
-                fullHeight={sheetFullHeight}
-                onHide={() => setSheetViewType(ResultSheetViewType.EMPTY)}
-            ></ResultsSheet>
         </div>
     );
 };

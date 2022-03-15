@@ -4,6 +4,10 @@
     width: 100%;
 }
 
+.regular {
+    inset-inline-start: 30px;
+}
+
 .streetViewButtonContainer {
     display: flex;
     justify-content: space-around;

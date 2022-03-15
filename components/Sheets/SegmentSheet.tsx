@@ -12,6 +12,7 @@ import {
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
 import { SheetMetadata } from "../Misc/SheetMetadata";
 import { SheetTitle } from "../Misc/SheetTitle";
+import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 import { useUnitsContext } from "../../contexts/Units";
 import {
     StreetViewButton,
@@ -62,6 +63,7 @@ export const SegmentSheet: React.ComponentType<{
     setViewState: (value: SheetViewState) => void;
     onClose: () => void;
 }> = ({ segment, viewState, setViewState, onClose }) => {
+    const sizeClass = useHorizontalSizeClass();
     const { units } = useUnitsContext();
     const [{ y }, api] = useSpring(() => defaultStreetViewPosition);
     const [streetViewMode, setStreetViewMode] = useState<StreetViewMode>(
@@ -127,6 +129,8 @@ export const SegmentSheet: React.ComponentType<{
         ? segment.athlete_segment_stats?.effort_count > 0
         : false;
 
+    const insetInlineStart = sizeClass === SizeClass.COMPACT ? 0 : 30;
+
     return (
         <Sheet
             className={sheetStyles.segmentSheet}
@@ -134,6 +138,9 @@ export const SegmentSheet: React.ComponentType<{
             onChangeViewState={setViewState}
             defaultHeight={defaultHeight}
             fullHeight={fullHeight}
+            style={{
+                insetInlineStart: insetInlineStart,
+            }}
         >
             <CloseIcon className={sheetStyles.closeButton} onClick={onClose} />
             {segment && (

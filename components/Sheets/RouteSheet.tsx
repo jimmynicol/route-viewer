@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import cw from "classnames";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
@@ -11,8 +12,9 @@ import {
 } from "../../utils/unitConversions";
 import { useUnitsContext } from "../../contexts/Units";
 
-import styles from "../Sheets/Sheet.module.css";
 import { segmentListItems } from "../Misc/SegmentListItems";
+import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
+import { MetadataContainer } from "../Misc/MetadataContainer";
 
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
@@ -21,6 +23,7 @@ export const RouteSheet: React.ComponentType<{
     setViewState: (value: SheetViewState) => void;
     onSegmentSelect: (value: DetailedSegment) => void;
 }> = ({ route, segments, viewState, setViewState, onSegmentSelect }) => {
+    const sizeClass = useHorizontalSizeClass();
     const { units } = useUnitsContext();
     const titleRef = useRef<HTMLDivElement>(null);
     const [segmentListHeight, setSegmentListHeight] = useState(0);
@@ -30,6 +33,7 @@ export const RouteSheet: React.ComponentType<{
     const distance = distanceStr(units, route?.distance, 2);
     const elevation = elevationStr(units, route?.elevation_gain, 0);
     const numSegments = (segments || []).length.toFixed(0);
+    const insetInlineStart = sizeClass === SizeClass.COMPACT ? 0 : 30;
 
     useEffect(() => {
         const titleEl = titleRef.current;
@@ -52,10 +56,11 @@ export const RouteSheet: React.ComponentType<{
             viewState={viewState}
             onChangeViewState={setViewState}
             defaultHeight={defaultHeight}
+            style={{ insetInlineStart: insetInlineStart }}
         >
             <div ref={titleRef}>
                 <SheetTitle title={route.name} link={link} />
-                <div className={styles.metadataContainer}>
+                <MetadataContainer>
                     <SheetMetadata
                         num={distance}
                         unit={unitsStr(units, "km")}
@@ -72,7 +77,7 @@ export const RouteSheet: React.ComponentType<{
                         description={"Segments"}
                         onClick={() => setViewState(SheetViewState.FULL)}
                     />
-                </div>
+                </MetadataContainer>
             </div>
             <div
                 style={{
