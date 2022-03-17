@@ -213,17 +213,10 @@ function tallyResultsByRider(results: RideEfforts) {
 
         riderStats.segments++;
 
-        switch (effort.achievement) {
-            case 1:
-                riderStats.prs++;
-                break;
-            case 2:
-                riderStats.top10s++;
-                break;
-            case 3:
-                riderStats.xoms++;
-                break;
-        }
+        if (effort.achievement > 0) riderStats.prs++;
+        if (effort.achievement === 2) riderStats.top10s++;
+        if (effort.achievement === 3) riderStats.xoms++;
+        if (effort.achievement === 4) riderStats.clubXoms++;
 
         riderStats.completedRide = riderStats.segments === numberOfSegments;
 
@@ -231,10 +224,11 @@ function tallyResultsByRider(results: RideEfforts) {
             riderStats.prs + riderStats.top10s + riderStats.xoms;
 
         riderStats.rideScore =
-            riderStats.prs +
-            3 * riderStats.top10s +
-            6 * riderStats.xoms +
-            (numAchievements === numberOfSegments ? 20 : 0);
+            riderStats.prs + // reward PRs
+            3 * riderStats.top10s + // bonus for top10
+            4 * riderStats.clubXoms + // more for clubXOM
+            6 * riderStats.xoms + // lots more for a XOM
+            (numAchievements === numberOfSegments ? 20 : 0); // bonus round for prs on all segments
     };
 
     for (const segmentId of results.segmentsInOrder) {
@@ -254,6 +248,33 @@ function determineRiderOfTheDay(resultsByRider: Record<string, RiderStats>) {
         .sort((a, b) => b.rideScore - a.rideScore)[0];
 }
 
+function determineClubXoms(results: RideEfforts) {
+    for (const segmentId of results.segmentsInOrder) {
+        const segment: RideSegment = results.segments[segmentId];
+        const clubXomsMen = segment.clubXoms.men.map(
+            (effort) => effort.segment_effort_id
+        );
+        const clubXomsWomen = segment.clubXoms.women.map(
+            (effort) => effort.segment_effort_id
+        );
+
+        for (const effort of segment.efforts.men) {
+            if (clubXomsMen.includes(effort.segment_effort_id)) {
+                if (effort.achievement !== SegmentAchievement.XOM) {
+                    effort.achievement = SegmentAchievement.CLUB_XOM;
+                }
+            }
+        }
+        for (const effort of segment.efforts.women) {
+            if (clubXomsWomen.includes(effort.segment_effort_id)) {
+                if (effort.achievement !== SegmentAchievement.XOM) {
+                    effort.achievement = SegmentAchievement.CLUB_XOM;
+                }
+            }
+        }
+    }
+}
+
 function listClubXOMs(results: RideEfforts) {
     const men: SegmentEffort[] = [];
     const women: SegmentEffort[] = [];
@@ -269,13 +290,11 @@ function listClubXOMs(results: RideEfforts) {
 
         for (const effort of segment.efforts.men) {
             if (clubXomsMen.includes(effort.segment_effort_id)) {
-                effort.achievement = SegmentAchievement.CLUB_XOM;
                 men.push(effort);
             }
         }
         for (const effort of segment.efforts.women) {
             if (clubXomsWomen.includes(effort.segment_effort_id)) {
-                effort.achievement = SegmentAchievement.CLUB_XOM;
                 women.push(effort);
             }
         }
@@ -384,7 +403,50 @@ function determineGC(results: RideEfforts) {
     } as GeneralClassification;
 }
 
+function doubleCheckAchievements(results: RideEfforts) {
+    for (const segmentId of results.segmentsInOrder) {
+        const segment: RideSegment = results.segments[segmentId];
+        const xomsMen = segment.xoms.men[0].segment_effort_id;
+        const xomsWomen = segment.xoms.women[0].segment_effort_id;
+        const clubXomsMen = segment.clubXoms.men[0].segment_effort_id;
+        const clubXomsWomen = segment.clubXoms.women[0].segment_effort_id;
+
+        for (const effort of segment.efforts.men) {
+            if (
+                effort.achievement === SegmentAchievement.XOM &&
+                xomsMen !== effort.segment_effort_id
+            ) {
+                effort.achievement = SegmentAchievement.NONE;
+            }
+
+            if (
+                effort.achievement === SegmentAchievement.CLUB_XOM &&
+                clubXomsMen !== effort.segment_effort_id
+            ) {
+                effort.achievement = SegmentAchievement.NONE;
+            }
+        }
+        for (const effort of segment.efforts.women) {
+            if (
+                effort.achievement === SegmentAchievement.XOM &&
+                xomsWomen !== effort.segment_effort_id
+            ) {
+                effort.achievement = SegmentAchievement.NONE;
+            }
+
+            if (
+                effort.achievement === SegmentAchievement.CLUB_XOM &&
+                clubXomsWomen !== effort.segment_effort_id
+            ) {
+                effort.achievement = SegmentAchievement.NONE;
+            }
+        }
+    }
+}
+
 export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
+    determineClubXoms(results);
+    doubleCheckAchievements(results);
     const talliedResultsByRider = tallyResultsByRider(results);
 
     return {

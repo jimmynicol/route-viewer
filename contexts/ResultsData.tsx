@@ -32,10 +32,7 @@ function getResultsName(): string {
 }
 
 export function athleteLinks(athleteId: string): string[] {
-    return [
-        `https://www.strava.com/athletes/${athleteId}`,
-        `https://www.strava.com/pros/${athleteId}`,
-    ];
+    return [`/athletes/${athleteId}`, `/pros/${athleteId}`];
 }
 
 export const ResultsDataProvider = ({

@@ -14,7 +14,7 @@ export const MyResults: React.ComponentType<
         onItemClick: (athleteId: string) => void;
     } & React.HTMLAttributes<HTMLDivElement>
 > = ({ onItemClick, ...props }) => {
-    const { statsByRider } = useResultsDataContext();
+    const { talliedResults, statsByRider } = useResultsDataContext();
     const { isLoading, isError, data } = useAthleteWithToken();
 
     if (isLoading) {

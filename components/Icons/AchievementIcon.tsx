@@ -19,19 +19,19 @@ export const AchievementIcon: React.ComponentType<
         return <CupIcon style={{ height: 15 }} />;
     }
 
-    if (achievement === SegmentAchievement.XOM) {
-        if (gender === Sex.Female) {
-            return <QOMIcon style={{ height: 17, fill: "#FEC835" }} />;
-        } else {
-            return <KOMIcon style={{ height: 17, fill: "#FEC835" }} />;
-        }
-    }
-
     if (achievement === SegmentAchievement.CLUB_XOM) {
         if (gender === Sex.Female) {
             return <QOMIcon style={{ height: 17, fill: "#ccc" }} />;
         } else {
             return <KOMIcon style={{ height: 17, fill: "#ccc" }} />;
+        }
+    }
+
+    if (achievement === SegmentAchievement.XOM) {
+        if (gender === Sex.Female) {
+            return <QOMIcon style={{ height: 17, fill: "#FEC835" }} />;
+        } else {
+            return <KOMIcon style={{ height: 17, fill: "#FEC835" }} />;
         }
     }
 
