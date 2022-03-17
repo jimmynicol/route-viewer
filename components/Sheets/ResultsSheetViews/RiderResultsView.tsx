@@ -63,7 +63,7 @@ export const RiderResultsView: React.ComponentType<{
         if (
             rideStats.prs === 0 &&
             rideStats.xoms === 0 &&
-            rideStats.clubXOMs === 0 &&
+            rideStats.clubXoms === 0 &&
             rideStats.top10s === 0
         ) {
             return <div></div>;
@@ -82,7 +82,7 @@ export const RiderResultsView: React.ComponentType<{
                     description={"XOMs"}
                 />
                 <SheetMetadata
-                    num={rideStats.clubXOMs}
+                    num={rideStats.clubXoms}
                     unit={""}
                     description={"ClubXOMs"}
                 />
@@ -95,7 +95,7 @@ export const RiderResultsView: React.ComponentType<{
         );
     };
 
-    const segments = Object.keys(efforts).map((segmentId, index) => {
+    const segments = results.segmentsInOrder.map((segmentId, index) => {
         const segment = results.segments[segmentId].segment;
         const effort = efforts[segmentId];
         const hasAchievement = effort.achievement !== SegmentAchievement.NONE;

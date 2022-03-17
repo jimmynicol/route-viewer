@@ -29,9 +29,9 @@ export const AchievementIcon: React.ComponentType<
 
     if (achievement === SegmentAchievement.CLUB_XOM) {
         if (gender === Sex.Female) {
-            return <QOMIcon style={{ fill: "#ccc" }} />;
+            return <QOMIcon style={{ height: 17, fill: "#ccc" }} />;
         } else {
-            return <KOMIcon style={{ fill: "#ccc" }} />;
+            return <KOMIcon style={{ height: 17, fill: "#ccc" }} />;
         }
     }
 

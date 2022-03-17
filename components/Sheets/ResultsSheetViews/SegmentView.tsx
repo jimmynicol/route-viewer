@@ -39,7 +39,7 @@ export const SegmentView: React.ComponentType<
 
     const segment = segments[segmentId].segment;
     const efforts = segments[segmentId].efforts;
-    const clubXOMs = segments[segmentId].clubXOMs;
+    const clubXoms = segments[segmentId].clubXoms;
     const link = `https://www.strava.com/segments/${segment?.id}`;
 
     const header = (
@@ -82,11 +82,11 @@ export const SegmentView: React.ComponentType<
                 <span>Club:</span>
                 <span>
                     <KOMIcon style={{ height: 19, fill: "#ccc" }} /> KOM{" "}
-                    {secondsToMinutes(clubXOMs.men[0].elapsed_time)}
+                    {secondsToMinutes(clubXoms.men[0].elapsed_time)}
                 </span>
                 <span>
                     <QOMIcon style={{ height: 19, fill: "#ccc" }} /> QOM{" "}
-                    {secondsToMinutes(clubXOMs.women[0].elapsed_time)}
+                    {secondsToMinutes(clubXoms.women[0].elapsed_time)}
                 </span>
             </div>
             <HR />

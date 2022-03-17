@@ -182,7 +182,7 @@ export const ResultsView: React.ComponentType = () => {
                             riders={talliedResults.stats.numberOfRiders}
                             prs={talliedResults.stats.numberOfPRs}
                             xoms={talliedResults.stats.numberOfXOMs}
-                            clubXOMs={talliedResults.stats.numberOfClubXoms}
+                            clubXoms={talliedResults.stats.numberOfClubXoms}
                             onClick={handleSheetState}
                         />
                         <HR />

@@ -29,7 +29,7 @@ export interface RiderStats {
     athlete_link: string;
     prs: number;
     top10s: number;
-    clubXOMs: number;
+    clubXoms: number;
     xoms: number;
     segments: number;
     completedRide: boolean;
@@ -52,7 +52,7 @@ export interface TalliedRideEfforts {
         men: SegmentEffort[];
         women: SegmentEffort[];
     };
-    clubXOMs: {
+    clubXoms: {
         men: SegmentEffort[];
         women: SegmentEffort[];
     };
@@ -100,18 +100,18 @@ function determineNumberOfClubXOMs(results: RideEfforts) {
 
     for (const segmentId in results.segments) {
         const segment: RideSegment = results.segments[segmentId];
-        const clubXOMsMen = segment.clubXOMs.men.map(
+        const clubXomsMen = segment.clubXoms.men.map(
             (effort) => effort.segment_effort_id
         );
-        const clubXOMsWomen = segment.clubXOMs.women.map(
+        const clubXomsWomen = segment.clubXoms.women.map(
             (effort) => effort.segment_effort_id
         );
 
         for (const effort of segment.efforts.men) {
-            if (clubXOMsMen.includes(effort.segment_effort_id)) XOMs++;
+            if (clubXomsMen.includes(effort.segment_effort_id)) XOMs++;
         }
         for (const effort of segment.efforts.women) {
-            if (clubXOMsWomen.includes(effort.segment_effort_id)) XOMs++;
+            if (clubXomsWomen.includes(effort.segment_effort_id)) XOMs++;
         }
     }
 
@@ -204,7 +204,7 @@ function tallyResultsByRider(results: RideEfforts) {
                 athlete_link: effort.athlete_link,
                 prs: 0,
                 top10s: 0,
-                clubXOMs: 0,
+                clubXoms: 0,
                 xoms: 0,
                 segments: 0,
                 completedRide: false,
@@ -260,21 +260,21 @@ function listClubXOMs(results: RideEfforts) {
 
     for (const segmentId of results.segmentsInOrder) {
         const segment: RideSegment = results.segments[segmentId];
-        const clubXOMsMen = segment.clubXOMs.men.map(
+        const clubXomsMen = segment.clubXoms.men.map(
             (effort) => effort.segment_effort_id
         );
-        const clubXOMsWomen = segment.clubXOMs.women.map(
+        const clubXomsWomen = segment.clubXoms.women.map(
             (effort) => effort.segment_effort_id
         );
 
         for (const effort of segment.efforts.men) {
-            if (clubXOMsMen.includes(effort.segment_effort_id)) {
+            if (clubXomsMen.includes(effort.segment_effort_id)) {
                 effort.achievement = SegmentAchievement.CLUB_XOM;
                 men.push(effort);
             }
         }
         for (const effort of segment.efforts.women) {
-            if (clubXOMsWomen.includes(effort.segment_effort_id)) {
+            if (clubXomsWomen.includes(effort.segment_effort_id)) {
                 effort.achievement = SegmentAchievement.CLUB_XOM;
                 women.push(effort);
             }
@@ -399,7 +399,7 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
         },
         riders: talliedResultsByRider,
         riderOfTheDay: determineRiderOfTheDay(talliedResultsByRider),
-        clubXOMs: listClubXOMs(results),
+        clubXoms: listClubXOMs(results),
         xoms: listXOMs(results),
         prs: listPRs(results),
         generalClassification: determineGC(results),
@@ -408,21 +408,21 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
 
 export function riderResultsToHighlightString(riderResults: RiderStats) {
     const result = [];
-    const { prs, top10s, clubXOMs, xoms, segments } = riderResults;
+    const { prs, top10s, clubXoms, xoms, segments } = riderResults;
 
     result.push(
         segments === 1 ? `${segments} Segment` : `${segments} Segments`
     );
 
-    if (prs > 0 || top10s > 0 || clubXOMs > 0 || xoms > 0) {
-        const count = prs + top10s + clubXOMs + xoms;
+    if (prs > 0 || top10s > 0 || clubXoms > 0 || xoms > 0) {
+        const count = prs + top10s + clubXoms + xoms;
         result.push(`${count} PR${count !== 1 ? "s" : ""}`);
     }
     if (top10s > 0) {
         result.push(`${top10s} Top10${top10s !== 1 ? "s" : ""}`);
     }
-    if (clubXOMs > 0) {
-        result.push(`${clubXOMs} ClubXOM${clubXOMs !== 1 ? "s" : ""}`);
+    if (clubXoms > 0) {
+        result.push(`${clubXoms} ClubXOM${clubXoms !== 1 ? "s" : ""}`);
     }
     if (xoms > 0) {
         result.push(`${xoms} XOM${xoms !== 1 ? "s" : ""}`);
