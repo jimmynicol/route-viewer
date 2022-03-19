@@ -49,12 +49,12 @@ export interface TalliedRideEfforts {
     riders: Record<string, RiderStats>;
     riderOfTheDay: RiderStats;
     xoms: {
-        men: SegmentEffort[];
-        women: SegmentEffort[];
+        men: PREffort[];
+        women: PREffort[];
     };
     clubXoms: {
-        men: SegmentEffort[];
-        women: SegmentEffort[];
+        men: PREffort[];
+        women: PREffort[];
     };
     prs: {
         men: PREffort[];
@@ -77,61 +77,6 @@ function determineNumberOfRiders(results: RideEfforts) {
     }
 
     return Object.keys(tmp).length;
-}
-
-function determineNumberOfPRs(results: RideEfforts) {
-    let prs = 0;
-
-    for (const segmentId in results.segments) {
-        const segment: RideSegment = results.segments[segmentId];
-        for (const effort of segment.efforts.men) {
-            if (effort.achievement > 0) prs++;
-        }
-        for (const effort of segment.efforts.women) {
-            if (effort.achievement > 0) prs++;
-        }
-    }
-
-    return prs;
-}
-
-function determineNumberOfClubXOMs(results: RideEfforts) {
-    let XOMs = 0;
-
-    for (const segmentId in results.segments) {
-        const segment: RideSegment = results.segments[segmentId];
-        const clubXomsMen = segment.clubXoms.men.map(
-            (effort) => effort.segment_effort_id
-        );
-        const clubXomsWomen = segment.clubXoms.women.map(
-            (effort) => effort.segment_effort_id
-        );
-
-        for (const effort of segment.efforts.men) {
-            if (clubXomsMen.includes(effort.segment_effort_id)) XOMs++;
-        }
-        for (const effort of segment.efforts.women) {
-            if (clubXomsWomen.includes(effort.segment_effort_id)) XOMs++;
-        }
-    }
-
-    return XOMs;
-}
-
-function determineNumberOfXOMs(results: RideEfforts) {
-    let XOMs = 0;
-
-    for (const segmentId in results.segments) {
-        const segment: RideSegment = results.segments[segmentId];
-        for (const effort of segment.efforts.men) {
-            if (effort.achievement === 3) XOMs++;
-        }
-        for (const effort of segment.efforts.women) {
-            if (effort.achievement === 3) XOMs++;
-        }
-    }
-
-    return XOMs;
 }
 
 function determineLongestSegment(results: RideEfforts): [string, number] {
@@ -251,22 +196,18 @@ function determineRiderOfTheDay(resultsByRider: Record<string, RiderStats>) {
 function determineClubXoms(results: RideEfforts) {
     for (const segmentId of results.segmentsInOrder) {
         const segment: RideSegment = results.segments[segmentId];
-        const clubXomsMen = segment.clubXoms.men.map(
-            (effort) => effort.segment_effort_id
-        );
-        const clubXomsWomen = segment.clubXoms.women.map(
-            (effort) => effort.segment_effort_id
-        );
+        const clubXomMan = segment.clubXoms.men[0].segment_effort_id;
+        const clubXomWoman = segment.clubXoms.women[0].segment_effort_id;
 
         for (const effort of segment.efforts.men) {
-            if (clubXomsMen.includes(effort.segment_effort_id)) {
+            if (clubXomMan === effort.segment_effort_id) {
                 if (effort.achievement !== SegmentAchievement.XOM) {
                     effort.achievement = SegmentAchievement.CLUB_XOM;
                 }
             }
         }
         for (const effort of segment.efforts.women) {
-            if (clubXomsWomen.includes(effort.segment_effort_id)) {
+            if (clubXomWoman === effort.segment_effort_id) {
                 if (effort.achievement !== SegmentAchievement.XOM) {
                     effort.achievement = SegmentAchievement.CLUB_XOM;
                 }
@@ -276,27 +217,20 @@ function determineClubXoms(results: RideEfforts) {
 }
 
 function listClubXOMs(results: RideEfforts) {
-    const men: SegmentEffort[] = [];
-    const women: SegmentEffort[] = [];
+    const men: PREffort[] = [];
+    const women: PREffort[] = [];
 
     for (const segmentId of results.segmentsInOrder) {
         const segment: RideSegment = results.segments[segmentId];
-        const clubXomsMen = segment.clubXoms.men.map(
-            (effort) => effort.segment_effort_id
-        );
-        const clubXomsWomen = segment.clubXoms.women.map(
-            (effort) => effort.segment_effort_id
-        );
-
         for (const effort of segment.efforts.men) {
-            if (clubXomsMen.includes(effort.segment_effort_id)) {
-                men.push(effort);
-            }
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement === SegmentAchievement.CLUB_XOM)
+                men.push({ segmentId, athleteId, ...effort } as PREffort);
         }
         for (const effort of segment.efforts.women) {
-            if (clubXomsWomen.includes(effort.segment_effort_id)) {
-                women.push(effort);
-            }
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement === SegmentAchievement.CLUB_XOM)
+                men.push({ segmentId, athleteId, ...effort } as PREffort);
         }
     }
 
@@ -307,16 +241,20 @@ function listClubXOMs(results: RideEfforts) {
 }
 
 function listXOMs(results: RideEfforts) {
-    const men: SegmentEffort[] = [];
-    const women: SegmentEffort[] = [];
+    const men: PREffort[] = [];
+    const women: PREffort[] = [];
 
     for (const segmentId of results.segmentsInOrder) {
         const segment: RideSegment = results.segments[segmentId];
         for (const effort of segment.efforts.men) {
-            if (effort.achievement === 3) men.push(effort);
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement === SegmentAchievement.XOM)
+                men.push({ segmentId, athleteId, ...effort } as PREffort);
         }
         for (const effort of segment.efforts.women) {
-            if (effort.achievement === 3) women.push(effort);
+            const athleteId = effort.athlete_link.split("/").slice(-1)[0];
+            if (effort.achievement === SegmentAchievement.XOM)
+                men.push({ segmentId, athleteId, ...effort } as PREffort);
         }
     }
 
@@ -447,23 +385,32 @@ function doubleCheckAchievements(results: RideEfforts) {
 export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
     determineClubXoms(results);
     doubleCheckAchievements(results);
+
+    const prs = listPRs(results);
+    const xoms = listXOMs(results);
+    const clubXoms = listClubXOMs(results);
+
+    const numPRs = prs.men.length + prs.women.length;
+    const numXoms = xoms.men.length + xoms.women.length;
+    const numClubXoms = clubXoms.men.length + clubXoms.women.length;
+
     const talliedResultsByRider = tallyResultsByRider(results);
 
     return {
         stats: {
             numberOfRiders: determineNumberOfRiders(results),
-            numberOfPRs: determineNumberOfPRs(results),
-            numberOfClubXoms: determineNumberOfClubXOMs(results),
-            numberOfXOMs: determineNumberOfXOMs(results),
+            numberOfPRs: numPRs,
+            numberOfClubXoms: numClubXoms,
+            numberOfXOMs: numXoms,
             longestSegment: determineLongestSegment(results),
             steepestSegment: determineSteepestSegment(results),
             segmentWithMostPRs: determineSegmentWithMostPRs(results),
         },
         riders: talliedResultsByRider,
         riderOfTheDay: determineRiderOfTheDay(talliedResultsByRider),
-        clubXoms: listClubXOMs(results),
-        xoms: listXOMs(results),
-        prs: listPRs(results),
+        xoms,
+        clubXoms,
+        prs,
         generalClassification: determineGC(results),
     };
 }

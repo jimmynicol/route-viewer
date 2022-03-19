@@ -30,7 +30,8 @@ export const RiderResultsView: React.ComponentType<{
 
     const isLoggedInUser = athleteData ? athleteData.id === athleteId : false;
     const efforts = effortsByRider(athleteId);
-    const firstEffort = efforts[Object.keys(efforts)[0]];
+    const effortIds = Object.keys(efforts);
+    const firstEffort = efforts[effortIds[0]];
     const riderName = firstEffort.athlete_name;
     const link = `https://www.strava.com/activities/${firstEffort.activity_id}`;
 
@@ -95,35 +96,38 @@ export const RiderResultsView: React.ComponentType<{
         );
     };
 
-    const segments = results.segmentsInOrder.map((segmentId, index) => {
-        const segment = results.segments[segmentId].segment;
-        const effort = efforts[segmentId];
-        const hasAchievement = effort.achievement !== SegmentAchievement.NONE;
+    const segments = results.segmentsInOrder
+        .filter((segmentId) => effortIds.includes(segmentId))
+        .map((segmentId, index) => {
+            const segment = results.segments[segmentId].segment;
+            const effort = efforts[segmentId];
+            const hasAchievement =
+                effort.achievement !== SegmentAchievement.NONE;
 
-        return (
-            <ListItem
-                key={index}
-                index={index + 1}
-                title={segment.name}
-                onClick={() =>
-                    onSegmentClick ? onSegmentClick(segment.id) : null
-                }
-            >
-                {hasAchievement && (
-                    <AchievementIcon
-                        achievement={effort.achievement}
-                    ></AchievementIcon>
-                )}
-                <span className={typography.semanticallyReduced}>
-                    {secondsToMinutes(effort.elapsed_time)}
-                    {effort.average_power > 0 && (
-                        <span>{` @ ${effort.average_power}W`}</span>
+            return (
+                <ListItem
+                    key={index}
+                    index={index + 1}
+                    title={segment.name}
+                    onClick={() =>
+                        onSegmentClick ? onSegmentClick(segment.id) : null
+                    }
+                >
+                    {hasAchievement && (
+                        <AchievementIcon
+                            achievement={effort.achievement}
+                        ></AchievementIcon>
                     )}
-                </span>
-                <span className={styles.rank}>{effort.rank}</span>
-            </ListItem>
-        );
-    });
+                    <span className={typography.semanticallyReduced}>
+                        {secondsToMinutes(effort.elapsed_time)}
+                        {effort.average_power > 0 && (
+                            <span>{` @ ${effort.average_power}W`}</span>
+                        )}
+                    </span>
+                    <span className={styles.rank}>{effort.rank}</span>
+                </ListItem>
+            );
+        });
 
     return (
         <div className={styles.riderResults}>

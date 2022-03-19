@@ -57,6 +57,12 @@ export const ResultsView: React.ComponentType = () => {
             case EffortStatsTypes.PRS:
                 setSheetViewType(ResultSheetViewType.PRS);
                 break;
+            case EffortStatsTypes.XOMS:
+                setSheetViewType(ResultSheetViewType.XOMS);
+                break;
+            case EffortStatsTypes.CLUB_XOMS:
+                setSheetViewType(ResultSheetViewType.CLUB_XOMS);
+                break;
         }
     };
 

@@ -49,6 +49,12 @@
     opacity: 0.5;
 }
 
+.verticalAlignCenter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* <code> */
 .code {
     font-family: Menlo, monospace;

@@ -11,6 +11,8 @@ import { SegmentsView } from "./ResultsSheetViews/SegmentsView";
 import { PRsView } from "./ResultsSheetViews/PRsView";
 import { GCView } from "./ResultsSheetViews/GCView";
 import { SegmentView } from "./ResultsSheetViews/SegmentView";
+import { XOMView } from "./ResultsSheetViews/XOMView";
+import { ClubXOMView } from "./ResultsSheetViews/ClubXOMView";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -117,8 +119,25 @@ export const ResultsSheet: React.ComponentType<{
                 />
             );
             break;
-        default:
-            content = <div></div>;
+        case ResultSheetViewType.XOMS:
+            content = (
+                <XOMView
+                    onItemClick={(effort: PREffort) => {
+                        setSheetViewData(effort.athleteId);
+                        setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
+            );
+            break;
+        case ResultSheetViewType.CLUB_XOMS:
+            content = (
+                <ClubXOMView
+                    onItemClick={(effort: PREffort) => {
+                        setSheetViewData(effort.athleteId);
+                        setSheetViewType(ResultSheetViewType.RIDER);
+                    }}
+                />
+            );
             break;
     }
 
