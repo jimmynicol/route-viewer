@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import cw from "classnames";
 
 import { DetailedSegment, Route } from "../../data/stravaDataTypes";
 import { Sheet, SheetViewState } from "../Sheets/Sheet";
@@ -16,6 +15,8 @@ import { segmentListItems } from "../Misc/SegmentListItems";
 import { SizeClass, useHorizontalSizeClass } from "../../utils/useSizeClass";
 import { MetadataContainer } from "../Misc/MetadataContainer";
 
+import typography from "../../styles/Typography.module.css";
+
 export const RouteSheet: React.ComponentType<{
     route: Route | undefined;
     segments: DetailedSegment[];
@@ -28,6 +29,7 @@ export const RouteSheet: React.ComponentType<{
     const titleRef = useRef<HTMLDivElement>(null);
     const [segmentListHeight, setSegmentListHeight] = useState(0);
     const [defaultHeight, setDefaultHeight] = useState(0);
+    const [showText, setShowText] = useState(false);
 
     const link = `https://www.strava.com/routes/${route?.id_str}`;
     const distance = distanceStr(units, route?.distance, 2);
@@ -86,7 +88,35 @@ export const RouteSheet: React.ComponentType<{
                 }}
             >
                 {segmentListItems(segments, onSegmentSelect)}
+
+                <div
+                    className={typography.caption}
+                    style={{ textAlign: "center", margin: 30 }}
+                    onClick={() => setShowText(!showText)}
+                >
+                    {showText ? "Hide Text" : "Show Text"}
+                </div>
+                {showText && <SegmentsTextList segments={segments} />}
             </div>
         </Sheet>
+    );
+};
+
+const SegmentsTextList: React.ComponentType<
+    { segments: DetailedSegment[] } & React.HTMLAttributes<HTMLDivElement>
+> = ({ segments }) => {
+    return (
+        <div>
+            {segments.map((segment: DetailedSegment, i: number) => (
+                <p key={i} className={typography.caption}>
+                    <span>{i + 1}. </span>
+                    {segment.name}:{" "}
+                    <a href="https://www.strava.com/segments/{segment.id}">
+                        https://www.strava.com/segments/{segment.id}
+                    </a>{" "}
+                    - ({segment.xoms.kom} / {segment.xoms.qom})
+                </p>
+            ))}
+        </div>
     );
 };
