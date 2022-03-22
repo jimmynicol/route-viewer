@@ -111,7 +111,7 @@ const SegmentsTextList: React.ComponentType<
                 <p key={i} className={typography.caption}>
                     <span>{i + 1}. </span>
                     {segment.name}:{" "}
-                    <a href={`https://www.strava.com/segments/{segment.id}`}>
+                    <a href={`https://www.strava.com/segments/${segment.id}`}>
                         https://www.strava.com/segments/{segment.id}
                     </a>{" "}
                     - ({segment.xoms.kom} / {segment.xoms.qom})
