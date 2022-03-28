@@ -86,6 +86,12 @@ export const ResultsView: React.ComponentType = () => {
         setSheetFullHeight,
     ]);
 
+    useEffect(() => {
+        if (!currentSegment) return;
+        setSheetViewData(currentSegment.id);
+        setSheetViewType(ResultSheetViewType.SEGMENT);
+    }, [currentSegment]);
+
     if (resultsDataState === ResultsDataState.LOADING) {
         return (
             <div className={loadingStyles.loadingMessage}>
@@ -135,6 +141,12 @@ export const ResultsView: React.ComponentType = () => {
 
     // console.log(results);
     // console.log(talliedResults);
+
+    // const ridersByScore = Object.values(talliedResults.riders)
+    //     .filter((a) => a.completedRide)
+    //     .sort((a, b) => b.rideScore - a.rideScore)
+    //     .slice(0, 10)
+    //     .forEach((a) => console.log(a));
 
     const sizeClassClass =
         sizeClass === SizeClass.COMPACT
@@ -278,7 +290,14 @@ export const ResultsView: React.ComponentType = () => {
                     type={sheetViewType}
                     typeData={sheetViewData}
                     fullHeight={sheetFullHeight}
-                    onHide={() => setSheetViewType(ResultSheetViewType.EMPTY)}
+                    onHide={() => {
+                        setSheetViewType(ResultSheetViewType.EMPTY);
+                        setCurrentSegment(null);
+                    }}
+                    onSegmentSelect={(segmentId: number) => {
+                        const segment = results.segments[segmentId].segment;
+                        setCurrentSegment(segment);
+                    }}
                 ></ResultsSheet>
             </div>
         </div>

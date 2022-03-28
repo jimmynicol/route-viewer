@@ -165,15 +165,12 @@ function tallyResultsByRider(results: RideEfforts) {
 
         riderStats.completedRide = riderStats.segments === numberOfSegments;
 
-        const numAchievements =
-            riderStats.prs + riderStats.top10s + riderStats.xoms;
-
         riderStats.rideScore =
             riderStats.prs + // reward PRs
             3 * riderStats.top10s + // bonus for top10
             4 * riderStats.clubXoms + // more for clubXOM
             6 * riderStats.xoms + // lots more for a XOM
-            (numAchievements === numberOfSegments ? 20 : 0); // bonus round for prs on all segments
+            (riderStats.prs === numberOfSegments ? 20 : 0); // bonus round for prs on all segments
     };
 
     for (const segmentId of results.segmentsInOrder) {
@@ -424,7 +421,7 @@ export function riderResultsToHighlightString(riderResults: RiderStats) {
     );
 
     if (prs > 0 || top10s > 0 || clubXoms > 0 || xoms > 0) {
-        const count = prs + top10s + clubXoms + xoms;
+        const count = prs;
         result.push(`${count} PR${count !== 1 ? "s" : ""}`);
     }
     if (top10s > 0) {

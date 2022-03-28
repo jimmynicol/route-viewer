@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Sheet, SheetViewState } from "./Sheet";
-import { useAthleteDataContext } from "../../contexts/AthleteData";
 import { RiderResultsView } from "./ResultsSheetViews/RiderResultsView";
-
-import styles from "./ResultsSheet.module.css";
 import { RidersView } from "./ResultsSheetViews/RidersView";
 import { PREffort, RiderStats } from "../../data/resultsConverter";
 import { SegmentsView } from "./ResultsSheetViews/SegmentsView";
@@ -13,6 +10,8 @@ import { GCView } from "./ResultsSheetViews/GCView";
 import { SegmentView } from "./ResultsSheetViews/SegmentView";
 import { XOMView } from "./ResultsSheetViews/XOMView";
 import { ClubXOMView } from "./ResultsSheetViews/ClubXOMView";
+
+import styles from "./ResultsSheet.module.css";
 
 export enum ResultSheetViewType {
     EMPTY,
@@ -30,9 +29,17 @@ export const ResultsSheet: React.ComponentType<{
     type: ResultSheetViewType;
     typeData?: any;
     onHide: () => void;
+    onSegmentSelect?: (segmentId: number) => void;
     fullHeight?: number;
     defaultHeight?: number;
-}> = ({ type, typeData, onHide, defaultHeight = -50, fullHeight = 500 }) => {
+}> = ({
+    type,
+    typeData,
+    onHide,
+    onSegmentSelect,
+    defaultHeight = -50,
+    fullHeight = 500,
+}) => {
     const [sheetViewState, setSheetViewState] = useState<SheetViewState>(
         SheetViewState.HIDE
     );
@@ -49,7 +56,10 @@ export const ResultsSheet: React.ComponentType<{
                 ? SheetViewState.HIDE
                 : SheetViewState.FULL
         );
-    }, [sheetViewType, setSheetViewState]);
+        if (sheetViewType === ResultSheetViewType.SEGMENT && onSegmentSelect) {
+            onSegmentSelect(sheetViewData);
+        }
+    }, [sheetViewType, sheetViewData, onSegmentSelect, setSheetViewState]);
     useEffect(() => {
         if (sheetViewState === SheetViewState.DEFAULT) onHide();
     }, [sheetViewState, onHide]);
