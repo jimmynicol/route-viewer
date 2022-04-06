@@ -140,7 +140,7 @@ export const ResultsView: React.ComponentType = () => {
     }
 
     // console.log(results);
-    // console.log(talliedResults);
+    // console.log(talliedResults);    
 
     // const ridersByScore = Object.values(talliedResults.riders)
     //     .filter((a) => a.completedRide)

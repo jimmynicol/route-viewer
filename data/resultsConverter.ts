@@ -227,7 +227,7 @@ function listClubXOMs(results: RideEfforts) {
         for (const effort of segment.efforts.women) {
             const athleteId = effort.athlete_link.split("/").slice(-1)[0];
             if (effort.achievement === SegmentAchievement.CLUB_XOM)
-                men.push({ segmentId, athleteId, ...effort } as PREffort);
+                women.push({ segmentId, athleteId, ...effort } as PREffort);
         }
     }
 
@@ -251,7 +251,7 @@ function listXOMs(results: RideEfforts) {
         for (const effort of segment.efforts.women) {
             const athleteId = effort.athlete_link.split("/").slice(-1)[0];
             if (effort.achievement === SegmentAchievement.XOM)
-                men.push({ segmentId, athleteId, ...effort } as PREffort);
+                women.push({ segmentId, athleteId, ...effort } as PREffort);
         }
     }
 
@@ -381,7 +381,7 @@ function doubleCheckAchievements(results: RideEfforts) {
 
 export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
     determineClubXoms(results);
-    doubleCheckAchievements(results);
+    // doubleCheckAchievements(results);
 
     const prs = listPRs(results);
     const xoms = listXOMs(results);
