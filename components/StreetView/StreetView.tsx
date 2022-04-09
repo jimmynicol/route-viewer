@@ -40,8 +40,6 @@ export const StreetView: React.ComponentType<{
         if (!segment) return;
         if (!isGoogleMapsLoaded || !target.current) return;
 
-        console.log("StreetView", segment);
-
         const position = {
             lat:
                 mode === StreetViewMode.START
