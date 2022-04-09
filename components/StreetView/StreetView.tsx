@@ -40,15 +40,17 @@ export const StreetView: React.ComponentType<{
         if (!segment) return;
         if (!isGoogleMapsLoaded || !target.current) return;
 
+        console.log("StreetView", segment);
+
         const position = {
             lat:
                 mode === StreetViewMode.START
-                    ? segment.start_latitude
-                    : segment.end_latitude,
+                    ? segment.start_latlng[0]
+                    : segment.end_latlng[0],
             lng:
                 mode === StreetViewMode.START
-                    ? segment.start_longitude
-                    : segment.end_longitude,
+                    ? segment.start_latlng[1]
+                    : segment.end_latlng[1],
         };
 
         const sv = new google.maps.StreetViewPanorama(target.current, {
