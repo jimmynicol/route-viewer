@@ -4,6 +4,7 @@ import cw from "classnames";
 import { GeneralClassification } from "../../data/resultsConverter";
 import { secondsToMinutes } from "../../utils/unitConversions";
 import { SegmentedControl } from "../Misc/SegmentedControl";
+import { Sex } from "../../data/stravaDataTypes";
 
 import typography from "../../styles/Typography.module.css";
 import styles from "./GeneralClassificationList.module.css";
@@ -13,8 +14,9 @@ export const GeneralClassificationList: React.ComponentType<
         riders: GeneralClassification;
         limit?: number;
         onItemClick?: (athleteId: string) => void;
+        onSeeAll?: (genderToShow: Sex) => void;
     } & React.HTMLAttributes<HTMLDivElement>
-> = ({ riders, limit = 10, onItemClick, ...props }) => {
+> = ({ riders, limit = 10, onItemClick, onSeeAll, ...props }) => {
     const [genderToShow, setGenderToShow] = useState(0);
 
     const header = (
@@ -51,6 +53,17 @@ export const GeneralClassificationList: React.ComponentType<
         <div {...props}>
             {header}
             <div>{listItems}</div>
+            <div
+                className={typography.bodyReduced}
+                style={{ textAlign: "center", margin: 15 }}
+                onClick={() =>
+                    onSeeAll
+                        ? onSeeAll(genderToShow ? Sex.Male : Sex.Female)
+                        : null
+                }
+            >
+                See All
+            </div>
         </div>
     );
 };

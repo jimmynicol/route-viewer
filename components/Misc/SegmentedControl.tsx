@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cw from "classnames";
 
 import styles from "./SegmentedControl.module.css";
@@ -15,19 +15,16 @@ export interface SegmentedControlValue {
 export const SegmentedControl: React.ComponentType<
     {
         labels: string[];
+        highlightedItem?: number;
         onValueChanged?: (value: SegmentedControlValue) => void;
     } & React.HTMLAttributes<HTMLDivElement>
-> = ({ labels, onValueChanged, ...props }) => {
+> = ({ labels, highlightedItem = 0, onValueChanged, ...props }) => {
     const componentRef = useRef<HTMLDivElement>(null);
+    const [itemNum, setItemNum] = useState(highlightedItem);
     const [{ x }, api] = useSpring(() => ({ x: 2 }));
 
-    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        event.preventDefault();
-
-        const el = event.currentTarget;
-        const itemNum = Number(el.dataset.num) || 0;
+    useEffect(() => {
         const dims = componentRef.current?.getBoundingClientRect();
-
         if (!dims) return;
 
         const newX =
@@ -40,14 +37,26 @@ export const SegmentedControl: React.ComponentType<
             immediate: false,
             config: config.stiff,
         });
+    }, [componentRef, itemNum, api, labels]);
+
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+
+        const el = event.currentTarget;
+        const _itemNum = Number(el.dataset.num) || 0;
+        setItemNum(_itemNum);
 
         if (onValueChanged) {
             onValueChanged({
-                label: labels[itemNum],
-                index: itemNum,
+                label: labels[_itemNum],
+                index: _itemNum,
             } as SegmentedControlValue);
         }
     };
+
+    useEffect(() => {
+        setItemNum(highlightedItem);
+    }, [highlightedItem, setItemNum]);
 
     return (
         <div

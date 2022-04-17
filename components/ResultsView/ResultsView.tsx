@@ -140,7 +140,7 @@ export const ResultsView: React.ComponentType = () => {
     }
 
     // console.log(results);
-    // console.log(talliedResults);    
+    // console.log(talliedResults);
 
     // const ridersByScore = Object.values(talliedResults.riders)
     //     .filter((a) => a.completedRide)
@@ -268,16 +268,11 @@ export const ResultsView: React.ComponentType = () => {
                                     setSheetViewData(athleteId);
                                     setSheetViewType(ResultSheetViewType.RIDER);
                                 }}
-                            />
-                            <div
-                                className={typography.bodyReduced}
-                                style={{ textAlign: "center", margin: 15 }}
-                                onClick={() => {
+                                onSeeAll={(genderToShow) => {
+                                    setSheetViewData(genderToShow);
                                     setSheetViewType(ResultSheetViewType.GC);
                                 }}
-                            >
-                                See All
-                            </div>
+                            />
                         </div>
                     </div>
                 </div>

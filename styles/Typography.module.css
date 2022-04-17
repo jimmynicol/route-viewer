@@ -78,6 +78,16 @@
     color: #2997ff;
 }
 
+.highlighted {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+
+    font-size: 11px;
+    padding: 1px 4px;
+
+    border-radius: 3px;
+}
+
 /*----- Colors -----*/
 .title,
 .titleReduced,
@@ -106,5 +116,9 @@
     .code,
     .button {
         color: rgb(255, 255, 255);
+    }
+    .highlighted {
+        background-color: rgba(255, 255, 255, 0.6);
+        color:rgb(0, 0, 0);
     }
 }

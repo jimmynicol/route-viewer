@@ -124,7 +124,9 @@ export const RiderResultsView: React.ComponentType<{
                             <span>{` @ ${effort.average_power}W`}</span>
                         )}
                     </span>
-                    <span className={styles.rank}>{effort.rank}</span>
+                    <span className={cw(styles.rank, typography.highlighted)}>
+                        {effort.rank}
+                    </span>
                 </ListItem>
             );
         });

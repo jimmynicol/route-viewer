@@ -14,7 +14,7 @@ export const MyResults: React.ComponentType<
         onItemClick: (athleteId: string) => void;
     } & React.HTMLAttributes<HTMLDivElement>
 > = ({ onItemClick, ...props }) => {
-    const { talliedResults, statsByRider } = useResultsDataContext();
+    const { statsByRider } = useResultsDataContext();
     const { isLoading, isError, data } = useAthleteWithToken();
 
     if (isLoading) {
@@ -35,7 +35,8 @@ export const MyResults: React.ComponentType<
 
     if (!data) return <div></div>;
 
-    const caption = riderResultsToHighlightString(statsByRider(data.id));
+    const rider = statsByRider(data.id);
+    const caption = riderResultsToHighlightString(rider);
 
     return (
         <div {...props} onClick={() => onItemClick(data.id)}>
@@ -55,6 +56,14 @@ export const MyResults: React.ComponentType<
                 <div>
                     <h2 className={cw(typography.titleReduced)}>My Results</h2>
                     <p className={cw(typography.caption)}>{caption}</p>
+                    {rider.gcRank > 0 && (
+                        <p className={cw(typography.caption)}>
+                            General Classification:{" "}
+                            <span className={typography.highlighted}>
+                                {rider.gcRank}
+                            </span>
+                        </p>
+                    )}
                 </div>
             </div>
             <ForwardChevronIcon />

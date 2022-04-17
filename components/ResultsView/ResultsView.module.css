@@ -3,7 +3,8 @@
     inset-block-start: 0;
     inset-inline-start: 0;
 
-    height: 100vh;
+    height: 100%;
+    height: calc(100vh - env(safe-area-inset-bottom));
     width: 100vw;
 
     background-color: rgba(255, 255, 255, 1);
@@ -97,7 +98,7 @@
 }
 
 .myResults button {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 24px;
 }
 

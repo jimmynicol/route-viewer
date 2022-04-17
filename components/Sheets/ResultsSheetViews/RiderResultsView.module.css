@@ -32,14 +32,6 @@
 .rank {
     position: absolute;
     inset-inline-end: 20px;
-
-    background-color: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 1);
-
-    font-size: 11px;
-    padding: 0 4px;
-
-    border-radius: 3px;
 }
 
 .overallTime {

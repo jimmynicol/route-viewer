@@ -122,6 +122,7 @@ export const ResultsSheet: React.ComponentType<{
         case ResultSheetViewType.GC:
             content = (
                 <GCView
+                    genderToShow={sheetViewData}
                     onItemClick={(athleteId: string) => {
                         setSheetViewData(athleteId);
                         setSheetViewType(ResultSheetViewType.RIDER);
