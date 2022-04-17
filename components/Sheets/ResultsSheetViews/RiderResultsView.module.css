@@ -32,6 +32,8 @@
 .rank {
     position: absolute;
     inset-inline-end: 20px;
+
+    opacity: 0.5;
 }
 
 .overallTime {
