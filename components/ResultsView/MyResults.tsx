@@ -36,10 +36,12 @@ export const MyResults: React.ComponentType<
     if (!data) return <div></div>;
 
     const rider = statsByRider(data.id);
-    const caption = riderResultsToHighlightString(rider);
+    const caption = rider
+        ? riderResultsToHighlightString(rider)
+        : "No results for this ride";
 
     return (
-        <div {...props} onClick={() => onItemClick(data.id)}>
+        <div {...props} onClick={() => (rider ? onItemClick(data.id) : null)}>
             <div
                 style={{
                     display: "flex",
@@ -56,7 +58,7 @@ export const MyResults: React.ComponentType<
                 <div>
                     <h2 className={cw(typography.titleReduced)}>My Results</h2>
                     <p className={cw(typography.caption)}>{caption}</p>
-                    {rider.gcRank > 0 && (
+                    {rider?.gcRank > 0 && (
                         <p className={cw(typography.caption)}>
                             General Classification:{" "}
                             <span className={typography.highlighted}>
@@ -66,7 +68,7 @@ export const MyResults: React.ComponentType<
                     )}
                 </div>
             </div>
-            <ForwardChevronIcon />
+            {rider && <ForwardChevronIcon />}
         </div>
     );
 };

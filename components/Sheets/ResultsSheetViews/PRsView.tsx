@@ -45,16 +45,17 @@ export const PRsView: React.ComponentType<
             key={i}
             index={i + 1}
             title={effort.athlete_name}
+            stackDescription={true}
             onClick={() => (onItemClick ? onItemClick(effort) : null)}
         >
+            <span className={typography.caption}>
+                {results.segments[effort.segmentId].segment.name}
+            </span>
             <span className={typography.caption}>
                 {secondsToMinutes(effort.elapsed_time)}
                 {effort.average_power > 0 && (
                     <span>{` @ ${effort.average_power}W`}</span>
                 )}
-            </span>
-            <span className={typography.caption}>
-                - {results.segments[effort.segmentId].segment.name}
             </span>
         </ListItem>
     ));

@@ -382,6 +382,8 @@ export function resultsConverter(results: RideEfforts): TalliedRideEfforts {
 }
 
 export function riderResultsToHighlightString(riderResults: RiderStats) {
+    if (!riderResults) return "";
+
     const result = [];
     const { prs, top10s, clubXoms, xoms, segments } = riderResults;
 
