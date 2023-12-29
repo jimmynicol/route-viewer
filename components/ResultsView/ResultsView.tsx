@@ -139,9 +139,6 @@ export const ResultsView: React.ComponentType = () => {
         return <div></div>;
     }
 
-    // console.log(results);
-    // console.log(talliedResults);
-
     // const ridersByScore = Object.values(talliedResults.riders)
     //     .filter((a) => a.completedRide)
     //     .sort((a, b) => b.rideScore - a.rideScore)
